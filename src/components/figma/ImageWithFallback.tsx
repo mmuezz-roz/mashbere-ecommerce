@@ -1,0 +1,25 @@
+'use client';
+
+import React, { useState } from 'react';
+
+interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  fallback?: string;
+}
+
+export function ImageWithFallback({ 
+  src, 
+  alt, 
+  fallback = 'https://images.unsplash.com/photo-1576506295286-5cda18df43e7?w=800&auto=format&fit=crop&q=60',
+  ...props 
+}: ImageWithFallbackProps) {
+  const [error, setError] = useState(false);
+
+  return (
+    <img
+      src={error ? fallback : src}
+      alt={alt}
+      onError={() => setError(true)}
+      {...props}
+    />
+  );
+}

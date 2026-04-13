@@ -1,0 +1,95 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --background: #ffffff;
+  --foreground: #1c2114;
+  --card: #ffffff;
+  --card-foreground: #1c2114;
+  --popover: #ffffff;
+  --popover-foreground: #1c2114;
+  --primary: #708238;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f6ef;
+  --secondary-foreground: #708238;
+  --muted: #f4f6ef;
+  --muted-foreground: #5a682d;
+  --accent: #f0f3e8;
+  --accent-foreground: #708238;
+  --destructive: #9b2c2c;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8d5;
+  --input: transparent;
+  --input-background: #f4f6ef;
+  --switch-background: #cbd5e1;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #708238;
+  --radius: 1rem;
+}
+
+.dark {
+  --background: #0d1108;
+  --foreground: #f4f6ef;
+  --card: #0d1108;
+  --card-foreground: #f4f6ef;
+  --popover: #0d1108;
+  --popover-foreground: #f4f6ef;
+  --primary: #8ba145;
+  --primary-foreground: #0d1108;
+  --secondary: #1c2114;
+  --secondary-foreground: #f4f6ef;
+  --muted: #1c2114;
+  --muted-foreground: #a3b18a;
+  --accent: #1c2114;
+  --accent-foreground: #f4f6ef;
+  --destructive: #9b2c2c;
+  --destructive-foreground: #ffffff;
+  --border: #2d361c;
+  --input: #1c2114;
+  --ring: #8ba145;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-bebas);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-primary/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    font-size: var(--font-size);
+  }
+}
