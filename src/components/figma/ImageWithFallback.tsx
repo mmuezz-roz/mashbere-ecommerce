@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { optimizeCloudinaryUrl } from '@/lib/imageOptimizer';
 
 interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallback?: string;
@@ -14,9 +15,11 @@ export function ImageWithFallback({
 }: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
 
+  const finalSrc = error ? fallback : optimizeCloudinaryUrl(src as string);
+
   return (
     <img
-      src={error ? fallback : src}
+      src={finalSrc}
       alt={alt}
       onError={() => setError(true)}
       {...props}

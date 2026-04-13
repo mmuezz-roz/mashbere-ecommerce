@@ -37,6 +37,7 @@ export default function NewProductPage() {
   const router = useRouter();
   const [form, setForm] = useState<FormData>(INITIAL);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [newFlavor, setNewFlavor] = useState('');
   const [newVariant, setNewVariant] = useState('');
 
@@ -148,13 +149,72 @@ export default function NewProductPage() {
 
           {/* Image */}
           <Section title="Product Image">
-            <div>
-              <Label>Image URL *</Label>
-              <input type="url" required value={form.image} onChange={e => set('image', e.target.value)} className={inputCls} placeholder="https://…" />
+            <div className="space-y-4">
+              <Label>Upload Image *</Label>
+              <div className="flex items-center gap-4">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    setUploading(true);
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    try {
+                      const res = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData,
+                      });
+                      const data = await res.json();
+                      if (data.success) {
+                        set('image', data.url);
+                        toast.success('Image uploaded successfully!');
+                      } else {
+                        toast.error('Upload failed: ' + data.message);
+                      }
+                    } catch {
+                      toast.error('Failed to upload image');
+                    } finally {
+                      setUploading(false);
+                    }
+                  }}
+                  className="hidden"
+                  id="image-upload"
+                />
+                <label
+                  htmlFor="image-upload"
+                  className={`flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-sm font-semibold cursor-pointer hover:bg-gray-200 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  {uploading ? (
+                    <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                  ) : <Plus size={16} />}
+                  {uploading ? 'Uploading...' : 'Choose File'}
+                </label>
+                <span className="text-xs text-gray-400">or enter URL below</span>
+              </div>
+
+              <input
+                type="url"
+                required
+                value={form.image}
+                onChange={(e) => set('image', e.target.value)}
+                className={inputCls}
+                placeholder="https://cloudinary.com/..."
+              />
             </div>
             {form.image && (
-              <div className="mt-4 w-32 h-32 rounded-2xl overflow-hidden border border-gray-200 bg-gray-50">
-                <img src={form.image} alt="Preview" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <div className="mt-4 w-44 h-44 rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 relative group">
+                <img src={form.image} alt="Preview" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => set('image', '')}
+                  className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                >
+                  <X size={14} />
+                </button>
               </div>
             )}
           </Section>
