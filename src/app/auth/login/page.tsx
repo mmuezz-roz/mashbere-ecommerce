@@ -12,6 +12,8 @@ import { GoogleAuthButton } from '@/components/auth/GoogleAuthButton';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/hooks/useAuth';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -22,8 +24,16 @@ type LoginValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // Redirect if already logged in
+  React.useEffect(() => {
+    if (!authLoading && user) {
+      router.push('/');
+    }
+  }, [user, authLoading, router]);
 
   const {
     register,
@@ -36,24 +46,24 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginValues) => {
     setLoading(true);
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
+      const { data: authData, error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
       });
 
-      const result = await response.json();
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
 
-      if (result.success) {
-        toast.success(`Welcome back, ${result.data.name}! 🎉`);
+      if (authData.user) {
+        toast.success(`Welcome back! 🎉`);
         router.push('/');
         router.refresh();
-      } else {
-        toast.error(result.message || 'Invalid email or password');
       }
-    } catch {
-      toast.error('Connection error. Please check your internet and try again.');
+    } catch (err) {
+      console.error('Login error:', err);
+      toast.error('Connection error. Please try again.');
     } finally {
       setLoading(false);
     }

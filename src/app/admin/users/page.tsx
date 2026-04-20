@@ -114,18 +114,18 @@ export default function UsersPage() {
                       ))}
                     </tr>
                   ))
-                ) : users.length === 0 ? (
+                ) : (users || []).length === 0 ? (
                   <tr><td colSpan={4} className="px-5 py-16 text-center text-gray-400 font-medium">No users found</td></tr>
                 ) : (
-                  users.map(user => (
+                  (users || []).map(user => (
                     <tr key={user._id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#708238] to-[#4a5a25] flex items-center justify-center text-white font-black text-sm flex-shrink-0">
-                            {user.name.charAt(0).toUpperCase()}
+                            {(user.name || 'U').charAt(0).toUpperCase()}
                           </div>
                           <div>
-                            <p className="font-semibold text-gray-900">{user.name}</p>
+                            <p className="font-semibold text-gray-900">{user.name || 'Anonymous'}</p>
                             <p className="text-xs text-gray-400">{user.email}</p>
                           </div>
                         </div>

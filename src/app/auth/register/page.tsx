@@ -12,6 +12,8 @@ import { GoogleAuthButton } from '@/components/auth/GoogleAuthButton';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/hooks/useAuth';
 
 const registerSchema = z
   .object({
@@ -29,9 +31,17 @@ type RegisterValues = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  // Redirect if already logged in
+  React.useEffect(() => {
+    if (!authLoading && user) {
+      router.push('/');
+    }
+  }, [user, authLoading, router]);
 
   const {
     register,
@@ -44,32 +54,35 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterValues) => {
     setLoading(true);
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        }),
+      const { data: authData, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            full_name: data.name,
+          },
+          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+        },
       });
 
-      const result = await response.json();
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
 
-      if (result.success) {
-        toast.success('Account created! Please sign in. 🎉');
-        router.push('/auth/login');
-      } else {
-        // Show specific validation errors if available
-        if (result.errors && Array.isArray(result.errors)) {
-          result.errors.forEach((err: { message: string }) => toast.error(err.message));
+      if (authData.user) {
+        toast.success('Account created successfully! 🎉');
+        // Check if session exists (auto-login) or if they need to verify email
+        if (authData.session) {
+          router.push('/');
         } else {
-          toast.error(result.message || 'Registration failed. Please try again.');
+          toast.info('Please check your email to confirm your account.');
+          router.push('/auth/login');
         }
       }
-    } catch {
-      toast.error('Connection error. Please check your internet and try again.');
+    } catch (err) {
+      console.error('Registration error:', err);
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }

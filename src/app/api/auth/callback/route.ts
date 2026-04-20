@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/server';
 
 export async function GET(req: NextRequest) {
   const { searchParams, origin } = new URL(req.url);
@@ -7,18 +7,14 @@ export async function GET(req: NextRequest) {
   const next = searchParams.get('next') ?? '/';
 
   if (code) {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-
+    const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
 
-  // Return to error page if something goes wrong
-  return NextResponse.redirect(`${origin}/auth/login?error=oauth_error`);
+  // If no code is present, it might be an implicit flow or a direct hit.
+  // We redirect to the home page (or the 'next' param) where useAuth will pick up the session.
+  return NextResponse.redirect(`${origin}${next}`);
 }

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Home, User, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/hooks/useAuth';
 
 const NAV_ITEMS = [
   { name: 'Home', href: '/', icon: Home },
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
 export default function BottomNav() {
   const pathname = usePathname();
   const { getCartCount } = useCart();
+  const { user } = useAuth();
   const cartCount = getCartCount();
 
   return (
@@ -28,7 +30,7 @@ export default function BottomNav() {
           return (
             <Link 
               key={item.name} 
-              href={item.name === 'Account' ? '/auth/login' : item.href}
+              href={item.name === 'Account' ? (user ? '/profile' : '/auth/login') : item.href}
               className="relative flex flex-col items-center justify-center flex-1 h-full transition-colors group"
             >
               <div className={`relative flex flex-col items-center gap-0.5 ${

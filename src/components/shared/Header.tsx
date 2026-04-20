@@ -8,6 +8,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { UserMenu } from '@/components/auth/UserMenu';
 
 export default function Header() {
   const { getCartCount } = useCart();
@@ -104,15 +105,7 @@ export default function Header() {
                         </span>
                       )}
                     </Link>
-                    {user ? (
-                      <Link href="/admin/dashboard" className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#708238] shadow-lg hover:scale-110 active:scale-95 transition-all">
-                        <User className="w-5 h-5" />
-                      </Link>
-                    ) : (
-                      <Link href="/auth/login" className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#708238] shadow-lg hover:scale-110 active:scale-95 transition-all">
-                        <User className="w-5 h-5" />
-                      </Link>
-                    )}
+                    <UserMenu />
                   </div>
                 </div>
               </motion.div>
