@@ -40,7 +40,7 @@ export class UserController {
       );
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        return ApiResponse.error('Validation failed', 400, error.errors);
+        return ApiResponse.error('Validation failed', 400, (error as any).errors);
       }
       if (error instanceof ApiError) {
         return ApiResponse.error(error.message, error.statusCode);
@@ -91,7 +91,7 @@ export class UserController {
       );
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        return ApiResponse.error('Validation failed', 400, error.errors);
+        return ApiResponse.error('Validation failed', 400, (error as any).errors);
       }
       if (error instanceof ApiError) {
         return ApiResponse.error(error.message, error.statusCode);

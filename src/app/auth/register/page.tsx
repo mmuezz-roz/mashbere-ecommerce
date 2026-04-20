@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'motion/react';
 import { UserPlus, Mail, Lock, User, Loader2, ArrowRight, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import { GoogleAuthButton } from '@/components/auth/GoogleAuthButton';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -276,6 +277,24 @@ export default function RegisterPage() {
               )}
             </Button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6 flex items-center">
+            <div className="flex-1 border-t border-border" />
+            <span className="mx-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">or</span>
+            <div className="flex-1 border-t border-border" />
+          </div>
+
+          {/* Google Sign-Up */}
+          <GoogleAuthButton mode="register" />
+
+          {/* Sign-in link (mobile) */}
+          <p className="mt-6 text-center text-sm text-muted-foreground lg:hidden">
+            Already have an account?{' '}
+            <Link href="/auth/login" className="text-primary font-bold hover:underline">
+              Sign in
+            </Link>
+          </p>
         </motion.div>
       </div>
     </div>

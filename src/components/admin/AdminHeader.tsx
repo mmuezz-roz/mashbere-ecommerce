@@ -9,7 +9,9 @@ interface Props {
 }
 
 export default function AdminHeader({ title, subtitle }: Props) {
-  const { openSidebar } = useAdmin();
+  const { openSidebar, adminUser } = useAdmin();
+
+  const userInitial = adminUser?.full_name?.charAt(0).toUpperCase() || 'A';
 
   return (
     <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 py-4">
@@ -40,10 +42,17 @@ export default function AdminHeader({ title, subtitle }: Props) {
             aria-label="Notifications"
           >
             <Bell size={18} />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#708238] rounded-full" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#708238] rounded-full border-2 border-white" />
           </button>
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#708238] to-[#4a5a25] flex items-center justify-center text-white font-black text-sm shadow-sm select-none">
-            A
+          
+          <div className="flex items-center gap-3 ml-2 border-l border-gray-100 pl-4">
+            <div className="flex flex-col items-end hidden sm:flex">
+              <span className="text-[10px] font-black text-gray-300 uppercase tracking-tighter leading-none mb-1">Administrator</span>
+              <span className="text-xs font-bold text-gray-700 leading-none">{adminUser?.full_name || 'Admin'}</span>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#708238] to-[#4a5a25] flex items-center justify-center text-white font-black text-sm shadow-sm select-none">
+              {userInitial}
+            </div>
           </div>
         </div>
       </div>

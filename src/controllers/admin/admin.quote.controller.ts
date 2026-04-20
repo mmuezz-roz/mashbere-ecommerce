@@ -52,7 +52,7 @@ export class AdminQuoteController {
       return ApiResponse.success(quote, 'Quote status updated');
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        return ApiResponse.error('Invalid status value', 400, error.errors);
+        return ApiResponse.error('Invalid status value', 400, (error as any).errors);
       }
       if (error instanceof ApiError) return ApiResponse.error(error.message, error.statusCode);
       const msg = error instanceof Error ? error.message : 'Failed to update quote';

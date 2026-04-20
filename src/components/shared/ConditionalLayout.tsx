@@ -21,7 +21,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow pb-[var(--bottom-nav-height)] lg:pb-0">{children}</main>
       <Footer />
       <BottomNav />
     </div>

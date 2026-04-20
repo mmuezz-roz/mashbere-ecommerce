@@ -1,48 +1,33 @@
 import mongoose from 'mongoose';
-import dns from 'dns';
 
-if (process.env.NODE_ENV !== 'production') {
-  dns.setServers(['8.8.8.8', '1.1.1.1']);
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
 }
 
-declare global {
-  // eslint-disable-next-line no-var
-  var mongooseCache: { conn: mongoose.Mongoose | null; promise: Promise<mongoose.Mongoose> | null };
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
-if (!global.mongooseCache) {
-  global.mongooseCache = { conn: null, promise: null };
-}
-
-async function connectDB(): Promise<mongoose.Mongoose> {
-  const MONGODB_URI = process.env.MONGODB_URI;
-
-  if (!MONGODB_URI) {
-    throw new Error(
-      'MONGODB_URI is not defined. Please add it to your .env.local file.'
-    );
+async function connectDB() {
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  if (global.mongooseCache.conn) {
-    return global.mongooseCache.conn;
-  }
-
-  if (!global.mongooseCache.promise) {
-    global.mongooseCache.promise = mongoose.connect(MONGODB_URI, {
+  if (!cached.promise) {
+    const opts = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 10000,
-      connectTimeoutMS: 10000,
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URI as string, opts).then((mongoose) => {
+      return mongoose;
     });
   }
-
-  try {
-    global.mongooseCache.conn = await global.mongooseCache.promise;
-    return global.mongooseCache.conn;
-  } catch (error) {
-    // Reset promise so next call retries
-    global.mongooseCache.promise = null;
-    throw error;
-  }
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
 
 export default connectDB;

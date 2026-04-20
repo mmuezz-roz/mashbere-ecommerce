@@ -23,7 +23,7 @@ export default function HeroSection() {
       </div>
 
       {/* Content Container (Spacing matching screenshot) */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 flex flex-col items-center text-center pt-[35vh]">
+      <div className="relative z-20 container-responsive flex flex-col items-center text-center pt-[35vh]">
         
         {/* Massive Two-Line Heading (Exact casing and punctuation) */}
         <motion.h1 

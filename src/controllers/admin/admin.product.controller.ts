@@ -56,7 +56,7 @@ export class AdminProductController {
       return ApiResponse.success(product, 'Product created successfully', 201);
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        return ApiResponse.error('Validation failed', 400, error.errors);
+        return ApiResponse.error('Validation failed', 400, (error as any).errors);
       }
       const msg = error instanceof Error ? error.message : 'Failed to create product';
       return ApiResponse.error(msg, 500);
@@ -84,7 +84,7 @@ export class AdminProductController {
       return ApiResponse.success(product, 'Product updated successfully');
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        return ApiResponse.error('Validation failed', 400, error.errors);
+        return ApiResponse.error('Validation failed', 400, (error as any).errors);
       }
       if (error instanceof ApiError) return ApiResponse.error(error.message, error.statusCode);
       const msg = error instanceof Error ? error.message : 'Failed to update product';

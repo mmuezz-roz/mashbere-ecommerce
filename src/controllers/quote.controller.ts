@@ -19,7 +19,7 @@ export class QuoteController {
       return ApiResponse.success(quote, 'Quote request submitted successfully', 201);
     } catch (error: any) {
       if (error instanceof z.ZodError) {
-        return ApiResponse.error('Validation Error', 400, error.errors);
+        return ApiResponse.error('Validation Error', 400, (error as any).errors);
       }
       return ApiResponse.error(error.message, 500);
     }

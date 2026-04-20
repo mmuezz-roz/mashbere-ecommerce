@@ -6,14 +6,14 @@ import { Truck, ShieldCheck, Package } from 'lucide-react';
 
 export default function ValueSection() {
   return (
-    <section className="py-32 bg-[#141A0B] relative overflow-hidden">
+    <section className="section-padding bg-[#141A0B] relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#708238]/10 rounded-full blur-[150px]" />
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[#C4EB54]/5 rounded-full blur-[150px]" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="container-responsive relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           {/* Value Card 1: Express Delivery */}

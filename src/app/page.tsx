@@ -19,34 +19,34 @@ export default async function Home() {
       <HeroSection />
 
       {/* Featured Products Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 relative">
+      <section className="container-responsive section-padding relative">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 sm:mb-16 lg:mb-20 gap-8">
           <div className="space-y-4 max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-black text-xs uppercase tracking-widest">
               <Star className="w-4 h-4 fill-current" />
               <span>Our Selection</span>
             </div>
-            <h2 className="text-6xl sm:text-7xl lg:text-8xl font-display text-gray-900 leading-none tracking-tight uppercase">
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-display text-gray-900 leading-none tracking-tight uppercase">
               Our Best <span className="text-primary ">Sellers</span>
             </h2>
-            <p className="text-gray-500 text-lg sm:text-xl font-medium leading-relaxed">
+            <p className="text-gray-500 text-base sm:text-lg lg:text-xl font-medium leading-relaxed">
               Discover the flavors that are taking the UAE by storm. Handcrafted, fresh, and irresistibly delicious.
             </p>
           </div>
           <Link 
             href="/products" 
-            className="group flex items-center gap-3 bg-white border-2 border-gray-100 hover:border-primary/20 px-8 py-4 rounded-[20px] font-black text-gray-900 transition-all shadow-xl shadow-gray-100/50 hover:shadow-2xl hover:scale-105"
+            className="group flex flex-shrink-0 items-center gap-3 bg-white border-2 border-gray-100 hover:border-primary/20 px-6 sm:px-8 py-3 sm:py-4 rounded-[16px] sm:rounded-[20px] font-black text-sm sm:text-base text-gray-900 transition-all shadow-xl shadow-gray-100/50 hover:shadow-2xl hover:scale-105"
           >
             <span>View All Flavors</span>
-            <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
-              <ArrowRight className="w-4 h-4" />
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-900 text-white rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
             </div>
           </Link>
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
           {featuredProducts.length > 0 ? (
             featuredProducts.slice(0, 4).map(product => (
               <ProductCard key={product.id} product={product} />
@@ -62,8 +62,8 @@ export default async function Home() {
       <ValueSection />
 
       {/* Final CTA Section */}
-      <section className="mt-32 lg:mt-50 mb-32 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="section-padding">
+        <div className="container-responsive">
           <div className="bg-[#141A0B] rounded-[64px] p-12 sm:p-24 relative overflow-hidden group border border-white/5">
             {/* Background Decorative Glow */}
             <div className="absolute -top-24 -right-24 w-[500px] h-[500px] bg-[#C4EB54]/10 rounded-full blur-[120px] transform group-hover:scale-110 transition-transform duration-[4s]" />
