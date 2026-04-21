@@ -7,7 +7,7 @@ import { ShoppingBag, Search, User } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { UserMenu } from '@/components/auth/UserMenu';
 
 export default function Header() {
@@ -15,6 +15,9 @@ export default function Header() {
   const cartCount = getCartCount();
   const { user } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -54,13 +57,34 @@ export default function Header() {
               >
                 {/* DESKTOP: Navigation Links (Left) */}
                 <nav className="hidden lg:flex items-center gap-6">
-                  <Link href="/" className="px-5 py-2 rounded-full bg-white text-[#708238] text-xs font-black uppercase tracking-widest shadow-lg shadow-white/10 transition-transform hover:scale-105 active:scale-95">
+                  <Link 
+                    href="/" 
+                    className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 ${
+                      pathname === '/' 
+                        ? 'bg-white text-[#708238] shadow-lg shadow-white/10' 
+                        : 'text-white/80 hover:text-white'
+                    }`}
+                  >
                     Home
                   </Link>
-                  <Link href="/products" className="text-white/80 hover:text-white text-xs font-black uppercase tracking-widest transition-colors">
+                  <Link 
+                    href="/products" 
+                    className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 ${
+                      (pathname === '/products' && !category) || (pathname.startsWith('/products/') && !category)
+                        ? 'bg-white text-[#708238] shadow-lg shadow-white/10' 
+                        : 'text-white/80 hover:text-white'
+                    }`}
+                  >
                     Shop
                   </Link>
-                  <Link href="/products?category=ice-cream" className="text-white/80 hover:text-white text-xs font-black uppercase tracking-widest transition-colors">
+                  <Link 
+                    href="/products?category=ice-cream" 
+                    className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 ${
+                      pathname.startsWith('/products') && category === 'ice-cream'
+                        ? 'bg-white text-[#708238] shadow-lg shadow-white/10' 
+                        : 'text-white/80 hover:text-white'
+                    }`}
+                  >
                     Flavors
                   </Link>
                 </nav>
