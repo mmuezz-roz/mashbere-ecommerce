@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Home, User, ShoppingBag, LayoutGrid } from 'lucide-react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { ShoppingBag, Search, User, Home, LayoutGrid } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,11 +12,12 @@ const NAV_ITEMS = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'Shop', href: '/products', icon: LayoutGrid },
   { name: 'Cart', href: '/cart', icon: ShoppingBag },
-  { name: 'Account', href: '/auth/login', icon: User },
+  { name: 'Search', href: '?search=true', icon: Search },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { getCartCount } = useCart();
   const { user } = useAuth();
   const cartCount = getCartCount();
@@ -25,15 +26,18 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-[100] lg:hidden h-[var(--bottom-nav-height)] bg-[#0d1108]/95 backdrop-blur-xl border-t border-white/5">
       <div className="h-full max-w-md mx-auto px-6 flex items-center justify-between">
         {NAV_ITEMS.map((item) => {
-          const isActive = item.href === '/' 
-            ? pathname === '/' 
-            : pathname.startsWith(item.href);
+          const isSearch = item.name === 'Search';
+          const isActive = isSearch 
+            ? searchParams.get('search') === 'true'
+            : (item.href === '/' 
+                ? pathname === '/' 
+                : pathname.startsWith(item.href));
           const Icon = item.icon;
 
           return (
             <Link 
               key={item.name} 
-              href={item.name === 'Account' ? (user ? '/profile' : '/auth/login') : item.href}
+              href={item.name === 'Search' ? `${pathname}?search=true` : (item.name === 'Account' ? (user ? '/profile' : '/auth/login') : item.href)}
               className="relative flex flex-col items-center justify-center flex-1 h-full transition-colors group"
             >
               <div className={`relative flex flex-col items-center gap-0.5 ${

@@ -22,7 +22,14 @@ export async function GET(
 
     if (error) throw error;
 
-    return ApiResponse.success(data);
+    // Map fields to match frontend expectations
+    const product = {
+      ...data,
+      _id: data.id,
+      businessType: data.business_type
+    };
+
+    return ApiResponse.success(product);
   } catch (error: any) {
     console.error('Admin Product Fetch Error:', error);
     return ApiResponse.error(error.message, 404);
@@ -48,6 +55,10 @@ export async function PATCH(
     const body = await req.json();
     const id = params.id;
 
+    if (!id || id === 'undefined' || id === 'null') {
+      return ApiResponse.error('Invalid Product ID', 400);
+    }
+
     const { data, error } = await supabase
       .from('products')
       .update({
@@ -71,7 +82,13 @@ export async function PATCH(
 
     if (error) throw error;
 
-    return ApiResponse.success(data, 'Product updated successfully');
+    const formattedProduct = {
+      ...data,
+      _id: data.id,
+      businessType: data.business_type
+    };
+
+    return ApiResponse.success(formattedProduct, 'Product updated successfully');
   } catch (error: any) {
     console.error('Admin Product Update Error:', error);
     return ApiResponse.error(error.message, 400);
@@ -89,6 +106,10 @@ export async function DELETE(
   try {
     const supabase = await createClient();
     const id = params.id;
+
+    if (!id || id === 'undefined' || id === 'null') {
+      return ApiResponse.error('Invalid Product ID', 400);
+    }
 
     const { error } = await supabase
       .from('products')

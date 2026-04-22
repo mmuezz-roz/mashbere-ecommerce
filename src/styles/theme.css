@@ -156,4 +156,13 @@
   .section-padding {
     @apply py-[var(--section-gap)];
   }
+
+  .point {
+    transition: all 0.3s ease;
+  }
+
+  .point:hover {
+    color: #b6ff3b;
+    transform: translateX(6px);
+  }
 }

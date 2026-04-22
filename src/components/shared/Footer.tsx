@@ -28,12 +28,12 @@ const FOOTER_LINKS = {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#141A0B] pt-24 pb-12 relative overflow-hidden text-white">
+    <footer className="bg-[#141A0B] pt-14 sm:pt-20 lg:pt-24 pb-10 sm:pb-12 relative overflow-hidden text-white">
       {/* Background Decorative Glow (Pistachio) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#C4EB54]/5 rounded-full blur-[120px] -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 mb-12 sm:mb-16 lg:mb-20">
           {/* Brand & Newsletter */}
           <div className="lg:col-span-5 space-y-10">
             <Link href="/" className="flex items-center gap-3">
@@ -54,13 +54,13 @@ export default function Footer() {
 
             <div className="space-y-4">
               <h4 className="text-sm font-black uppercase tracking-[0.2em] text-white">Join the Dream</h4>
-              <div className="flex p-1.5 bg-white/5 backdrop-blur-md rounded-[20px] max-w-md border border-white/10 focus-within:border-[#C4EB54]/50 transition-all">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="bg-transparent flex-1 px-5 py-3 outline-none text-sm font-medium text-white placeholder:text-gray-500"
+              <div className="flex flex-col sm:flex-row p-1.5 bg-white/5 backdrop-blur-md rounded-[20px] border border-white/10 focus-within:border-[#C4EB54]/50 transition-all max-w-sm sm:max-w-md gap-2 sm:gap-0">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="bg-transparent flex-1 px-4 sm:px-5 py-2.5 sm:py-3 outline-none text-sm font-medium text-white placeholder:text-gray-500 rounded-[14px] sm:rounded-none"
                 />
-                <button className="bg-[#C4EB54] text-[#141A0B] px-8 py-3 rounded-[16px] font-black text-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+                <button className="bg-[#C4EB54] text-[#141A0B] px-6 sm:px-8 py-2.5 sm:py-3 rounded-[14px] sm:rounded-[16px] font-black text-sm hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
                   <Send className="w-4 h-4" />
                   Join
                 </button>
@@ -69,7 +69,7 @@ export default function Footer() {
           </div>
 
           {/* Links Grid */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-12">
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
             <div>
               <h3 className="text-sm font-black uppercase tracking-[0.2em] text-white/50 mb-8">Explore</h3>
               <ul className="space-y-4">
@@ -96,7 +96,7 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               <h3 className="text-sm font-black uppercase tracking-[0.2em] text-white/50 mb-8">Contact</h3>
               <ul className="space-y-6">
                 {FOOTER_LINKS.Contact.map((item) => (

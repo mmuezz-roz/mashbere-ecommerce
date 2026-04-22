@@ -29,6 +29,19 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Handle mobile search trigger from URL
+  useEffect(() => {
+    if (searchParams.get('search') === 'true') {
+      setIsMobileSearchOpen(true);
+      // Clean up the URL after opening
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete('search');
+      const queryString = newParams.toString();
+      const newUrl = pathname + (queryString ? `?${queryString}` : '');
+      window.history.replaceState(null, '', newUrl);
+    }
+  }, [searchParams, pathname]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -106,13 +119,13 @@ export default function Header() {
 
                 {/* ACTIONS (Right) */}
                 <div className="flex items-center gap-2">
-                  {/* Mobile Search Trigger */}
-                  <button 
-                    onClick={() => setIsMobileSearchOpen(true)}
+                  {/* Mobile Account Trigger (Swapped from Search) */}
+                  <Link 
+                    href={user ? '/profile' : '/auth/login'}
                     className="lg:hidden w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white"
                   >
-                    <Search className="w-5 h-5" />
-                  </button>
+                    <User className="w-5 h-5" />
+                  </Link>
 
                   <div className="hidden lg:flex items-center gap-3">
                     <button 

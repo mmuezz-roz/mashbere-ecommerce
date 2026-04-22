@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { Send, Info, Phone } from 'lucide-react';
+import { submitInquiryAction } from '@/app/actions';
+import { toast } from 'sonner';
 
 interface InquiryFormState {
   name: string;
@@ -43,12 +45,22 @@ export default function EquipmentInquiryForm() {
     setIsSubmitting(true);
 
     try {
-      // Replace with actual Server Action or API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setSubmitted(true);
-      setFormData(INITIAL_STATE);
-    } catch {
-      // Error is intentionally not exposed to the user
+      const result = await submitInquiryAction({
+        name: formData.name,
+        company: formData.company,
+        email: formData.email,
+        equipmentInterest: formData.equipmentInterest,
+        message: formData.message,
+      });
+
+      if (result.success) {
+        setSubmitted(true);
+        setFormData(INITIAL_STATE);
+        toast.success('Inquiry sent successfully!');
+      }
+    } catch (err) {
+      console.error('Submission error:', err);
+      toast.error('Failed to send inquiry. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

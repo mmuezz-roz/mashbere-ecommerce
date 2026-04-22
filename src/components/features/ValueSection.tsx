@@ -4,6 +4,52 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Truck, ShieldCheck, Package } from 'lucide-react';
 
+const VALUES = [
+  {
+    icon: Truck,
+    iconBg: 'bg-[#708238]',
+    iconColor: 'text-white',
+    iconShadow: 'shadow-[#708238]/20',
+    iconHover: 'group-hover:rotate-12',
+    title: 'Express Delivery',
+    highlight: 'Launching Soon',
+    description:
+      'We are refining our express delivery experience to meet the highest standards of speed and quality. A seamless, temperature-controlled service will be available shortly across the UAE.',
+  },
+  {
+    icon: ShieldCheck,
+    iconBg: 'bg-white/10',
+    iconColor: 'text-[#C4EB54]',
+    iconShadow: '',
+    iconHover: 'group-hover:-rotate-12',
+    title: 'Artisanal Quality',
+    highlight: 'Guaranteed',
+    description:
+      'Crafted with precision and the finest ingredients to deliver a rich, smooth, and consistently refined experience.',
+    points: [
+      'Premium, responsibly sourced ingredients',
+      'Clean recipes, no unnecessary additives',
+      'Consistent taste in every scoop',
+    ],
+  },
+  {
+    icon: Package,
+    iconBg: 'bg-[#708238]',
+    iconColor: 'text-white',
+    iconShadow: 'shadow-[#708238]/20',
+    iconHover: 'group-hover:rotate-12',
+    title: 'Premium',
+    highlight: 'Presentation',
+    description:
+      'Designed to elevate every moment  from the first glance to the final bite.',
+    points: [
+      'Elegant, detail-focused design',
+      'Crafted to preserve texture & freshness',
+      'A premium experience in every serving',
+    ],
+  },
+];
+
 export default function ValueSection() {
   return (
     <section className="section-padding bg-[#141A0B] relative overflow-hidden">
@@ -14,62 +60,54 @@ export default function ValueSection() {
       </div>
 
       <div className="container-responsive relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
-          {/* Value Card 1: Express Delivery */}
-          <motion.div 
-            whileHover={{ y: -15, scale: 1.02 }}
-            className="group relative bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-[48px] hover:bg-white/10 hover:border-[#C4EB54]/30 transition-all duration-500 cursor-pointer"
-          >
-            <div className="w-16 h-16 bg-[#708238] rounded-2xl flex items-center justify-center mb-10 group-hover:rotate-12 transition-transform duration-500 shadow-2xl shadow-[#708238]/20">
-              <Truck className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-4xl font-display text-white mb-6 uppercase tracking-wide">
-              Express <br /> <span className="text-[#C4EB54]">Delivery</span>
-            </h3>
-            <p className="text-gray-400 text-lg leading-relaxed font-medium">
-              Our expedited logistics network facilitates direct-to-door fulfillment within sixty minutes, 
-              maintaining optimal thermal integrity across all seven Emirates.
-            </p>
-            <div className="mt-10 h-1 w-12 bg-[#708238] group-hover:w-full transition-all duration-700 rounded-full" />
-          </motion.div>
+        {/* Section Label */}
+        <div className="text-center mb-8 sm:mb-12">
+          <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] text-[#C4EB54]/60">
+            Why Choose Mashbere
+          </span>
+        </div>
 
-          {/* Value Card 2: Quality Guarantee */}
-          <motion.div 
-            whileHover={{ y: -15, scale: 1.02 }}
-            className="group relative bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-[48px] hover:bg-white/10 hover:border-[#C4EB54]/30 transition-all duration-500 cursor-pointer"
-          >
-            <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-10 group-hover:-rotate-12 transition-transform duration-500 shadow-2xl border border-white/10">
-              <ShieldCheck className="w-8 h-8 text-[#C4EB54]" />
-            </div>
-            <h3 className="text-4xl font-display text-white mb-6 uppercase tracking-wide">
-              Quality <br /> <span className="text-[#C4EB54]">Guarantee</span>
-            </h3>
-            <p className="text-gray-400 text-lg leading-relaxed font-medium">
-              We adhere to rigorous artisanal standards, sourcing exclusively premium, 
-              non-GMO organic components to ensure an unparalleled sensory experience.
-            </p>
-            <div className="mt-10 h-1 w-12 bg-[#708238] group-hover:w-full transition-all duration-700 rounded-full" />
-          </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+          {VALUES.map((v, i) => {
+            const Icon = v.icon;
+            return (
+              <motion.div
+                key={v.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                whileHover={{ y: -10, scale: 1.01 }}
+                className="group relative bg-white/5 backdrop-blur-xl border border-white/10 p-6 sm:p-8 lg:p-10 rounded-[36px] sm:rounded-[48px] hover:bg-white/10 hover:border-[#C4EB54]/30 transition-all duration-500 cursor-pointer flex flex-col"
+              >
+                <div
+                  className={`w-12 h-12 sm:w-16 sm:h-16 ${v.iconBg} rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 sm:mb-10 ${v.iconHover} transition-transform duration-500 shadow-2xl ${v.iconShadow} border border-white/10`}
+                >
+                  <Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${v.iconColor}`} />
+                </div>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-display text-white mb-3 sm:mb-6 uppercase tracking-wide">
+                  {v.title} <br />
+                  <span className="text-[#C4EB54]">{v.highlight}</span>
+                </h3>
+                <p className="text-gray-400 text-sm sm:text-base lg:text-lg leading-relaxed font-medium mb-6">
+                  {v.description}
+                </p>
+                
+                {v.points && (
+                  <ul className="space-y-3 mb-8">
+                    {v.points.map((point) => (
+                      <li key={point} className="point flex items-start gap-3 text-gray-400 text-xs sm:text-sm font-medium">
+                        <span className="text-[#C4EB54] flex-shrink-0">✔</span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
-          {/* Value Card 3: Perfect Packaging */}
-          <motion.div 
-            whileHover={{ y: -15, scale: 1.02 }}
-            className="group relative bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-[48px] hover:bg-white/10 hover:border-[#C4EB54]/30 transition-all duration-500 cursor-pointer"
-          >
-            <div className="w-16 h-16 bg-[#708238] rounded-2xl flex items-center justify-center mb-10 group-hover:rotate-12 transition-transform duration-500 shadow-2xl shadow-[#708238]/20">
-              <Package className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-4xl font-display text-white mb-6 uppercase tracking-wide">
-              Perfect <br /> <span className="text-[#C4EB54]">Packaging</span>
-            </h3>
-            <p className="text-gray-400 text-lg leading-relaxed font-medium">
-              Our bespoke, temperature-controlled ecological containment systems are engineered 
-              to preserve structural and textural integrity for up to four hours post-dispatch.
-            </p>
-            <div className="mt-10 h-1 w-12 bg-[#708238] group-hover:w-full transition-all duration-700 rounded-full" />
-          </motion.div>
-
+                <div className="mt-auto h-0.5 w-10 bg-[#708238] group-hover:w-full transition-all duration-700 rounded-full" />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

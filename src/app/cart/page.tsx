@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
+import { toast } from 'sonner';
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, getCartTotal } = useCart();
@@ -141,13 +142,18 @@ export default function Cart() {
                 </div>
               </div>
 
-              <Link
-                href="/checkout"
+              <button
+                onClick={() => {
+                  toast.info('Mobile Ordering is Coming Soon!', {
+                    description: 'We are currently setting up our delivery network. Online ordering will be available shortly.',
+                    duration: 5000,
+                  });
+                }}
                 className="w-full bg-[#141A0B] text-white py-5 rounded-full font-black uppercase tracking-widest hover:bg-[#708238] shadow-2xl shadow-[#141A0B]/20 transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2 mb-4"
               >
                 Proceed to Checkout
                 <ArrowRight className="w-5 h-5" />
-              </Link>
+              </button>
 
               <Link
                 href="/products"

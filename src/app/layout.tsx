@@ -20,10 +20,13 @@ export const metadata = {
   description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
 };
 
+import { PageLoader } from '@/components/shared/PageLoader';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${bebas.variable} font-sans`}>
+        <PageLoader />
         <CartProvider>
           <ConditionalLayout>{children}</ConditionalLayout>
           <Toaster position="top-center" richColors />

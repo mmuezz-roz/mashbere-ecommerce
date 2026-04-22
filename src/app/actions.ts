@@ -36,13 +36,28 @@ export async function processCheckoutAction(formData: DeliveryInfo) {
  */
 export async function submitInquiryAction(inquiry: Omit<Inquiry, 'id' | 'createdAt' | 'status'>) {
   try {
-    // Logic to save enquiry to 'inquiries' collection
-    console.log('New B2B Inquiry received:', inquiry.company || inquiry.name);
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    const { createClient } = await import('@/lib/supabase/server');
+    const supabase = await createClient();
+
+    const { error } = await supabase.from('quotes').insert([
+      {
+        name: inquiry.name,
+        company: inquiry.company,
+        email: inquiry.email,
+        equipment_interest: inquiry.equipmentInterest,
+        message: inquiry.message,
+        status: 'new',
+      },
+    ]);
+
+    if (error) {
+      console.error('Database insertion error:', error);
+      throw new Error(error.message);
+    }
+
     return { success: true };
-  } catch (error) {
-    throw new InternalServerError('Failed to submit inquiry');
+  } catch (error: any) {
+    console.error('Inquiry submission error:', error);
+    throw new InternalServerError('Failed to submit inquiry. Please try again later.');
   }
 }
