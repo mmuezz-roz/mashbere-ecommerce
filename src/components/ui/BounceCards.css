@@ -1,0 +1,33 @@
+.bounceCardsContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  position: absolute;
+  width: 140px;
+  height: 280px; /* Taller to fit the bottle aspect ratio */
+}
+
+@media (min-width: 640px) {
+  .card {
+    width: 180px;
+    height: 360px;
+  }
+}
+
+.card .image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+  /* Removed filter: drop-shadow() because tracing 9 high-res PNG outlines during scroll causes severe lag */
+  z-index: 20;
+  will-change: transform;
+  /* Hardware acceleration hint */
+  transform: translateZ(0);
+}

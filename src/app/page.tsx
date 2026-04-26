@@ -5,6 +5,7 @@ import { ProductCard } from '@/components/features/ProductCard';
 import HeroSection from '@/components/features/HeroSection';
 import ValueSection from '@/components/features/ValueSection';
 import { ScrollReveal } from '@/components/shared/ScrollReveal';
+import SipUpSection from '@/components/features/SipUpSection';
 
 /**
  * Homepage (Server Component)
@@ -18,6 +19,9 @@ export default async function Home() {
     <div className="flex flex-col bg-[#FDFCFD]">
       {/* Hero Section (Client Component) */}
       <HeroSection />
+
+      {/* SipUp Section */}
+      <SipUpSection />
 
       {/* Featured Products Section */}
       <ScrollReveal>
