@@ -35,3 +35,11 @@ next-env.d.ts
 # ide
 .vscode/
 .idea/
+
+# mcp servers
+.mcp.json
+
+# agentic tools
+.agents/
+.claude/
+.gemini/

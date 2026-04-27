@@ -48,7 +48,7 @@ export default function BounceCards({
           trigger: containerRef.current,
           start: 'top 90%', // Starts when container is 90% down the viewport
           end: 'top 30%',   // Ends when container is 30% down the viewport
-          scrub: 1,         // Smooth 1-second delay catch-up scrubbing
+          scrub: 1.5,       // Smoother catch-up scrubbing
         },
         x: (i) => {
           // Spread them much wider initially
@@ -58,7 +58,7 @@ export default function BounceCards({
         y: 200,
         scale: 1.5,
         stagger: 0.05,
-        ease: 'power2.out'
+        ease: 'power3.out'
       });
     }, containerRef);
     return () => ctx.revert();
@@ -102,8 +102,8 @@ export default function BounceCards({
         const noRotationTransform = getNoRotationTransform(baseTransform);
         gsap.to(target, {
           transform: noRotationTransform,
-          duration: 0.4,
-          ease: 'back.out(1.4)',
+          duration: 0.5,
+          ease: 'power3.out',
           overwrite: 'auto',
           zIndex: 50 // Bring hovered card to top
         });
@@ -111,14 +111,10 @@ export default function BounceCards({
         const offsetX = i < hoveredIdx ? -160 : 160;
         const pushedTransform = getPushedTransform(baseTransform, offsetX);
 
-        const distance = Math.abs(hoveredIdx - i);
-        const delay = distance * 0.05;
-
         gsap.to(target, {
           transform: pushedTransform,
-          duration: 0.4,
-          ease: 'back.out(1.4)',
-          delay,
+          duration: 0.5,
+          ease: 'power3.out',
           overwrite: 'auto',
           zIndex: 10 // Lower z-index for siblings
         });
@@ -137,8 +133,8 @@ export default function BounceCards({
       const baseTransform = transformStyles[i] || 'none';
       gsap.to(target, {
         transform: baseTransform,
-        duration: 0.4,
-        ease: 'back.out(1.4)',
+        duration: 0.5,
+        ease: 'power3.out',
         overwrite: 'auto',
         zIndex: 10 // Reset z-index
       });

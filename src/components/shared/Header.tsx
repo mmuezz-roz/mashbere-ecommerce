@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { UserMenu } from '@/components/auth/UserMenu';
+import GooeyNav from '@/components/ui/GooeyNav';
 
 export default function Header() {
   const { getCartCount } = useCart();
@@ -69,37 +70,23 @@ export default function Header() {
                 className="w-full flex items-center justify-between relative"
               >
                 {/* DESKTOP: Navigation Links (Left) */}
-                <nav className="hidden lg:flex items-center gap-6">
-                  <Link 
-                    href="/" 
-                    className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 ${
+                <nav className="hidden lg:flex items-center">
+                  <GooeyNav
+                    items={[
+                      { label: 'Home', href: '/' },
+                      { label: 'Shop', href: '/products' },
+                      { label: 'Flavors', href: '/products?category=ice-cream' },
+                    ]}
+                    initialActiveIndex={
                       pathname === '/' 
-                        ? 'bg-white text-[#708238] shadow-lg shadow-white/10' 
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                  >
-                    Home
-                  </Link>
-                  <Link 
-                    href="/products" 
-                    className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 ${
-                      (pathname === '/products' && !category) || (pathname.startsWith('/products/') && !category)
-                        ? 'bg-white text-[#708238] shadow-lg shadow-white/10' 
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                  >
-                    Shop
-                  </Link>
-                  <Link 
-                    href="/products?category=ice-cream" 
-                    className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 ${
-                      pathname.startsWith('/products') && category === 'ice-cream'
-                        ? 'bg-white text-[#708238] shadow-lg shadow-white/10' 
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                  >
-                    Flavors
-                  </Link>
+                        ? 0 
+                        : (pathname.startsWith('/products') && category === 'ice-cream')
+                          ? 2
+                          : pathname.startsWith('/products')
+                            ? 1
+                            : 0
+                    }
+                  />
                 </nav>
 
                 {/* LOGO: Left on Mobile, Center on Desktop */}

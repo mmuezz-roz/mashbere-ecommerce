@@ -21,6 +21,7 @@ export const metadata = {
 };
 
 import { PageLoader } from '@/components/shared/PageLoader';
+import ClickSpark from '@/components/ui/ClickSpark';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -28,7 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.variable} ${bebas.variable} font-sans`}>
         <PageLoader />
         <CartProvider>
-          <ConditionalLayout>{children}</ConditionalLayout>
+          <ClickSpark sparkColor="#C4EB54" sparkSize={12} sparkRadius={20} sparkCount={10} duration={600} extraScale={1.2}>
+            <ConditionalLayout>{children}</ConditionalLayout>
+          </ClickSpark>
           <Toaster position="top-center" richColors />
         </CartProvider>
       </body>

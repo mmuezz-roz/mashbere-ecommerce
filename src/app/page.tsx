@@ -6,6 +6,7 @@ import HeroSection from '@/components/features/HeroSection';
 import ValueSection from '@/components/features/ValueSection';
 import { ScrollReveal } from '@/components/shared/ScrollReveal';
 import SipUpSection from '@/components/features/SipUpSection';
+import GooeyButton from '@/components/ui/GooeyButton';
 
 /**
  * Homepage (Server Component)
@@ -40,15 +41,17 @@ export default async function Home() {
                 Discover the flavors that are taking the UAE by storm. Handcrafted, fresh, and irresistibly delicious.
               </p>
             </div>
-            <Link 
-              href="/products" 
-              className="group flex flex-shrink-0 items-center gap-3 bg-white border-2 border-gray-100 hover:border-primary/20 px-6 sm:px-8 py-3 sm:py-4 rounded-[16px] sm:rounded-[20px] font-black text-sm sm:text-base text-gray-900 transition-all shadow-xl shadow-gray-100/50 hover:shadow-2xl hover:scale-105"
-            >
-              <span>View All Flavors</span>
-              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-900 text-white rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
-                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-              </div>
-            </Link>
+            <GooeyButton>
+              <Link 
+                href="/products" 
+                className="group flex flex-shrink-0 items-center gap-3 bg-white border-2 border-gray-100 hover:border-primary/20 px-6 sm:px-8 py-3 sm:py-4 rounded-[16px] sm:rounded-[20px] font-black text-sm sm:text-base text-gray-900 transition-all shadow-xl shadow-gray-100/50 hover:shadow-2xl hover:scale-105"
+              >
+                <span>View All Flavors</span>
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-900 text-white rounded-full flex items-center justify-center group-hover:bg-primary transition-colors">
+                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                </div>
+              </Link>
+            </GooeyButton>
           </div>
 
           {/* Product Grid */}
@@ -90,18 +93,22 @@ export default async function Home() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center pt-2 sm:pt-4 items-center">
-                  <Link
-                    href="/products"
-                    className="w-full sm:w-auto bg-[#C4EB54] text-[#141A0B] px-10 sm:px-14 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base lg:text-lg uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all text-center"
-                  >
-                    Shop Collection
-                  </Link>
-                  <Link
-                    href="/equipment"
-                    className="w-full sm:w-auto bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 text-white px-10 sm:px-14 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base lg:text-lg uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all text-center"
-                  >
-                    B2B Solutions
-                  </Link>
+                  <GooeyButton particleCount={25} particleDistances={[140, 15]}>
+                    <Link
+                      href="/products"
+                      className="w-full sm:w-auto inline-block bg-[#C4EB54] text-[#141A0B] px-10 sm:px-14 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base lg:text-lg uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all text-center"
+                    >
+                      Shop Collection
+                    </Link>
+                  </GooeyButton>
+                  <GooeyButton particleCount={25} particleDistances={[140, 15]}>
+                    <Link
+                      href="/equipment"
+                      className="w-full sm:w-auto inline-block bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 text-white px-10 sm:px-14 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base lg:text-lg uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all text-center"
+                    >
+                      B2B Solutions
+                    </Link>
+                  </GooeyButton>
                 </div>
               </div>
             </div>

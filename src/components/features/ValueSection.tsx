@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Truck, ShieldCheck, Package } from 'lucide-react';
+import { Truck, ShieldCheck, Package, Check } from 'lucide-react';
 
 const VALUES = [
   {
@@ -11,10 +11,15 @@ const VALUES = [
     iconColor: 'text-white',
     iconShadow: 'shadow-[#708238]/20',
     iconHover: 'group-hover:rotate-12',
-    title: 'Express Delivery',
-    highlight: 'Launching Soon',
+    title: 'Express',
+    highlight: 'Delivery',
     description:
-      'We are refining our express delivery experience to meet the highest standards of speed and quality. A seamless, temperature-controlled service will be available shortly across the UAE.',
+      'We are refining our express logistics to ensure your premium treats arrive in perfect condition, every single time.',
+    points: [
+      'Temperature-controlled transit',
+      'Real-time order tracking',
+      'Carefully handled packaging',
+    ],
   },
   {
     icon: ShieldCheck,
@@ -22,8 +27,8 @@ const VALUES = [
     iconColor: 'text-[#C4EB54]',
     iconShadow: '',
     iconHover: 'group-hover:-rotate-12',
-    title: 'Artisanal Quality',
-    highlight: 'Guaranteed',
+    title: 'Artisanal',
+    highlight: 'Quality',
     description:
       'Crafted with precision and the finest ingredients to deliver a rich, smooth, and consistently refined experience.',
     points: [
@@ -41,7 +46,7 @@ const VALUES = [
     title: 'Premium',
     highlight: 'Presentation',
     description:
-      'Designed to elevate every moment  from the first glance to the final bite.',
+      'Designed to elevate every moment from the first glance to the final bite with our bespoke design language.',
     points: [
       'Elegant, detail-focused design',
       'Crafted to preserve texture & freshness',
@@ -89,16 +94,18 @@ export default function ValueSection() {
                   {v.title} <br />
                   <span className="text-[#C4EB54]">{v.highlight}</span>
                 </h3>
-                <p className="text-gray-400 text-sm sm:text-base lg:text-lg leading-relaxed font-medium mb-6">
+                <p className="flex-grow text-gray-400 text-sm sm:text-base lg:text-lg leading-relaxed font-medium mb-6">
                   {v.description}
                 </p>
                 
                 {v.points && (
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-4 mb-10">
                     {v.points.map((point) => (
-                      <li key={point} className="point flex items-start gap-3 text-gray-400 text-xs sm:text-sm font-medium">
-                        <span className="text-[#C4EB54] flex-shrink-0">✔</span>
-                        <span>{point}</span>
+                      <li key={point} className="point flex items-start gap-3 text-gray-400 text-xs sm:text-sm font-medium group/item">
+                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#C4EB54]/10 flex items-center justify-center mt-0.5">
+                          <Check className="w-3 h-3 text-[#C4EB54]" />
+                        </div>
+                        <span className="leading-tight">{point}</span>
                       </li>
                     ))}
                   </ul>
