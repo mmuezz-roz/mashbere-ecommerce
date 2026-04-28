@@ -157,11 +157,11 @@
     @apply py-[var(--section-gap)];
   }
 
-  .point {
+  .feature-point {
     transition: all 0.3s ease;
   }
 
-  .point:hover {
+  .feature-point:hover {
     color: #b6ff3b;
     transform: translateX(6px);
   }

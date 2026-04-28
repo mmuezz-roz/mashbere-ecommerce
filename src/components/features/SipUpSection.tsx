@@ -1,6 +1,34 @@
+'use client';
+
 import React from 'react';
+import { motion } from 'framer-motion';
 import BounceCards from '@/components/ui/BounceCards';
 import { ScrollReveal } from '@/components/shared/ScrollReveal';
+
+/* ── Animation helpers ── */
+
+// Splits text into individual word spans for staggered reveal
+const SplitWords = ({ text, className }: { text: string; className?: string }) => {
+  const words = text.split(' ');
+  return (
+    <>
+      {words.map((word, i) => (
+        <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
+          <motion.span
+            className={`inline-block ${className ?? ''}`}
+            variants={{
+              hidden: { y: '110%', opacity: 0, rotateX: -40 },
+              visible: { y: '0%', opacity: 1, rotateX: 0 },
+            }}
+            style={{ display: 'inline-block', transformOrigin: 'top' }}
+          >
+            {word}
+          </motion.span>
+        </span>
+      ))}
+    </>
+  );
+};
 
 export default function SipUpSection() {
   const images = [
@@ -15,7 +43,6 @@ export default function SipUpSection() {
     '/photos/gova.png',
   ];
 
-  // Creates a scattered stack of 9 cards
   const transformStyles = [
     'rotate(15deg) translate(-280px)',
     'rotate(-10deg) translate(-210px)',
@@ -25,25 +52,67 @@ export default function SipUpSection() {
     'rotate(12deg) translate(70px)',
     'rotate(-5deg) translate(140px)',
     'rotate(10deg) translate(210px)',
-    'rotate(-15deg) translate(280px)'
+    'rotate(-15deg) translate(280px)',
   ];
 
-  // Fallback for smaller screens if needed, but the container handles overflow.
-  
   return (
     <ScrollReveal hideMask={true}>
-      <section className="w-full relative overflow-x-clip py-20 sm:py-32 bg-[#FDFCFD]">
-        <div className="container-responsive">
-          <div className="flex flex-col items-center justify-center text-center mb-16 sm:mb-24">
-            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-display text-gray-900 leading-none tracking-tight uppercase">
-              Signature <span className="text-primary">SipUps</span>
-            </h2>
-            <p className="text-gray-500 text-base sm:text-lg lg:text-xl font-medium leading-relaxed max-w-2xl mt-4 sm:mt-6">
-              Experience our vibrant and refreshing SipUps. Handcrafted to perfection, each flavor bursts with natural goodness.
-            </p>
-          </div>
+      <section className="w-full relative overflow-x-clip">
 
-          <div className="w-full flex justify-center py-10 sm:py-20 mt-10">
+        {/* Full-width background image — drives section height */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/photos/ChatGPT Image Apr 28, 2026, 07_48_22 PM.png"
+          alt=""
+          aria-hidden="true"
+          className="w-full h-auto block"
+          style={{ display: 'block', width: '100%', height: 'auto' }}
+        />
+
+        {/* Very light overlay */}
+        <div className="absolute inset-0 bg-white/10" />
+
+        {/* Content — centred over image */}
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4">
+
+          {/* ── Heading: word-by-word 3D flip-up ── */}
+          <motion.h2
+            className="text-4xl sm:text-6xl lg:text-8xl font-display text-gray-900 leading-none tracking-tight uppercase text-center mb-4 sm:mb-6 perspective-[800px]"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.09, delayChildren: 0.1 },
+              },
+            }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+          >
+            <SplitWords text="Signature" />
+            {' '}
+            <SplitWords text="SipUps" className="text-primary" />
+          </motion.h2>
+
+          {/* ── Paragraph: fade + slide up ── */}
+          <motion.p
+            className="text-gray-600 text-base sm:text-lg lg:text-xl font-medium leading-relaxed max-w-2xl text-center"
+            initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Experience our vibrant and refreshing SipUps. Handcrafted to perfection,
+            each flavor bursts with natural goodness.
+          </motion.p>
+
+          {/* ── BounceCards ── */}
+          <motion.div
+            className="w-full flex justify-center mt-10"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
             <div className="w-full max-w-5xl flex justify-center transform scale-75 sm:scale-100">
               <BounceCards
                 images={images}
@@ -56,7 +125,8 @@ export default function SipUpSection() {
                 enableHover={true}
               />
             </div>
-          </div>
+          </motion.div>
+
         </div>
       </section>
     </ScrollReveal>

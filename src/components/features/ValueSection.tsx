@@ -101,7 +101,7 @@ export default function ValueSection() {
                 {v.points && (
                   <ul className="space-y-4 mb-10">
                     {v.points.map((point) => (
-                      <li key={point} className="point flex items-start gap-3 text-gray-400 text-xs sm:text-sm font-medium group/item">
+                      <li key={point} className="feature-point flex items-start gap-3 text-gray-400 text-xs sm:text-sm font-medium group/item">
                         <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#C4EB54]/10 flex items-center justify-center mt-0.5">
                           <Check className="w-3 h-3 text-[#C4EB54]" />
                         </div>
