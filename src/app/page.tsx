@@ -6,6 +6,7 @@ import HeroSection from '@/components/features/HeroSection';
 import ValueSection from '@/components/features/ValueSection';
 import { ScrollReveal } from '@/components/shared/ScrollReveal';
 import SipUpSection from '@/components/features/SipUpSection';
+import ProductShowcase from '@/components/features/ProductShowcase';
 import GooeyButton from '@/components/ui/GooeyButton';
 
 /**
@@ -23,6 +24,9 @@ export default async function Home() {
 
       {/* SipUp Section */}
       <SipUpSection />
+
+      {/* Product Showcase Section */}
+      <ProductShowcase />
 
       {/* Featured Products Section */}
       <ScrollReveal>

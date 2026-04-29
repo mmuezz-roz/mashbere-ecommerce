@@ -3,10 +3,11 @@ import { createClient } from '@/lib/supabase/server';
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
+    const { id } = await params;
     
     // Check admin auth
     const { data: { user } } = await supabase.auth.getUser();
@@ -28,7 +29,7 @@ export async function PATCH(
     const { error } = await supabase
       .from('quotes')
       .update({ status })
-      .eq('id', params.id);
+      .eq('id', id);
 
     if (error) throw error;
 

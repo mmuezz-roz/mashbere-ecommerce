@@ -20,13 +20,29 @@ export default function Header() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      setIsScrolled(currentScrollY > 20);
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsHidden(true);
+      } else if (currentScrollY < lastScrollY) {
+        setIsHidden(false);
+      }
+      
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -55,7 +71,13 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-3 sm:top-6 left-1/2 -translate-x-1/2 z-[100] w-[95%] max-w-7xl transition-all duration-500">
+      <header 
+        className={`fixed left-1/2 -translate-x-1/2 z-[100] w-[95%] max-w-7xl transition-all duration-500 ease-in-out ${
+          isHidden 
+            ? 'top-0 -translate-y-[150%] opacity-0 pointer-events-none' 
+            : 'top-3 sm:top-6 translate-y-0 opacity-100 pointer-events-auto'
+        }`}
+      >
         <div className={`backdrop-blur-xl rounded-[32px] sm:rounded-[40px] px-2 sm:px-8 py-1 sm:py-3 flex items-center justify-between border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.3)] transition-all duration-500 ${
           isScrolled ? 'bg-[#1E2710]/95' : 'bg-[#708238]/80'
         }`}>
@@ -75,12 +97,12 @@ export default function Header() {
                     items={[
                       { label: 'Home', href: '/' },
                       { label: 'Shop', href: '/products' },
-                      { label: 'Flavors', href: '/products?category=ice-cream' },
+                      { label: 'For Business', href: '/equipment' },
                     ]}
                     initialActiveIndex={
                       pathname === '/' 
                         ? 0 
-                        : (pathname.startsWith('/products') && category === 'ice-cream')
+                        : pathname.startsWith('/equipment')
                           ? 2
                           : pathname.startsWith('/products')
                             ? 1

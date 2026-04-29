@@ -66,14 +66,6 @@ export default function HeroSection() {
               Shop Now
             </Link>
           </GooeyButton>
-          <GooeyButton particleCount={20} particleDistances={[120, 10]}>
-            <Link
-              href="/equipment"
-              className="inline-block bg-white/10 backdrop-blur-xl border border-white/20 text-white px-10 sm:px-14 py-4 rounded-full font-black text-sm sm:text-base uppercase tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all"
-            >
-              B2B Solutions
-            </Link>
-          </GooeyButton>
         </motion.div>
       </div>
 

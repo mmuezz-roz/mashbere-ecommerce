@@ -57,23 +57,31 @@ export default function SipUpSection() {
 
   return (
     <ScrollReveal hideMask={true}>
-      <section className="w-full relative overflow-x-clip">
+      <section className="w-full relative overflow-x-clip min-h-[600px] sm:min-h-[800px] flex items-center justify-center">
 
-        {/* Full-width background image — drives section height */}
+        {/* Mobile background image */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/photos/ChatGPT Image Apr 29, 2026, 01_24_11 PM.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-center sm:hidden"
+        />
+
+        {/* Desktop/Tablet background image */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/photos/ChatGPT Image Apr 28, 2026, 07_48_22 PM.png"
           alt=""
           aria-hidden="true"
-          className="w-full h-auto block"
-          style={{ display: 'block', width: '100%', height: 'auto' }}
+          className="absolute inset-0 w-full h-full object-cover object-center hidden sm:block"
         />
 
         {/* Very light overlay */}
         <div className="absolute inset-0 bg-white/10" />
 
-        {/* Content — centred over image */}
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4">
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center justify-center w-full px-4 py-24 sm:py-32">
 
           {/* ── Heading: word-by-word 3D flip-up ── */}
           <motion.h2

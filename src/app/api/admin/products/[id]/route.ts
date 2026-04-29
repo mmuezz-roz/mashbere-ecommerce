@@ -8,11 +8,11 @@ import { ApiResponse } from '@/lib/api-response';
  */
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
-    const id = params.id;
+    const { id } = await params;
 
     const { data, error } = await supabase
       .from('products')
@@ -48,12 +48,12 @@ export const PUT = PATCH;
  */
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
     const body = await req.json();
-    const id = params.id;
+    const { id } = await params;
 
     if (!id || id === 'undefined' || id === 'null') {
       return ApiResponse.error('Invalid Product ID', 400);
@@ -101,11 +101,11 @@ export async function PATCH(
  */
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
-    const id = params.id;
+    const { id } = await params;
 
     if (!id || id === 'undefined' || id === 'null') {
       return ApiResponse.error('Invalid Product ID', 400);

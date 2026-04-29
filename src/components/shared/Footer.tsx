@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Instagram, Twitter, Facebook, Mail, Phone, MapPin, Sparkles, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import GooeyButton from '@/components/ui/GooeyButton';
 
 const FOOTER_LINKS = {
   Explore: [
@@ -51,6 +52,17 @@ export default function Footer() {
               Crafting premium artisanal frozen delights with the finest natural ingredients. 
               Delivering moments of pure joy across the UAE.
             </p>
+
+            <div className="pt-2 pb-4">
+              <GooeyButton particleCount={15} particleDistances={[100, 10]}>
+                <Link
+                  href="/equipment"
+                  className="inline-block bg-white/10 backdrop-blur-xl border border-white/20 text-white px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all shadow-xl"
+                >
+                  Partner with Us
+                </Link>
+              </GooeyButton>
+            </div>
 
             <div className="space-y-4">
               <h4 className="text-sm font-black uppercase tracking-[0.2em] text-white">Join the Dream</h4>
@@ -115,10 +127,20 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 text-gray-400">
           <div className="flex gap-4 order-2 md:order-1">
-            <Link href="#" className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-[#C4EB54]/10 hover:text-[#C4EB54] transition-all">
+            <Link 
+              href="https://www.instagram.com/mashbere.ae?igsh=cTZtdmh5YXQ1dWc2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-[#C4EB54]/10 hover:text-[#C4EB54] transition-all"
+            >
               <Instagram className="w-5 h-5" />
             </Link>
-            <Link href="#" className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-[#C4EB54]/10 hover:text-[#C4EB54] transition-all">
+            <Link 
+              href="https://www.facebook.com/share/1JTDeNX7H1/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-[#C4EB54]/10 hover:text-[#C4EB54] transition-all"
+            >
               <Facebook className="w-5 h-5" />
             </Link>
           </div>

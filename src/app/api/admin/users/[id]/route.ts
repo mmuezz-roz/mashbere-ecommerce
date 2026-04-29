@@ -8,12 +8,12 @@ import { ApiResponse } from '@/lib/api-response';
  */
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
     const body = await req.json();
-    const id = params.id;
+    const { id } = await params;
 
     if (!body.role) {
       return ApiResponse.error('Role is required', 400);
