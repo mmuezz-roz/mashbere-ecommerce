@@ -44,29 +44,6 @@ export const ScrollReveal = ({
       >
         {children}
       </motion.div>
-      
-      {/* Modern Masking Effect */}
-      {!hideMask && (
-        <motion.div
-          variants={{
-            hidden: { left: 0 },
-            visible: { left: "100%" },
-          }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay, ease: "easeIn" }}
-          style={{
-            position: "absolute",
-            top: 4,
-            bottom: 4,
-            left: 0,
-            right: 0,
-            background: "#C4EB54",
-            zIndex: 20,
-          }}
-        />
-      )}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import ValueSection from '@/components/features/ValueSection';
 import { ScrollReveal } from '@/components/shared/ScrollReveal';
 import SipUpSection from '@/components/features/SipUpSection';
 import ProductShowcase from '@/components/features/ProductShowcase';
+import ZeroRiskPartnership from '@/components/features/ZeroRiskPartnership';
 import GooeyButton from '@/components/ui/GooeyButton';
 
 /**
@@ -73,51 +74,14 @@ export default async function Home() {
         </section>
       </ScrollReveal>
 
+
       <ScrollReveal delay={0.3}>
         <ValueSection />
       </ScrollReveal>
 
-      {/* Final CTA Section */}
+      {/* Final CTA Section: Zero-Risk Partnership */}
       <ScrollReveal direction="up" delay={0.4}>
-        <section className="section-padding">
-          <div className="container-responsive">
-            <div className="bg-[#141A0B] rounded-[40px] sm:rounded-[56px] lg:rounded-[64px] p-8 sm:p-16 lg:p-24 relative overflow-hidden group border border-white/5">
-              {/* Background Decorative Glow */}
-              <div className="absolute -top-24 -right-24 w-[500px] h-[500px] bg-[#C4EB54]/10 rounded-full blur-[120px] transform group-hover:scale-110 transition-transform duration-[4s]" />
-              <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] bg-[#708238]/10 rounded-full blur-[100px] transform group-hover:scale-110 transition-transform duration-[5s]" />
-
-              <div className="relative z-10 text-center space-y-6 sm:space-y-10">
-                <h2 className="text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-display text-white leading-[0.9] uppercase tracking-tighter">
-                  Ready to find your <br />
-                  <span className="text-[#C4EB54]">Perfect Scoop?</span>
-                </h2>
-
-                <p className="max-w-xl mx-auto text-sm sm:text-base lg:text-xl text-gray-400 font-medium leading-relaxed px-2">
-                  Indulge in a new standard of ice cream where rich flavors, premium quality, and unforgettable taste come together in every bite.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center pt-2 sm:pt-4 items-center">
-                  <GooeyButton particleCount={25} particleDistances={[140, 15]}>
-                    <Link
-                      href="/products"
-                      className="w-full sm:w-auto inline-block bg-[#C4EB54] text-[#141A0B] px-10 sm:px-14 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base lg:text-lg uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all text-center"
-                    >
-                      Shop Collection
-                    </Link>
-                  </GooeyButton>
-                  <GooeyButton particleCount={25} particleDistances={[140, 15]}>
-                    <Link
-                      href="/equipment"
-                      className="w-full sm:w-auto inline-block bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 text-white px-10 sm:px-14 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base lg:text-lg uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all text-center"
-                    >
-                      B2B Solutions
-                    </Link>
-                  </GooeyButton>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ZeroRiskPartnership />
       </ScrollReveal>
     </div>
   );

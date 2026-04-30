@@ -113,7 +113,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   
-  --font-sans: var(--font-inter);
+  --font-sans: "VC Nudge Trial Normal", var(--font-inter);
   --font-display: var(--font-bebas);
 
   /* Map custom variables to theme if needed, 
