@@ -112,8 +112,8 @@ export default function ProductShowcase() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 40,
+    damping: 25,
     restDelta: 0.001
   });
 
@@ -136,7 +136,7 @@ export default function ProductShowcase() {
   const textY3 = useTransform(smoothReveal, [0.4, 0.8], [60, 0]);
 
   return (
-    <section ref={targetRef} className="relative h-[800vh] bg-[#FDFBF3]">
+    <section ref={targetRef} className="relative h-[1200vh] bg-[#FDFBF3]">
       <div className="sticky top-0 h-screen flex flex-col lg:flex-row items-start lg:items-center overflow-hidden pt-20 lg:pt-0">
         <div className="flex flex-col lg:flex-row items-start lg:items-center h-full w-full">
           {/* Lead Heading Slide - Independent Transform */}
@@ -266,7 +266,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 2. Middle Layer (Chickku) - Overlaps Top */}
             <motion.div 
               style={{ x: chickkuX, y: chickkuY }}
-              className="absolute -top-24 -left-12 -right-12 -bottom-12 z-10 pointer-events-none"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
                 src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.png"
@@ -279,7 +279,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 3. Top Layer (Popsicle) - Overlaps Top + High Shadow */}
             <motion.div 
               style={{ x: popsicleX, y: popsicleY }}
-              className="absolute -top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-12 pointer-events-none"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
             >
               <motion.div
                 animate={{ 
@@ -291,14 +291,14 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="relative w-full h-[120%] flex items-center justify-center"
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
               >
                 <Image 
                   src="/photos/ChatGPT_Image_Apr_30__2026__05_31_32_PM-removebg-preview.png"
                   alt="Premium Popsicle"
                   width={450}
                   height={650}
-                  className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] brightness-110"
+                  className="object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.5)] scale-75 lg:scale-100"
                   priority
                 />
               </motion.div>
