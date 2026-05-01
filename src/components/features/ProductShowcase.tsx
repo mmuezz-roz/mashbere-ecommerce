@@ -273,6 +273,8 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 alt="Chickku Detail"
                 fill
                 className="object-contain"
+                quality={100}
+                unoptimized
               />
             </motion.div>
 
@@ -298,7 +300,9 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   alt="Premium Popsicle"
                   width={450}
                   height={650}
-                  className="object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.5)] scale-75 lg:scale-100"
+                  className="object-contain scale-75 lg:scale-100"
+                  quality={100}
+                  unoptimized
                   priority
                 />
               </motion.div>
