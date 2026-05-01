@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 
 const SHOWCASE_ITEMS = [
   { 
@@ -184,69 +184,132 @@ export default function ProductShowcase() {
             style={{ x: cardsX }} 
             className="flex items-center gap-8 lg:gap-20 pr-[20vw] z-30 pl-8 lg:pl-0"
           >
-            {SHOWCASE_ITEMS.map((item, index) => {
-              // Calculate relative progress for each card to handle active/inactive states
-              const start = 0.15 + (index * 0.1);
-              const end = start + 0.1;
-              
-              // Scale and Opacity based on whether the card is in the center-ish area
-              const scale = useTransform(smoothProgress, [start - 0.05, start, end], [0.9, 1, 0.9]);
-              const opacity = useTransform(smoothProgress, [start - 0.05, start, end], [0.7, 1, 0.7]);
-              
-              // Parallax: Background moves slower
-              const bgY = useTransform(smoothProgress, [start - 0.1, end + 0.1], ["0%", "10%"]);
-
-              return (
-                <motion.div 
-                  key={item.id}
-                  style={{ scale, opacity }}
-                  initial={{ opacity: 0, x: 100, scale: 0.95 }}
-                  whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: index * 0.1, 
-                    ease: [0.22, 1, 0.36, 1] 
-                  }}
-                  viewport={{ once: true }}
-                  className="shrink-0 flex justify-center perspective-1000"
-                >
-                  <motion.div 
-                    whileHover={{ y: -12, scale: 1.02 }}
-                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative w-[90vw] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card"
-                    style={{ 
-                      backgroundColor: item.bgColor,
-                      rotate: index % 2 === 0 ? '-3deg' : '3deg'
-                    }}
-                  >
-                    {/* Bottom-aligned content */}
-                    <div className="absolute inset-x-0 bottom-0 p-8 lg:p-10 z-10 text-left">
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                      >
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#8B4513] mb-2 block">
-                          {item.label}
-                        </span>
-                        <h3 className="text-3xl lg:text-5xl font-display uppercase leading-none text-white mb-4">
-                          {item.name}
-                        </h3>
-                        <p className="text-sm lg:text-base text-white/70 font-medium leading-relaxed line-clamp-2" style={{ fontFamily: '"VC Nudge Trial Normal", sans-serif' }}>
-                          {item.desc}
-                        </p>
-                      </motion.div>
-                    </div>
-
-                    {/* Overlay for depth */}
-                    <div className="absolute inset-0 border border-white/10 rounded-[24px] pointer-events-none z-30" />
-                  </motion.div>
-                </motion.div>
-              );
-            })}
+            {SHOWCASE_ITEMS.map((item, index) => (
+              <ProductCard 
+                key={item.id} 
+                item={item} 
+                index={index} 
+                smoothProgress={smoothProgress} 
+              />
+            ))}
           </motion.div>
         </div>
       </div>
     </section>
   );
 }
+
+function ProductCard({ item, index, smoothProgress }: { item: any, index: number, smoothProgress: any }) {
+  const mouseX = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
+  const mouseY = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  const start = 0.15 + (index * 0.1);
+  const end = start + 0.1;
+  const scale = useTransform(smoothProgress, [start - 0.05, start, end], [0.9, 1, 0.9]);
+
+  // Parallax transforms: Hover right (0.5) -> move left (-X)
+  const chickkuX = useTransform(mouseX, [-0.5, 0.5], [15, -15]);
+  const chickkuY = useTransform(mouseY, [-0.5, 0.5], [15, -15]);
+  
+  const popsicleX = useTransform(mouseX, [-0.5, 0.5], [40, -40]);
+  const popsicleY = useTransform(mouseY, [-0.5, 0.5], [40, -40]);
+
+  return (
+    <motion.div 
+      style={{ scale }}
+      initial={{ x: 100, scale: 0.95 }}
+      whileInView={{ x: 0, scale: 1 }}
+      transition={{ 
+        duration: 0.8, 
+        delay: index * 0.1, 
+        ease: [0.22, 1, 0.36, 1] 
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      viewport={{ once: true }}
+      className="shrink-0 flex justify-center perspective-1000"
+    >
+      <motion.div 
+        whileHover={{ y: -8, scale: 1.01 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-[90vw] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card"
+        style={{ 
+          backgroundColor: item.bgColor,
+          rotate: index % 2 === 0 ? '-3deg' : '3deg'
+        }}
+      >
+        {index === 0 && (
+          <>
+            {/* 1. Background Image - Stays clipped */}
+            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+              <Image 
+                src="/photos/ChatGPT Image May 1, 2026, 03_10_13 PM.png"
+                alt="Card Background"
+                fill
+                className="object-cover"
+              />
+            </div>
+            
+            {/* 2. Middle Layer (Chickku) - Overlaps Top */}
+            <motion.div 
+              style={{ x: chickkuX, y: chickkuY }}
+              className="absolute -top-24 -left-12 -right-12 -bottom-12 z-10 pointer-events-none"
+            >
+              <Image 
+                src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.png"
+                alt="Chickku Detail"
+                fill
+                className="object-contain"
+              />
+            </motion.div>
+
+            {/* 3. Top Layer (Popsicle) - Overlaps Top + High Shadow */}
+            <motion.div 
+              style={{ x: popsicleX, y: popsicleY }}
+              className="absolute -top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-12 pointer-events-none"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="relative w-full h-[120%] flex items-center justify-center"
+              >
+                <Image 
+                  src="/photos/ChatGPT_Image_Apr_30__2026__05_31_32_PM-removebg-preview.png"
+                  alt="Premium Popsicle"
+                  width={450}
+                  height={650}
+                  className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] brightness-110"
+                  priority
+                />
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+
+        {/* Overlay for depth (inner border) */}
+        <div className="absolute inset-0 border border-white/10 rounded-[48px] pointer-events-none z-30" />
+      </motion.div>
+    </motion.div>
+  );
+}
+
