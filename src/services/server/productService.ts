@@ -109,6 +109,262 @@ export const ProductService = {
   },
 
   /**
+   * Fetches all popsicles joined with their detail data
+   */
+  async getAllPopsicles(): Promise<any[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, name, description, price, image, featured, slug,
+        product_details (
+          subtitle, label, accent_color, bg_gradient, text_color,
+          long_desc, highlight, ingredients, stats, tags, image_path
+        )
+      `)
+      .eq('category', 'popsicle')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('[Server] Error fetching popsicles:', error.message || error);
+      return [];
+    }
+
+    return (data || []).map((p: any) => {
+      const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
+      return {
+        id: p.slug,
+        name: p.name,
+        subtitle: d?.subtitle ?? '',
+        label: d?.label ?? '',
+        image: d?.image_path ?? p.image,
+        accentColor: d?.accent_color ?? '#F5F5F5',
+        bgGradient: d?.bg_gradient ?? '',
+        textColor: d?.text_color ?? '#111',
+        desc: p.description,
+        longDesc: d?.long_desc ?? p.description,
+        highlight: d?.highlight ?? '',
+        ingredients: d?.ingredients ?? [],
+        stats: d?.stats ?? [],
+        tags: d?.tags ?? [],
+        price: Number(p.price),
+        featured: p.featured,
+      };
+    });
+  },
+
+  /**
+   * Fetches a single popsicle with full detail by slug
+   */
+  async getPopsicleDetail(slug: string): Promise<any | null> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, name, description, price, image, featured, slug,
+        product_details (
+          subtitle, label, accent_color, bg_gradient, text_color,
+          long_desc, highlight, ingredients, stats, tags, image_path
+        )
+      `)
+      .eq('category', 'popsicle')
+      .eq('slug', slug)
+      .single();
+
+    if (error) {
+      if (error.code !== 'PGRST116') {
+        console.error('[Server] Error fetching popsicle detail:', error.message || error);
+      }
+      return null;
+    }
+
+    if (!data) return null;
+    const d = Array.isArray(data.product_details) ? data.product_details[0] : data.product_details;
+
+    return {
+      id: data.slug,
+      name: data.name,
+      subtitle: d?.subtitle ?? '',
+      label: d?.label ?? '',
+      image: d?.image_path ?? data.image,
+      accentColor: d?.accent_color ?? '#F5F5F5',
+      bgGradient: d?.bg_gradient ?? '',
+      textColor: d?.text_color ?? '#111',
+      desc: data.description,
+      longDesc: d?.long_desc ?? data.description,
+      highlight: d?.highlight ?? '',
+      ingredients: d?.ingredients ?? [],
+      stats: d?.stats ?? [],
+      tags: d?.tags ?? [],
+      price: Number(data.price),
+      featured: data.featured,
+    };
+  },
+
+  /**
+   * Fetches all sipups joined with their detail data
+   */
+  async getAllSipups(): Promise<any[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, name, description, price, image, featured, slug,
+        product_details (
+          subtitle, label, accent_color, bg_gradient, text_color,
+          long_desc, highlight, ingredients, stats, tags, image_path
+        )
+      `)
+      .eq('category', 'sip-up')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('[Server] Error fetching sipups:', error.message || error);
+      return [];
+    }
+
+    return (data || []).map((p: any) => {
+      const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
+      return {
+        id: p.slug,
+        name: p.name,
+        subtitle: d?.subtitle ?? '',
+        label: d?.label ?? '',
+        image: d?.image_path ?? p.image,
+        accentColor: d?.accent_color ?? '#F5F5F5',
+        desc: p.description,
+        longDesc: d?.long_desc ?? p.description,
+        stats: d?.stats ?? [],
+        price: Number(p.price),
+        featured: p.featured,
+      };
+    });
+  },
+
+  /**
+   * Fetches a single sipup with full detail by slug
+   */
+  async getSipupDetail(slug: string): Promise<any | null> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, name, description, price, image, featured, slug,
+        product_details (
+          subtitle, label, accent_color, bg_gradient, text_color,
+          long_desc, highlight, ingredients, stats, tags, image_path
+        )
+      `)
+      .eq('category', 'sip-up')
+      .eq('slug', slug)
+      .single();
+
+    if (error) {
+      if (error.code !== 'PGRST116') {
+        console.error('[Server] Error fetching sipup detail:', error.message || error);
+      }
+      return null;
+    }
+
+    if (!data) return null;
+    const d = Array.isArray(data.product_details) ? data.product_details[0] : data.product_details;
+
+    return {
+      id: data.slug,
+      name: data.name,
+      subtitle: d?.subtitle ?? '',
+      label: d?.label ?? '',
+      image: d?.image_path ?? data.image,
+      accentColor: d?.accent_color ?? '#F5F5F5',
+      desc: data.description,
+      longDesc: d?.long_desc ?? data.description,
+      stats: d?.stats ?? [],
+      price: Number(data.price),
+      featured: data.featured,
+    };
+  },
+
+  /**
+   * Fetches all pookies joined with their detail data
+   */
+  async getAllPookies(): Promise<any[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, name, description, price, image, featured, slug,
+        product_details (
+          subtitle, label, accent_color, bg_gradient, text_color,
+          long_desc, highlight, ingredients, stats, tags, image_path
+        )
+      `)
+      .eq('category', 'pookies')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('[Server] Error fetching pookies:', error.message || error);
+      return [];
+    }
+
+    return (data || []).map((p: any) => {
+      const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
+      return {
+        id: p.slug,
+        name: p.name,
+        subtitle: d?.subtitle ?? '',
+        label: d?.label ?? '',
+        image: d?.image_path ?? p.image,
+        accentColor: d?.accent_color ?? '#F5F5F5',
+        desc: p.description,
+        longDesc: d?.long_desc ?? p.description,
+        stats: d?.stats ?? [],
+        price: Number(p.price),
+        featured: p.featured,
+      };
+    });
+  },
+
+  /**
+   * Fetches all equipment joined with their detail data
+   */
+  async getAllEquipment(): Promise<any[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, name, description, price, image, featured, slug,
+        product_details (
+          subtitle, label, accent_color, bg_gradient, text_color,
+          long_desc, highlight, ingredients, stats, tags, image_path
+        )
+      `)
+      .eq('category', 'equipment')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('[Server] Error fetching equipment:', error.message || error);
+      return [];
+    }
+
+    return (data || []).map((p: any) => {
+      const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
+      return {
+        id: p.slug,
+        name: p.name,
+        subtitle: d?.subtitle ?? '',
+        label: d?.label ?? '',
+        image: d?.image_path ?? p.image,
+        accentColor: d?.accent_color ?? '#F5F5F5',
+        desc: p.description,
+        longDesc: d?.long_desc ?? p.description,
+        stats: d?.stats ?? [],
+        price: Number(p.price),
+        featured: p.featured,
+      };
+    });
+  },
+
+  /**
    * Maps database record to TypeScript Product interface
    */
   mapToProduct(dbProduct: any): Product {
@@ -131,3 +387,4 @@ export const ProductService = {
     };
   }
 };
+

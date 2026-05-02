@@ -19,7 +19,7 @@ interface BounceCardsProps {
   animationStagger?: number;
   easeType?: string;
   transformStyles?: string[];
-  enableHover?: boolean;
+  onCardClick?: (index: number) => void;
 }
 
 export default function BounceCards({
@@ -37,7 +37,8 @@ export default function BounceCards({
     'rotate(-10deg) translate(85px)',
     'rotate(2deg) translate(170px)'
   ],
-  enableHover = true
+  enableHover = true,
+  onCardClick
 }: BounceCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -154,7 +155,7 @@ export default function BounceCards({
       {images.map((src, idx) => (
         <div
           key={idx}
-          className={`card card-${idx}`}
+          className={`card card-${idx} cursor-pointer`}
           style={{
             transform: transformStyles[idx] ?? 'none',
             zIndex: 10,
@@ -162,6 +163,7 @@ export default function BounceCards({
           }}
           onMouseEnter={() => pushSiblings(idx)}
           onMouseLeave={resetSiblings}
+          onClick={() => onCardClick?.(idx)}
         >
           <Image 
             className="image" 

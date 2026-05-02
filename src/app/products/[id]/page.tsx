@@ -1,47 +1,51 @@
+import React from 'react';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import { ProductService } from '@/services/server/productService';
-import { ProductCard } from '@/components/features';
-import ProductDetailsClient from './ProductDetailsClient';
-import { notFound } from 'next/navigation';
+import ProductDetailClient from './ProductDetailClient';
 
-interface ProductPageProps {
-  params: Promise<{ id: string }>;
+interface Props {
+  params: { id: string };
 }
 
-/**
- * Product Details Page (Server Component)
- * Fetches product and related data on the server for best performance and SEO.
- */
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductDetailPage({ params }: Props) {
   const { id } = await params;
-  
-  // Data fetching on the server
-  const [product, relatedProducts] = await Promise.all([
-    ProductService.getProductById(id),
-    ProductService.getRelatedProducts(id)
-  ]);
 
-  if (!product) {
-    notFound();
+  // We need to fetch all to know prev/next.
+  // In a real large DB, we might do cursor-based or adjacent queries,
+  // but for 15 products, fetching all once is totally fine.
+  const [allPopsicles, allPookies, allEquipment] = await Promise.all([
+    ProductService.getAllPopsicles(),
+    ProductService.getAllPookies(),
+    ProductService.getAllEquipment()
+  ]);
+  
+  const allItems = [...allPopsicles, ...allPookies, ...allEquipment];
+  
+  const currentIndex = allItems.findIndex(f => f.id === id);
+  const flavor = allItems[currentIndex];
+
+  if (!flavor) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFCFA] p-4">
+        <h1 className="text-5xl font-display text-gray-900 uppercase mb-6">Not Found</h1>
+        <Link href="/products" className="flex items-center gap-2 text-[#708238] font-bold hover:gap-3 transition-all">
+          <ArrowLeft size={18} />
+          Back to All Flavours
+        </Link>
+      </div>
+    );
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
-        {/* Interactive Client Section */}
-        <ProductDetailsClient product={product} />
+  const prevFlavor = currentIndex > 0 ? allItems[currentIndex - 1] : null;
+  const nextFlavor = currentIndex < allItems.length - 1 ? allItems[currentIndex + 1] : null;
 
-        {/* Related Products Section */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-20">
-            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-8 px-4">You Might Also Like</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {relatedProducts.map(p => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+  return (
+    <ProductDetailClient
+      flavor={flavor}
+      prevFlavor={prevFlavor}
+      nextFlavor={nextFlavor}
+      currentIndex={currentIndex}
+    />
   );
 }

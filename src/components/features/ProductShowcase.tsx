@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Star } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 
@@ -112,7 +113,7 @@ export default function ProductShowcase() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 40,
+    stiffness: 150,
     damping: 25,
     restDelta: 0.001
   });
@@ -123,7 +124,7 @@ export default function ProductShowcase() {
   });
 
   const headingX = useTransform(smoothProgress, [0, 0.15, 1], ["0%", "-20%", "-20%"]);
-  const cardsX = useTransform(smoothProgress, [0, 1], ["0%", "-88%"]);
+  const cardsX = useTransform(smoothProgress, [0, 0.9], ["0%", "-88%"]);
 
   // Scroll Reveal for Heading Lines (now tied to early revealProgress)
   const textOpacity1 = useTransform(smoothReveal, [0, 0.4], [0, 1]);
@@ -139,20 +140,11 @@ export default function ProductShowcase() {
     <section ref={targetRef} className="relative h-[1200vh] bg-[#FDFBF3]">
       <div className="sticky top-0 h-screen flex flex-col lg:flex-row items-start lg:items-center overflow-hidden pt-20 lg:pt-0">
         <div className="flex flex-col lg:flex-row items-start lg:items-center h-full w-full">
-          {/* Lead Heading Slide - Independent Transform */}
           <motion.div 
             style={{ x: isMobile ? 0 : headingX }}
             className="shrink-0 w-full lg:w-auto pl-8 sm:pl-12 lg:pl-[15vw] mb-12 lg:mb-0 lg:mr-60 flex flex-col justify-center z-10"
           >
-            <div className="flex flex-col items-start text-left">
-              <motion.div 
-                style={{ opacity: textOpacity1, y: textY1 }}
-                className="inline-flex items-center gap-2 bg-[#7E8D5F]/10 px-4 py-2 rounded-full text-[#7E8D5F] font-black text-xs uppercase tracking-widest mb-6 lg:mb-10"
-              >
-                <Star className="w-4 h-4 fill-current" />
-                <span>Premium Collection</span>
-              </motion.div>
-              
+            <div className="flex flex-col items-start text-left max-w-4xl">
               <h2 className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter">
                 <motion.span 
                   style={{ opacity: textOpacity1, y: textY1 }}
@@ -171,7 +163,7 @@ export default function ProductShowcase() {
                 </motion.div>
                 <motion.span 
                   style={{ opacity: textOpacity3, y: textY3 }}
-                  className="text-[14vw] sm:text-9xl lg:text-[11rem] xl:text-[13rem]"
+                  className="text-[12vw] sm:text-8xl lg:text-[10rem] xl:text-[12rem] whitespace-nowrap"
                 >
                   DELICIOUS FLAVORS
                 </motion.span>
@@ -200,6 +192,25 @@ export default function ProductShowcase() {
 }
 
 function ProductCard({ item, index, smoothProgress }: { item: any, index: number, smoothProgress: any }) {
+  const router = useRouter();
+  
+  // Define mapped popsicle data based on index
+  const popsicleMap: Record<number, string> = {
+    0: 'chikku',
+    1: 'mango',
+    2: 'tender-coconut',
+    3: 'strawberry',
+    4: 'pistachio',
+    5: 'chocolate',
+    6: 'guava'
+  };
+
+  const handleCardClick = () => {
+    const slug = popsicleMap[index];
+    if (slug) {
+      router.push(`/products/${slug}`);
+    }
+  };
   const mouseX = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
   const mouseY = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
 
@@ -245,7 +256,8 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
       <motion.div 
         whileHover={{ y: -8, scale: 1.01 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-[90vw] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card"
+        onClick={handleCardClick}
+        className="relative w-[90vw] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card cursor-pointer"
         style={{ 
           backgroundColor: item.bgColor,
           rotate: index % 2 === 0 ? '-3deg' : '3deg'
@@ -261,6 +273,15 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 fill
                 className="object-cover"
               />
+            </div>
+
+            {/* 1.5 Decorative Text Layer - CHIKKU */}
+            <div 
+              className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
+            >
+              <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none">
+                CHIKKU
+              </span>
             </div>
             
             {/* 2. Middle Layer (Chickku) - Overlaps Top */}
@@ -301,6 +322,447 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
+                  quality={100}
+                  unoptimized
+                  priority
+                />
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+
+        {index === 1 && (
+          <>
+            {/* 1. Background Image - scaled up to hide white edges */}
+            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+              <Image 
+                src="/photos/mango cardbg.png"
+                alt="Mango Card Background"
+                fill
+                className="object-cover scale-[1.15]"
+                quality={100}
+                unoptimized
+              />
+            </div>
+
+            {/* 1.5 Decorative Text Layer - MANGO */}
+            <div 
+              className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
+            >
+              <div className="flex flex-col items-start gap-1">
+                <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
+                  MANGO
+                </span>
+                <span className="font-display text-2xl lg:text-4xl text-white/70 uppercase tracking-widest select-none leading-none">
+                  ALPHONSO
+                </span>
+              </div>
+            </div>
+            
+            {/* 2. Middle Layer (Mango Pieces) - Parallax */}
+            <motion.div 
+              style={{ x: chickkuX, y: chickkuY }}
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+            >
+              <Image 
+                src="/photos/mango pieces-Photoroom.png"
+                alt="Mango Pieces"
+                fill
+                className="object-contain"
+                quality={100}
+                unoptimized
+              />
+            </motion.div>
+
+            {/* 3. Top Layer (Mango Popsicle) - Floating Animation */}
+            <motion.div 
+              style={{ x: popsicleX, y: popsicleY }}
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+              >
+                <Image 
+                  src="/photos/mango popsicle.webp"
+                  alt="Mango Popsicle"
+                  width={550}
+                  height={750}
+                  className="object-contain scale-85 lg:scale-115"
+                  quality={100}
+                  unoptimized
+                  priority
+                />
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+
+
+        {index === 2 && (
+          <>
+            {/* 1. Background Image - Stays clipped */}
+            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+              <Image 
+                src="/photos/ChatGPT Image May 2, 2026, 05_20_20 PM.png"
+                alt="Tender Coconut Card Background"
+                fill
+                className="object-fill scale-[2.2]"
+              />
+            </div>
+
+            {/* 1.5 Decorative Text Layer - TENDER COCONUT */}
+            <div 
+              className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
+            >
+              <div className="flex flex-col items-start gap-1">
+                <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
+                  TENDER
+                </span>
+                <span className="font-display text-2xl lg:text-4xl text-white/70 uppercase tracking-widest select-none leading-none">
+                  COCONUT
+                </span>
+              </div>
+            </div>
+            
+            {/* 2. Middle Layer (Tender Pieces) - Overlaps Top */}
+            <motion.div 
+              style={{ x: chickkuX, y: chickkuY }}
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+            >
+              <Image 
+                src="/photos/tender og pieces.png"
+                alt="Tender Coconut Pieces"
+                fill
+                className="object-contain scale-[0.85]"
+                quality={100}
+                unoptimized
+              />
+            </motion.div>
+
+            {/* 3. Top Layer (Tender Popsicle) - Overlaps Top + Floating Animation */}
+            <motion.div 
+              style={{ x: popsicleX, y: popsicleY }}
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+              >
+                <Image 
+                  src="/photos/tender popsicle.png"
+                  alt="Tender Coconut Popsicle"
+                  width={450}
+                  height={650}
+                  className="object-contain scale-75 lg:scale-100"
+                  quality={100}
+                  unoptimized
+                  priority
+                />
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+
+        {index === 3 && (
+          <>
+            {/* 1. Background Image - Stays clipped */}
+            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+              <Image 
+                src="/photos/strawberry bg card.png"
+                alt="Strawberry Card Background"
+                fill
+                className="object-cover scale-110"
+              />
+            </div>
+
+            {/* 1.5 Decorative Text Layer - STRAWBERRY */}
+            <div 
+              className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
+            >
+              <div className="flex flex-col items-start gap-1">
+                <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
+                  STRAWBERRY
+                </span>
+                <span className="font-display text-2xl lg:text-4xl text-white/70 uppercase tracking-widest select-none leading-none">
+                  SWEET & TART
+                </span>
+              </div>
+            </div>
+            
+            {/* 2. Middle Layer (Strawberry Pieces) - Overlaps Top */}
+            <motion.div 
+              style={{ x: chickkuX, y: chickkuY }}
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+            >
+              <Image 
+                src="/photos/Strawberry pices.webp"
+                alt="Strawberry Pieces"
+                fill
+                className="object-contain"
+                quality={100}
+                unoptimized
+              />
+            </motion.div>
+
+            {/* 3. Top Layer (Strawberry Popsicle) - Overlaps Top + Floating Animation */}
+            <motion.div 
+              style={{ x: popsicleX, y: popsicleY }}
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+              >
+                <Image 
+                  src="/photos/strwberry ppsicle.webp"
+                  alt="Strawberry Popsicle"
+                  width={450}
+                  height={650}
+                  className="object-contain scale-75 lg:scale-100"
+                  quality={100}
+                  unoptimized
+                  priority
+                />
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+
+        {index === 4 && (
+          <>
+            {/* 1. Background Image - Stays clipped */}
+            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+              <Image 
+                src="/photos/pistatio bg card.webp"
+                alt="Pistachio Card Background"
+                fill
+                className="object-cover scale-110"
+              />
+            </div>
+
+            {/* 1.5 Decorative Text Layer - PISTACHIO */}
+            <div 
+              className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
+            >
+              <div className="flex flex-col items-start gap-1">
+                <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
+                  PISTACHIO
+                </span>
+                <span className="font-display text-2xl lg:text-4xl text-white/70 uppercase tracking-widest select-none leading-none">
+                  BRONTE GOLD
+                </span>
+              </div>
+            </div>
+            
+            {/* 2. Middle Layer (Pista Pieces) - Overlaps Top */}
+            <motion.div 
+              style={{ x: chickkuX, y: chickkuY }}
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+            >
+              <Image 
+                src="/photos/pista pieces.webp"
+                alt="Pistachio Pieces"
+                fill
+                className="object-contain"
+                quality={100}
+                unoptimized
+              />
+            </motion.div>
+
+            {/* 3. Top Layer (Pistachio Popsicle) - Overlaps Top + Floating Animation */}
+            <motion.div 
+              style={{ x: popsicleX, y: popsicleY }}
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+              >
+                <Image 
+                  src="/photos/pistatio popsicle.webp"
+                  alt="Pistachio Popsicle"
+                  width={450}
+                  height={650}
+                  className="object-contain scale-75 lg:scale-100"
+                  quality={100}
+                  unoptimized
+                  priority
+                />
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+
+        {index === 5 && (
+          <>
+            {/* 1. Background Image - Stays clipped */}
+            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+              <Image 
+                src="/photos/chocolate bgcard.webp"
+                alt="Chocolate Card Background"
+                fill
+                className="object-cover scale-110"
+              />
+            </div>
+
+            {/* 1.5 Decorative Text Layer - CHOCOLATE */}
+            <div 
+              className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
+            >
+              <div className="flex flex-col items-start gap-1">
+                <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
+                  CHOCOLATE
+                </span>
+                <span className="font-display text-2xl lg:text-4xl text-white/70 uppercase tracking-widest select-none leading-none">
+                  BELGIAN DARK
+                </span>
+              </div>
+            </div>
+            
+            {/* 2. Middle Layer (Chocolate Pieces) - Overlaps Top */}
+            <motion.div 
+              style={{ x: chickkuX, y: chickkuY }}
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+            >
+              <Image 
+                src="/photos/chcoalte peices.webp"
+                alt="Chocolate Pieces"
+                fill
+                className="object-contain"
+                quality={100}
+                unoptimized
+              />
+            </motion.div>
+
+            {/* 3. Top Layer (Chocolate Popsicle) - Overlaps Top + Floating Animation */}
+            <motion.div 
+              style={{ x: popsicleX, y: popsicleY }}
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+              >
+                <Image 
+                  src="/photos/chcolate popsicle.webp"
+                  alt="Chocolate Popsicle"
+                  width={550}
+                  height={750}
+                  className="object-contain scale-85 lg:scale-115"
+                  quality={100}
+                  unoptimized
+                  priority
+                />
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+
+        {index === 6 && (
+          <>
+            {/* 1. Background Image - Stays clipped */}
+            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+              <Image 
+                src="/photos/guava bgCard.webp"
+                alt="Guava Card Background"
+                fill
+                className="object-cover scale-110"
+              />
+            </div>
+
+            {/* 1.5 Decorative Text Layer - GUAVA */}
+            <div 
+              className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
+            >
+              <div className="flex flex-col items-start gap-1">
+                <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
+                  GUAVA
+                </span>
+                <span className="font-display text-2xl lg:text-4xl text-white/70 uppercase tracking-widest select-none leading-none">
+                  PINK BLISS
+                </span>
+              </div>
+            </div>
+            
+            {/* 2. Middle Layer (Guava Pieces) - Overlaps Top */}
+            <motion.div 
+              style={{ x: chickkuX, y: chickkuY }}
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+            >
+              <Image 
+                src="/photos/guava pieces seeds.webp"
+                alt="Guava Pieces"
+                fill
+                className="object-contain"
+                quality={100}
+                unoptimized
+              />
+            </motion.div>
+
+            {/* 3. Top Layer (Guava Popsicle) - Overlaps Top + Floating Animation */}
+            <motion.div 
+              style={{ x: popsicleX, y: popsicleY }}
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+              >
+                <Image 
+                  src="/photos/guava poposicle.webp"
+                  alt="Guava Popsicle"
+                  width={550}
+                  height={750}
+                  className="object-contain scale-85 lg:scale-115"
                   quality={100}
                   unoptimized
                   priority

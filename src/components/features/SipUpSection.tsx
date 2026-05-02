@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import BounceCards from '@/components/ui/BounceCards';
 import { ScrollReveal } from '@/components/shared/ScrollReveal';
 
+import { useRouter } from 'next/navigation';
+import { SIPUPS } from '@/data/sipups';
+
 /* ── Animation helpers ── */
 
 // Splits text into individual word spans for staggered reveal
@@ -30,18 +33,13 @@ const SplitWords = ({ text, className }: { text: string; className?: string }) =
   );
 };
 
-export default function SipUpSection() {
-  const images = [
-    '/photos/sugar.png',
-    '/photos/tender.png',
-    '/photos/pomo.png',
-    '/photos/pineapple.png',
-    '/photos/passion.png',
-    '/photos/Mango.png',
-    '/photos/lychee.png',
-    '/photos/Grapes.png',
-    '/photos/gova.png',
-  ];
+interface Props {
+  sipups?: any[];
+}
+
+export default function SipUpSection({ sipups = [] }: Props) {
+  const router = useRouter();
+  const images = sipups.map(s => s.image);
 
   const transformStyles = [
     'rotate(15deg) translate(-280px)',
@@ -54,6 +52,13 @@ export default function SipUpSection() {
     'rotate(10deg) translate(210px)',
     'rotate(-15deg) translate(280px)',
   ];
+
+  const handleCardClick = (idx: number) => {
+    const sipup = sipups[idx];
+    if (sipup) {
+      router.push(`/sipups/${sipup.id}`);
+    }
+  };
 
   return (
     <ScrollReveal hideMask={true}>
@@ -131,6 +136,7 @@ export default function SipUpSection() {
                 easeType="elastic.out(1, 0.8)"
                 transformStyles={transformStyles}
                 enableHover={true}
+                onCardClick={handleCardClick}
               />
             </div>
           </motion.div>

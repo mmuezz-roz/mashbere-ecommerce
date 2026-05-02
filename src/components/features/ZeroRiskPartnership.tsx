@@ -49,7 +49,7 @@ export default function ZeroRiskPartnership() {
   return (
     <section className="w-full bg-white font-sans overflow-hidden">
       {/* Top Header & Steps */}
-      <div className="max-w-7xl mx-auto py-16 px-4">
+      <div className="container-responsive py-16">
         {/* Section Header with Lines */}
         <div className="flex items-center justify-center gap-4 mb-12">
           <div className="h-px w-12 sm:w-20 bg-[#708238]" />
@@ -111,7 +111,7 @@ export default function ZeroRiskPartnership() {
           }} 
         />
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        <div className="container-responsive grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           {/* Left Content */}
           <div className="space-y-10">
             <h2 className="text-5xl sm:text-7xl font-black text-gray-900 leading-[0.9] uppercase tracking-tighter">

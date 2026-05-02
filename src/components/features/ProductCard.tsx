@@ -39,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
       className="group relative"
     >
       <Link
-        href={`/products/${product.id}`}
+        href={product.category === 'sip-up' ? `/sipups/${product.slug}` : `/products/${product.slug}`}
         className="block bg-white rounded-[32px] sm:rounded-[40px] p-3 sm:p-4 transition-all duration-500 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.14)] border border-gray-50 group-hover:border-primary/10"
       >
         {/* Image Container */}

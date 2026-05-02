@@ -115,11 +115,20 @@ export default function Header() {
                 <div className="flex items-center lg:absolute lg:left-1/2 lg:-translate-x-1/2">
                   <Link href="/" className="group flex items-center">
                     <div className="relative w-36 sm:w-44 lg:w-80 h-20 sm:h-20 lg:h-32 transition-all group-hover:scale-105">
+                      {/* English Logo (Default) */}
                       <Image
                         src="/photos/mashbere_logo_no_bg.png"
                         alt="Mashbere Logo"
                         fill
-                        className="object-contain brightness-0 invert"
+                        className="object-contain brightness-0 invert transition-opacity duration-300 ease-in-out group-hover:opacity-0"
+                        priority
+                      />
+                      {/* Arabic Logo (Hover) */}
+                      <Image
+                        src="/photos/1777758274783-6846d2ef-8359-49ac-9256-60655e81b0d0_4.png"
+                        alt="Mashbere Arabic Logo"
+                        fill
+                        className="object-contain brightness-0 invert opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
                         priority
                       />
                     </div>
