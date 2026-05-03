@@ -168,7 +168,7 @@ export default function ProductShowcase() {
                 </motion.div>
                 <motion.span 
                   style={{ opacity: textOpacity3, y: textY3 }}
-                  className="text-[12vw] sm:text-6xl md:text-7xl lg:text-[10rem] xl:text-[12rem]"
+                  className="text-[12vw] sm:text-6xl md:text-7xl lg:text-[10rem] xl:text-[12rem] lg:whitespace-nowrap"
                 >
                   DELICIOUS FLAVORS
                 </motion.span>
