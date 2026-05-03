@@ -20,6 +20,7 @@ interface BounceCardsProps {
   easeType?: string;
   transformStyles?: string[];
   enableHover?: boolean;
+  isMobile?: boolean;
   onCardClick?: (index: number) => void;
 }
 
@@ -39,12 +40,30 @@ export default function BounceCards({
     'rotate(2deg) translate(170px)'
   ],
   enableHover = true,
+  isMobile = false,
   onCardClick
 }: BounceCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (isMobile) {
+        // Simpler entrance for mobile, no scrub
+        gsap.from('.card', {
+          y: 60,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 85%',
+            once: true
+          }
+        });
+        return;
+      }
+
       gsap.from('.card', {
         scrollTrigger: {
           trigger: containerRef.current,

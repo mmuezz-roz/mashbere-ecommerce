@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import BounceCards from '@/components/ui/BounceCards';
 import { ScrollReveal } from '@/components/shared/ScrollReveal';
 
@@ -11,7 +12,7 @@ import { SIPUPS } from '@/data/sipups';
 /* ── Animation helpers ── */
 
 // Splits text into individual word spans for staggered reveal
-const SplitWords = ({ text, className }: { text: string; className?: string }) => {
+const SplitWords = ({ text, className, isMobile }: { text: string; className?: string; isMobile?: boolean }) => {
   const words = text.split(' ');
   return (
     <>
@@ -20,7 +21,7 @@ const SplitWords = ({ text, className }: { text: string; className?: string }) =
           <motion.span
             className={`inline-block ${className ?? ''}`}
             variants={{
-              hidden: { y: '110%', opacity: 0, rotateX: -40 },
+              hidden: { y: '110%', opacity: 0, rotateX: isMobile ? 0 : -40 },
               visible: { y: '0%', opacity: 1, rotateX: 0 },
             }}
             style={{ display: 'inline-block', transformOrigin: 'top' }}
@@ -40,6 +41,14 @@ interface Props {
 export default function SipUpSection({ sipups = [] }: Props) {
   const router = useRouter();
   const images = sipups.map(s => s.image);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const transformStyles = [
     'rotate(15deg) translate(-280px)',
@@ -65,22 +74,26 @@ export default function SipUpSection({ sipups = [] }: Props) {
       <section className="w-full relative overflow-x-clip min-h-[600px] sm:min-h-[800px] flex items-center justify-center">
 
         {/* Mobile background image */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/photos/ChatGPT Image Apr 29, 2026, 01_24_11 PM.png"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover object-center sm:hidden"
-        />
+        <div className="absolute inset-0 sm:hidden">
+          <Image
+            src="/photos/ChatGPT Image Apr 29, 2026, 01_24_11 PM.png"
+            alt=""
+            aria-hidden="true"
+            fill
+            className="object-cover object-center"
+          />
+        </div>
 
         {/* Desktop/Tablet background image */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/photos/ChatGPT Image Apr 28, 2026, 07_48_22 PM.png"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover object-center hidden sm:block"
-        />
+        <div className="absolute inset-0 hidden sm:block">
+          <Image
+            src="/photos/ChatGPT Image Apr 28, 2026, 07_48_22 PM.png"
+            alt=""
+            aria-hidden="true"
+            fill
+            className="object-cover object-center"
+          />
+        </div>
 
         {/* Very light overlay */}
         <div className="absolute inset-0 bg-white/10" />
@@ -101,9 +114,9 @@ export default function SipUpSection({ sipups = [] }: Props) {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
           >
-            <SplitWords text="Signature" />
+            <SplitWords text="Signature" isMobile={isMobile} />
             {' '}
-            <SplitWords text="SipUps" className="text-primary" />
+            <SplitWords text="SipUps" className="text-primary" isMobile={isMobile} />
           </motion.h2>
 
           {/* ── Paragraph: fade + slide up ── */}
@@ -135,7 +148,8 @@ export default function SipUpSection({ sipups = [] }: Props) {
                 animationStagger={0.08}
                 easeType="elastic.out(1, 0.8)"
                 transformStyles={transformStyles}
-                enableHover={true}
+                enableHover={!isMobile}
+                isMobile={isMobile}
                 onCardClick={handleCardClick}
               />
             </div>

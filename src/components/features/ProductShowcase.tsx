@@ -347,7 +347,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
-                  priority={index < 2}
+                  priority={false}
                 />
               </motion.div>
             </motion.div>
@@ -416,7 +416,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   width={550}
                   height={750}
                   className="object-contain scale-85 lg:scale-115"
-                  priority={index < 2}
+                  priority={false}
                 />
               </motion.div>
             </motion.div>
@@ -486,7 +486,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
-                  priority={index < 2}
+                  priority={false}
                 />
               </motion.div>
             </motion.div>
@@ -555,7 +555,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
-                  priority={index < 2}
+                  priority={false}
                 />
               </motion.div>
             </motion.div>
@@ -624,7 +624,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
-                  priority={index < 2}
+                  priority={false}
                 />
               </motion.div>
             </motion.div>
@@ -693,7 +693,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   width={550}
                   height={750}
                   className="object-contain scale-85 lg:scale-115"
-                  priority={index < 2}
+                  priority={false}
                 />
               </motion.div>
             </motion.div>
@@ -762,7 +762,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   width={550}
                   height={750}
                   className="object-contain scale-85 lg:scale-115"
-                  priority={index < 2}
+                  priority={false}
                 />
               </motion.div>
             </motion.div>

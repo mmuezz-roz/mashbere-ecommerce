@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ArrowRight, Star } from 'lucide-react';
 import { ProductService } from '@/services/server/productService';
@@ -6,9 +7,14 @@ import HeroSection from '@/components/features/HeroSection';
 import ValueSection from '@/components/features/ValueSection';
 import { ScrollReveal } from '@/components/shared/ScrollReveal';
 import SipUpSection from '@/components/features/SipUpSection';
-import ProductShowcase from '@/components/features/ProductShowcase';
-import PookiesSection from '@/components/features/PookiesSection';
-import ZeroRiskPartnership from '@/components/features/ZeroRiskPartnership';
+
+const ProductShowcase = dynamic(() => import('@/components/features/ProductShowcase'), {
+  loading: () => <div className="h-screen bg-[#FDFBF3]" />
+});
+const PookiesSection = dynamic(() => import('@/components/features/PookiesSection'), {
+  loading: () => <div className="h-screen bg-white" />
+});
+const ZeroRiskPartnership = dynamic(() => import('@/components/features/ZeroRiskPartnership'));
 
 /**
  * Homepage (Server Component)
