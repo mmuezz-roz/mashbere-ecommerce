@@ -2,18 +2,21 @@
 
 import { AdminProvider, useAdmin } from '@/context/AdminContext';
 import AdminSidebar from '@/components/admin/AdminSidebar';
-import { Menu, IceCream } from 'lucide-react';
+import { Menu, IceCream, ShieldAlert } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 function AdminShell({ children }: { children: React.ReactNode }) {
-  const { sidebarOpen, openSidebar, closeSidebar, loading } = useAdmin();
+  const { sidebarOpen, openSidebar, closeSidebar, loading, isUnauthorized } = useAdmin();
+  const router = useRouter();
+
+  if (isUnauthorized) {
+    return null; // Let the redirect handle it, show nothing to avoid flash
+  }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-medium text-gray-500">Checking credentials...</p>
-        </div>
+      <div className="flex items-center justify-center h-screen bg-[#141A0B]">
+        <div className="w-12 h-12 border-4 border-[#C4EB54] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }

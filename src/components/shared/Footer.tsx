@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Instagram, Twitter, Facebook, Mail, Phone, MapPin, Sparkles, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import GooeyButton from '@/components/ui/GooeyButton';
 
 const FOOTER_LINKS = {
   Explore: [
@@ -54,14 +53,12 @@ export default function Footer() {
             </p>
 
             <div className="pt-2 pb-4">
-              <GooeyButton particleCount={15} particleDistances={[100, 10]}>
-                <Link
-                  href="/equipment"
-                  className="inline-block bg-white/10 backdrop-blur-xl border border-white/20 text-white px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all shadow-xl"
-                >
-                  Partner with Us
-                </Link>
-              </GooeyButton>
+              <Link
+                href="/equipment"
+                className="inline-block bg-white/10 backdrop-blur-xl border border-white/20 text-white px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all shadow-xl"
+              >
+                Partner with Us
+              </Link>
             </div>
 
             <div className="space-y-4">

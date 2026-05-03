@@ -109,8 +109,8 @@ export default function SipUpSection({ sipups = [] }: Props) {
           {/* ── Paragraph: fade + slide up ── */}
           <motion.p
             className="text-gray-600 text-base sm:text-lg lg:text-xl font-medium leading-relaxed max-w-2xl text-center"
-            initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
           >

@@ -5,7 +5,7 @@ import { ProductService } from '@/services/server/productService';
 import ProductDetailClient from './ProductDetailClient';
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function ProductDetailPage({ params }: Props) {

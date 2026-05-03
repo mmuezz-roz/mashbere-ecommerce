@@ -3,7 +3,8 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Star } from 'lucide-react';
+import Link from 'next/link';
+import { Star, ArrowRight } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 
 const SHOWCASE_ITEMS = [
@@ -77,27 +78,22 @@ const SHOWCASE_ITEMS = [
     image: "/photos/07.jpg",
     accentImage: "/photos/07.jpg"
   },
-  { 
-    id: 8, 
-    name: "Mango", 
-    label: "King of Fruits",
-    desc: "Made with authentic Alphonso mangoes for a thick, golden, and tropical flavor burst.",
-    bgColor: "#F3F0DA", 
-    textColor: "#4D461F", 
-    image: "/photos/08.jpg",
-    accentImage: "/photos/08.jpg"
-  },
 ];
 
 export default function ProductShowcase() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const [isMobile, setIsMobile] = React.useState(false);
 
+  const [screenWidth, setScreenWidth] = React.useState(1200);
+
   React.useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+      setIsMobile(window.innerWidth < 640);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
   
   // Main scroll progress for the horizontal movement (sticky)
@@ -123,8 +119,17 @@ export default function ProductShowcase() {
     damping: 30
   });
 
-  const headingX = useTransform(smoothProgress, [0, 0.15, 1], ["0%", "-20%", "-20%"]);
-  const cardsX = useTransform(smoothProgress, [0, 0.9], ["0%", "-88%"]);
+  const headingX = useTransform(scrollYProgress, [0, 0.15, 1], ["0%", "-20%", "-20%"]);
+  const translateEnd = React.useMemo(() => {
+    if (screenWidth < 640) return "-86%";
+    return "-95%";
+  }, [screenWidth]);
+
+  const cardsX = useTransform(
+    scrollYProgress, 
+    [0, 1], 
+    ["0%", translateEnd]
+  );
 
   // Scroll Reveal for Heading Lines (now tied to early revealProgress)
   const textOpacity1 = useTransform(smoothReveal, [0, 0.4], [0, 1]);
@@ -137,18 +142,18 @@ export default function ProductShowcase() {
   const textY3 = useTransform(smoothReveal, [0.4, 0.8], [60, 0]);
 
   return (
-    <section ref={targetRef} className="relative h-[1200vh] bg-[#FDFBF3]">
-      <div className="sticky top-0 h-screen flex flex-col lg:flex-row items-start lg:items-center overflow-hidden pt-20 lg:pt-0">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center h-full w-full">
+    <section ref={targetRef} className={`relative bg-[#FDFBF3] ${isMobile ? 'h-[600vh]' : 'h-[1200vh]'}`}>
+      <div className="sticky top-0 h-screen flex flex-col sm:flex-row items-start sm:items-center pt-20 sm:pt-0 overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center h-full w-full">
           <motion.div 
             style={{ x: isMobile ? 0 : headingX }}
-            className="shrink-0 w-full lg:w-auto pl-8 sm:pl-12 lg:pl-[15vw] mb-12 lg:mb-0 lg:mr-60 flex flex-col justify-center z-10"
+            className="shrink-0 w-full sm:w-auto pl-8 sm:pl-12 lg:pl-[15vw] mb-12 sm:mb-0 sm:mr-16 lg:mr-60 flex flex-col justify-center z-10"
           >
             <div className="flex flex-col items-start text-left max-w-4xl">
               <h2 className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter">
                 <motion.span 
                   style={{ opacity: textOpacity1, y: textY1 }}
-                  className="text-[8vw] sm:text-5xl lg:text-7xl xl:text-8xl"
+                  className="text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl"
                 >
                   WE HAVE 
                 </motion.span>
@@ -157,13 +162,13 @@ export default function ProductShowcase() {
                   className="relative inline-block w-fit my-2 lg:my-4"
                 >
                   <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
-                  <span className="relative z-10 text-[12vw] sm:text-8xl lg:text-[9rem] xl:text-[11rem] text-white px-5 py-0 block">
+                  <span className="relative z-10 text-[12vw] sm:text-6xl md:text-7xl lg:text-[9rem] xl:text-[11rem] text-white px-5 py-0 block">
                     FREAKING
                   </span>
                 </motion.div>
                 <motion.span 
                   style={{ opacity: textOpacity3, y: textY3 }}
-                  className="text-[12vw] sm:text-8xl lg:text-[10rem] xl:text-[12rem] whitespace-nowrap"
+                  className="text-[12vw] sm:text-6xl md:text-7xl lg:text-[10rem] xl:text-[12rem]"
                 >
                   DELICIOUS FLAVORS
                 </motion.span>
@@ -174,7 +179,7 @@ export default function ProductShowcase() {
           {/* Cards Container - Independent Transform - Higher Z-Index */}
           <motion.div 
             style={{ x: cardsX }} 
-            className="flex items-center gap-8 lg:gap-20 pr-[20vw] z-30 pl-8 lg:pl-0"
+            className="flex items-center gap-8 sm:gap-12 lg:gap-20 pr-[20vw] z-30 pl-8 sm:pl-0"
           >
             {SHOWCASE_ITEMS.map((item, index) => (
               <ProductCard 
@@ -182,16 +187,38 @@ export default function ProductShowcase() {
                 item={item} 
                 index={index} 
                 smoothProgress={smoothProgress} 
+                isMobile={isMobile}
               />
             ))}
+            
+            {/* Explore All Flavours Circular Button */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, margin: isMobile ? "100px" : "100px" }}
+              className="shrink-0 flex justify-center items-center h-[50vh] px-8 sm:px-16"
+            >
+              <Link 
+                href="/products"
+                className="w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 rounded-full bg-[#1C2410] text-white flex flex-col items-center justify-center gap-2 sm:gap-4 transition-all duration-500 hover:scale-110 hover:bg-[#708238] shadow-2xl group/cta"
+              >
+                <span className="font-display uppercase text-xl sm:text-2xl lg:text-3xl text-center leading-[1.1] tracking-wide">
+                  Explore <br /> All <br /> Flavours
+                </span>
+                <ArrowRight className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 group-hover/cta:translate-x-2 transition-transform duration-300" strokeWidth={2.5} />
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
+        
+
       </div>
     </section>
   );
 }
 
-function ProductCard({ item, index, smoothProgress }: { item: any, index: number, smoothProgress: any }) {
+function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, index: number, smoothProgress: any, isMobile: boolean }) {
   const router = useRouter();
   
   // Define mapped popsicle data based on index
@@ -241,23 +268,23 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
   return (
     <motion.div 
       style={{ scale }}
-      initial={{ x: 100, scale: 0.95 }}
-      whileInView={{ x: 0, scale: 1 }}
+      initial={{ x: isMobile ? 20 : 40, opacity: 0, scale: 0.95 }}
+      whileInView={{ x: 0, opacity: 1, scale: 1 }}
       transition={{ 
-        duration: 0.8, 
-        delay: index * 0.1, 
+        duration: 0.6, 
+        delay: 0, 
         ease: [0.22, 1, 0.36, 1] 
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      viewport={{ once: true }}
+      viewport={{ once: true, margin: isMobile ? "100px" : "100px" }}
       className="shrink-0 flex justify-center perspective-1000"
     >
       <motion.div 
         whileHover={{ y: -8, scale: 1.01 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         onClick={handleCardClick}
-        className="relative w-[90vw] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card cursor-pointer"
+        className="relative w-[90vw] md:w-[500px] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card cursor-pointer"
         style={{ 
           backgroundColor: item.bgColor,
           rotate: index % 2 === 0 ? '-3deg' : '3deg'
@@ -271,7 +298,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 src="/photos/ChatGPT Image May 1, 2026, 03_10_13 PM.png"
                 alt="Card Background"
                 fill
-                className="object-cover"
+                className="object-cover will-change-transform"
               />
             </div>
 
@@ -279,7 +306,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none">
+              <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none will-change-transform">
                 CHIKKU
               </span>
             </div>
@@ -287,22 +314,20 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 2. Middle Layer (Chickku) - Overlaps Top */}
             <motion.div 
               style={{ x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
                 src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.png"
                 alt="Chickku Detail"
                 fill
                 className="object-contain"
-                quality={100}
-                unoptimized
               />
             </motion.div>
 
             {/* 3. Top Layer (Popsicle) - Overlaps Top + High Shadow */}
             <motion.div 
               style={{ x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
                 animate={{ 
@@ -314,7 +339,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
               >
                 <Image 
                   src="/photos/ChatGPT_Image_Apr_30__2026__05_31_32_PM-removebg-preview.png"
@@ -322,9 +347,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
-                  quality={100}
-                  unoptimized
-                  priority
+                  priority={index < 2}
                 />
               </motion.div>
             </motion.div>
@@ -339,9 +362,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 src="/photos/mango cardbg.png"
                 alt="Mango Card Background"
                 fill
-                className="object-cover scale-[1.15]"
-                quality={100}
-                unoptimized
+                className="object-cover scale-[1.15] will-change-transform"
               />
             </div>
 
@@ -349,7 +370,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 will-change-transform">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   MANGO
                 </span>
@@ -362,22 +383,20 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 2. Middle Layer (Mango Pieces) - Parallax */}
             <motion.div 
               style={{ x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
                 src="/photos/mango pieces-Photoroom.png"
                 alt="Mango Pieces"
                 fill
                 className="object-contain"
-                quality={100}
-                unoptimized
               />
             </motion.div>
 
             {/* 3. Top Layer (Mango Popsicle) - Floating Animation */}
             <motion.div 
               style={{ x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
                 animate={{ 
@@ -389,7 +408,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
               >
                 <Image 
                   src="/photos/mango popsicle.webp"
@@ -397,9 +416,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   width={550}
                   height={750}
                   className="object-contain scale-85 lg:scale-115"
-                  quality={100}
-                  unoptimized
-                  priority
+                  priority={index < 2}
                 />
               </motion.div>
             </motion.div>
@@ -415,7 +432,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 src="/photos/ChatGPT Image May 2, 2026, 05_20_20 PM.png"
                 alt="Tender Coconut Card Background"
                 fill
-                className="object-fill scale-[2.2]"
+                className="object-fill scale-[2.2] will-change-transform"
               />
             </div>
 
@@ -423,7 +440,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 will-change-transform">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   TENDER
                 </span>
@@ -436,22 +453,20 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 2. Middle Layer (Tender Pieces) - Overlaps Top */}
             <motion.div 
               style={{ x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
                 src="/photos/tender og pieces.png"
                 alt="Tender Coconut Pieces"
                 fill
                 className="object-contain scale-[0.85]"
-                quality={100}
-                unoptimized
               />
             </motion.div>
 
             {/* 3. Top Layer (Tender Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
               style={{ x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
                 animate={{ 
@@ -463,7 +478,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
               >
                 <Image 
                   src="/photos/tender popsicle.png"
@@ -471,9 +486,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
-                  quality={100}
-                  unoptimized
-                  priority
+                  priority={index < 2}
                 />
               </motion.div>
             </motion.div>
@@ -488,7 +501,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 src="/photos/strawberry bg card.png"
                 alt="Strawberry Card Background"
                 fill
-                className="object-cover scale-110"
+                className="object-cover scale-110 will-change-transform"
               />
             </div>
 
@@ -496,7 +509,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 will-change-transform">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   STRAWBERRY
                 </span>
@@ -509,22 +522,20 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 2. Middle Layer (Strawberry Pieces) - Overlaps Top */}
             <motion.div 
               style={{ x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
                 src="/photos/Strawberry pices.webp"
                 alt="Strawberry Pieces"
                 fill
                 className="object-contain"
-                quality={100}
-                unoptimized
               />
             </motion.div>
 
             {/* 3. Top Layer (Strawberry Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
               style={{ x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
                 animate={{ 
@@ -536,7 +547,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
               >
                 <Image 
                   src="/photos/strwberry ppsicle.webp"
@@ -544,9 +555,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
-                  quality={100}
-                  unoptimized
-                  priority
+                  priority={index < 2}
                 />
               </motion.div>
             </motion.div>
@@ -561,7 +570,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 src="/photos/pistatio bg card.webp"
                 alt="Pistachio Card Background"
                 fill
-                className="object-cover scale-110"
+                className="object-cover scale-110 will-change-transform"
               />
             </div>
 
@@ -569,7 +578,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 will-change-transform">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   PISTACHIO
                 </span>
@@ -582,22 +591,20 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 2. Middle Layer (Pista Pieces) - Overlaps Top */}
             <motion.div 
               style={{ x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
                 src="/photos/pista pieces.webp"
                 alt="Pistachio Pieces"
                 fill
                 className="object-contain"
-                quality={100}
-                unoptimized
               />
             </motion.div>
 
             {/* 3. Top Layer (Pistachio Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
               style={{ x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
                 animate={{ 
@@ -609,7 +616,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
               >
                 <Image 
                   src="/photos/pistatio popsicle.webp"
@@ -617,9 +624,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   width={450}
                   height={650}
                   className="object-contain scale-75 lg:scale-100"
-                  quality={100}
-                  unoptimized
-                  priority
+                  priority={index < 2}
                 />
               </motion.div>
             </motion.div>
@@ -634,7 +639,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 src="/photos/chocolate bgcard.webp"
                 alt="Chocolate Card Background"
                 fill
-                className="object-cover scale-110"
+                className="object-cover scale-110 will-change-transform"
               />
             </div>
 
@@ -642,7 +647,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 will-change-transform">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   CHOCOLATE
                 </span>
@@ -655,22 +660,20 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 2. Middle Layer (Chocolate Pieces) - Overlaps Top */}
             <motion.div 
               style={{ x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
                 src="/photos/chcoalte peices.webp"
                 alt="Chocolate Pieces"
                 fill
                 className="object-contain"
-                quality={100}
-                unoptimized
               />
             </motion.div>
 
             {/* 3. Top Layer (Chocolate Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
               style={{ x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
                 animate={{ 
@@ -682,7 +685,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
               >
                 <Image 
                   src="/photos/chcolate popsicle.webp"
@@ -690,9 +693,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   width={550}
                   height={750}
                   className="object-contain scale-85 lg:scale-115"
-                  quality={100}
-                  unoptimized
-                  priority
+                  priority={index < 2}
                 />
               </motion.div>
             </motion.div>
@@ -707,7 +708,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                 src="/photos/guava bgCard.webp"
                 alt="Guava Card Background"
                 fill
-                className="object-cover scale-110"
+                className="object-cover scale-110 will-change-transform"
               />
             </div>
 
@@ -715,7 +716,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 will-change-transform">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   GUAVA
                 </span>
@@ -728,22 +729,20 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
             {/* 2. Middle Layer (Guava Pieces) - Overlaps Top */}
             <motion.div 
               style={{ x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
                 src="/photos/guava pieces seeds.webp"
                 alt="Guava Pieces"
                 fill
                 className="object-contain"
-                quality={100}
-                unoptimized
               />
             </motion.div>
 
             {/* 3. Top Layer (Guava Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
               style={{ x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
                 animate={{ 
@@ -755,7 +754,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center"
+                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
               >
                 <Image 
                   src="/photos/guava poposicle.webp"
@@ -763,9 +762,7 @@ function ProductCard({ item, index, smoothProgress }: { item: any, index: number
                   width={550}
                   height={750}
                   className="object-contain scale-85 lg:scale-115"
-                  quality={100}
-                  unoptimized
-                  priority
+                  priority={index < 2}
                 />
               </motion.div>
             </motion.div>

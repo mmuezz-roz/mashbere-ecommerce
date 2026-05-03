@@ -10,6 +10,7 @@ interface AdminContextValue {
   openSidebar: () => void;
   closeSidebar: () => void;
   loading: boolean;
+  isUnauthorized: boolean;
   adminUser: any | null;
 }
 
@@ -18,6 +19,7 @@ const AdminContext = createContext<AdminContextValue>({
   openSidebar: () => {},
   closeSidebar: () => {},
   loading: true,
+  isUnauthorized: false,
   adminUser: null,
 });
 
@@ -25,6 +27,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isUnauthorized, setIsUnauthorized] = useState(false);
   const [adminUser, setAdminUser] = useState<any | null>(null);
 
   useEffect(() => {
@@ -44,15 +47,20 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           .single();
 
         if (error || profile?.role !== 'admin') {
-          toast.error('Unauthorized access');
-          router.push('/');
+          setIsUnauthorized(true);
+          toast.error('ACCESS DENIED: Administrative Privileges Required', {
+            id: 'admin-denied',
+            duration: 5000,
+          });
+          router.replace('/');
           return;
         }
 
         setAdminUser(profile);
       } catch (err) {
         console.error('Admin check failed:', err);
-        router.push('/auth/login');
+        setIsUnauthorized(true);
+        router.replace('/auth/login');
       } finally {
         setLoading(false);
       }
@@ -68,6 +76,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         openSidebar: () => setSidebarOpen(true),
         closeSidebar: () => setSidebarOpen(false),
         loading,
+        isUnauthorized,
         adminUser,
       }}
     >

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { ProductService } from '@/services/server/productService';
 import FlavorsGrid from './FlavorsGrid';
 
@@ -30,15 +30,7 @@ export default async function ProductsPage() {
         />
         
         <div className="container-responsive py-16 lg:py-24 relative z-10">
-          <Link 
-            href="/"
-            className="group inline-flex items-center gap-3 text-white/60 hover:text-white font-bold text-sm uppercase tracking-widest transition-all mb-10"
-          >
-            <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-[#1C2410] transition-all">
-              <ArrowLeft size={14} />
-            </div>
-            Back to Home
-          </Link>
+
 
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
             <div>

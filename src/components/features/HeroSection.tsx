@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import GooeyButton from '@/components/ui/GooeyButton';
 
 export default function HeroSection() {
   return (
@@ -58,14 +57,12 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full"
         >
-          <GooeyButton particleCount={20} particleDistances={[120, 10]}>
-            <Link
-              href="/products"
-              className="inline-block bg-[#C4EB54] text-[#141A0B] px-10 sm:px-14 py-4 rounded-full font-black text-sm sm:text-base uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all"
-            >
-              Shop Now
-            </Link>
-          </GooeyButton>
+          <Link
+            href="/products"
+            className="inline-block bg-[#C4EB54] text-[#141A0B] px-10 sm:px-14 py-4 rounded-full font-black text-sm sm:text-base uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all"
+          >
+            Shop Now
+          </Link>
         </motion.div>
       </div>
 

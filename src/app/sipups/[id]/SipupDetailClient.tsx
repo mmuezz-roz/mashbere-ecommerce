@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Star, ShoppingBag, ChevronRight } from 'lucide-react';
-import GooeyButton from '@/components/ui/GooeyButton';
 
 interface Props {
   sipup: any;
@@ -98,12 +97,10 @@ export default function SipupDetailClient({ sipup }: Props) {
               transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-6 w-full"
             >
-              <GooeyButton particleCount={15}>
-                <button className="bg-[#1C2410] text-white px-10 py-5 rounded-3xl font-black text-base uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-4 hover:bg-[#708238] hover:scale-105 active:scale-95 transition-all">
-                  <ShoppingBag size={20} />
-                  Add to Cart
-                </button>
-              </GooeyButton>
+              <button className="bg-[#1C2410] text-white px-10 py-5 rounded-3xl font-black text-base uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-4 hover:bg-[#708238] hover:scale-105 active:scale-95 transition-all">
+                <ShoppingBag size={20} />
+                Add to Cart
+              </button>
 
               <Link href="/#sipups" className="group flex items-center gap-3 px-8 py-5 rounded-3xl font-black text-base text-gray-900 uppercase tracking-widest hover:text-[#708238] transition-all">
                 <span>View More Flavors</span>

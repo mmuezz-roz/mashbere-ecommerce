@@ -63,12 +63,6 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 style={{ backgroundColor: flavor.accentColor }}
               />
 
-              {/* Flavor number badge */}
-              <div className="absolute top-6 right-6 z-10 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
-                <span className="font-display text-gray-900 text-xl leading-none">
-                  {String(currentIndex + 1).padStart(2, '0')}
-                </span>
-              </div>
 
               <div className="relative aspect-square rounded-[40px] overflow-hidden shadow-2xl bg-white/40 backdrop-blur-sm">
                 <Image
@@ -198,7 +192,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 transition={{ duration: 0.6, delay: 0.7 }}
                 className="flex gap-4 flex-wrap"
               >
-                {flavor.category === 'equipment' ? (
+                {(flavor.category === 'equipment' || flavor.id === 'mashbere-retail-kiosk') ? (
                   <Link
                     href="/equipment#contact"
                     className="group bg-[#1C2410] text-white px-10 py-5 rounded-3xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-3 hover:bg-[#708238] hover:shadow-[#708238]/30 transition-all w-full sm:w-auto justify-center"

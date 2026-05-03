@@ -1,14 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Send, Info, Phone } from 'lucide-react';
 import { submitInquiryAction } from '@/app/actions';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
+import { LogIn, Lock } from 'lucide-react';
+import Link from 'next/link';
 
 interface InquiryFormState {
   name: string;
   company: string;
   email: string;
+  phone: string;
   equipmentInterest: string;
   message: string;
 }
@@ -24,14 +28,27 @@ const INITIAL_STATE: InquiryFormState = {
   name: '',
   company: '',
   email: '',
+  phone: '',
   equipmentInterest: '',
   message: '',
 };
 
 export default function EquipmentInquiryForm() {
+  const { user, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState<InquiryFormState>(INITIAL_STATE);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  // Sync user info when logged in
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.name || prev.name,
+        email: user.email || prev.email,
+      }));
+    }
+  }, [user]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -49,6 +66,7 @@ export default function EquipmentInquiryForm() {
         name: formData.name,
         company: formData.company,
         email: formData.email,
+        phone: formData.phone,
         equipmentInterest: formData.equipmentInterest,
         message: formData.message,
       });
@@ -72,7 +90,30 @@ export default function EquipmentInquiryForm() {
       <div className="p-8 sm:p-12 lg:p-16 border-r border-gray-100">
         <h2 className="text-3xl font-bold mb-6">Request Business Inquiry</h2>
 
-        {submitted ? (
+        {authLoading ? (
+          <div className="py-20 flex flex-col items-center justify-center">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : !user ? (
+          <div className="py-12 flex flex-col items-center text-center space-y-6">
+            <div className="w-20 h-20 bg-gray-50 rounded-3xl flex items-center justify-center text-gray-400">
+              <Lock size={40} />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-2xl font-black text-gray-900 uppercase">Login Required</h3>
+              <p className="text-gray-500 max-w-xs mx-auto font-medium">
+                Please log in to your account to submit a business inquiry.
+              </p>
+            </div>
+            <Link 
+              href="/auth/login" 
+              className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
+            >
+              <LogIn size={18} />
+              Login to Inquire
+            </Link>
+          </div>
+        ) : submitted ? (
           <div className="py-12 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Send className="w-8 h-8 text-green-600" />
@@ -114,20 +155,37 @@ export default function EquipmentInquiryForm() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="contact@company.com"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
-              />
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="contact@company.com"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="phone" className="text-sm font-medium text-gray-700">
+                  Contact Number
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  name="phone"
+                  required
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+971 50 000 0000"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">

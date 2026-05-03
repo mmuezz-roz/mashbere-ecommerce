@@ -103,22 +103,34 @@ export default function PookiesSection() {
           text-align: center;
         }
         .pookies-feature-icon {
-          width: 40px;
-          height: 40px;
-          border: 1.5px solid #a8b89a;
+          width: 56px;
+          height: 56px;
+          background: #e6e9e1;
+          border: none;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #3a5c2a;
+          color: #2d3e24;
+          margin-bottom: 12px;
         }
         .pookies-feature-label {
           font-family: var(--font-sans);
-          font-size: 13px;
-          color: #4a5a42;
-          font-weight: 600;
+          font-size: 15px;
+          color: #1a1a1a;
+          font-weight: 800;
           text-align: center;
-          line-height: 1.3;
+          line-height: 1.2;
+          margin-bottom: 6px;
+        }
+        .pookies-feature-desc {
+          font-family: var(--font-sans);
+          font-size: 12px;
+          color: #666;
+          font-weight: 500;
+          text-align: center;
+          line-height: 1.4;
+          max-width: 140px;
         }
         .pookies-cta {
           display: inline-flex;
@@ -160,25 +172,85 @@ export default function PookiesSection() {
         .pookies-logo-swap:hover .pookies-logo-en {
           opacity: 0;
         }
-        @media (max-width: 768px) {
+        .pookies-main-section {
+          margin-top: 64px;
+        }
+        @media (max-width: 1200px) {
+          .pookies-main-section {
+            margin-top: 32px;
+          }
           .pookies-content-wrap {
-            padding: 64px 32px 64px 32px !important;
+            padding: 80px 0 80px 5vw !important;
+            max-width: 480px !important;
+          }
+          .pookies-bg {
+            background-size: cover !important;
+            background-position: center right !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .pookies-main-section {
+            margin-top: 0 !important;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+          }
+          .pookies-content-wrap {
+            padding: 110px 24px 64px 24px !important;
             max-width: 100% !important;
           }
           .pookies-section-inner {
-            min-height: 110vw !important;
+            min-height: auto !important;
+          }
+          .pookies-title {
+            font-size: clamp(40px, 14vw, 72px) !important;
+          }
+          .pookies-subtitle {
+            font-size: clamp(16px, 5vw, 24px) !important;
+          }
+          .pookies-desc {
+            max-width: 100% !important;
+            font-size: 14px !important;
+          }
+          .pookies-features {
+            flex-wrap: wrap;
+            gap: 20px !important;
+            justify-content: center;
+          }
+          .pookies-feature {
+            flex: 0 0 calc(33% - 14px);
+            min-width: 80px;
+          }
+          .pookies-logo-en, .pookies-logo-ar {
+            width: min(220px, 55vw) !important;
+          }
+          .pookies-bg {
+            background-image: url('/photos/ChatGPT Image May 3, 2026, 04_41_21 PM.png') !important;
+            background-size: cover !important;
+            background-position: center 55% !important;
+          }
+          .pookies-cta {
+            padding: 14px 24px !important;
+          }
+        }
+        @media (max-width: 400px) {
+          .pookies-title {
+            font-size: 36px !important;
+          }
+          .pookies-feature-icon {
+            width: 44px !important;
+            height: 44px !important;
           }
         }
       `}</style>
 
       <section
         ref={sectionRef}
-        className="relative w-full overflow-hidden"
-        style={{ background: '#f5f0e8', marginTop: '64px' }}
+        className="pookies-main-section relative w-full overflow-hidden"
+        style={{ background: '#f5f0e8' }}
       >
         {/* Full background image */}
         <div
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full pookies-bg"
           style={{
             backgroundImage: `url('/photos/ChatGPT Image May 2, 2026, 11_13_00 PM.png')`,
             backgroundSize: '110%',
@@ -203,6 +275,12 @@ export default function PookiesSection() {
           }}
         />
 
+        {/* Swipe Down Indicator (Mobile Only) */}
+        <div className="absolute top-8 left-0 right-0 z-20 flex flex-col items-center justify-center md:hidden pointer-events-none">
+          <div className="w-10 h-1 bg-black/15 rounded-full mb-2"></div>
+          <span className="font-display uppercase text-[#2d3e24] tracking-[0.18em] text-[11px] font-bold opacity-70 text-center">Swipe down for Pookies</span>
+        </div>
+
         {/* Content */}
         <div
           className="pookies-section-inner relative z-10 flex items-center"
@@ -215,14 +293,14 @@ export default function PookiesSection() {
             {/* Pookies ICE Logo — hover to toggle Arabic version */}
             <div
               className="pookies-reveal pookies-logo-swap"
-              style={{ marginBottom: '-30px', width: '260px', position: 'relative', height: 'auto' }}
+              style={{ marginBottom: '-30px', width: 'min(260px, 60vw)', position: 'relative', height: 'auto' }}
             >
               {/* English logo (default) */}
               <img
                 src="/photos/1777754998295-8d335e3c-14f9-4866-a8af-da578df1ec7b_1.png"
                 alt="Pookies ICE Logo"
                 className="pookies-logo-en"
-                style={{ width: '260px', height: 'auto', display: 'block' }}
+                style={{ width: 'min(260px, 60vw)', height: 'auto', display: 'block' }}
               />
               {/* Arabic logo (shown on hover) */}
               <img
@@ -230,7 +308,7 @@ export default function PookiesSection() {
                 alt="بوكيز آيس Logo"
                 className="pookies-logo-ar"
                 style={{
-                  width: '260px',
+                  width: 'min(260px, 60vw)',
                   height: 'auto',
                   display: 'block',
                   position: 'absolute',
@@ -242,19 +320,21 @@ export default function PookiesSection() {
               />
             </div>
 
-            {/* Introducing badge */}
-            <div className="pookies-badge pookies-reveal">
-              <span className="pookies-badge-icon">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                  <circle cx="4" cy="4" r="3" stroke="#3a5c2a" strokeWidth="1.2" />
-                  <circle cx="4" cy="4" r="1.2" fill="#3a5c2a" />
+            {/* Introducing badge with lines */}
+            <div className="pookies-badge pookies-reveal flex items-center gap-4 w-full">
+              <div className="pookies-badge-line" />
+              <div className="flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3a5c2a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 11a7 7 0 0 1-7 7c-1.1 0-1.35-.16-2-.5Z"/>
+                  <path d="M11 20c-1-3 .5-6 1.5-8.5"/>
                 </svg>
-              </span>
-              Introducing
+                <span className="text-[#3a5c2a] font-bold tracking-[0.2em] uppercase text-[11px]">Introducing</span>
+              </div>
+              <div className="pookies-badge-line" />
             </div>
 
             {/* POOKIES */}
-            <h2 className="pookies-title pookies-reveal">POOKIES</h2>
+            <h2 className="pookies-title pookies-reveal">POOKEE</h2>
 
             {/* Small Pops. Big Joy. */}
             <p className="pookies-subtitle pookies-reveal">Small Pops. Big Joy.</p>
@@ -263,49 +343,62 @@ export default function PookiesSection() {
             <p className="pookies-desc pookies-reveal">
               Bite-sized indulgence crafted with real ingredients. Perfect for quick cravings and everyday treats.
             </p>
-
             {/* Feature icons */}
             <div className="pookies-features pookies-reveal">
               {/* Real Ingredients */}
               <div className="pookies-feature">
                 <div className="pookies-feature-icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 2C8 2 5 5 5 8.5C5 10.43 6.34 12 8 12C9.66 12 11 10.43 11 8.5C11 5 8 2 8 2Z" stroke="#3a5c2a" strokeWidth="1.2" strokeLinejoin="round"/>
-                    <path d="M8 12V14" stroke="#3a5c2a" strokeWidth="1.2" strokeLinecap="round"/>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 11a7 7 0 0 1-7 7c-1.1 0-1.35-.16-2-.5Z"/>
+                    <path d="M11 20c-1-3 .5-6 1.5-8.5"/>
                   </svg>
                 </div>
-                <span className="pookies-feature-label">Real<br/>Ingredients</span>
+                <span className="pookies-feature-label">Real Ingredients</span>
+                <p className="pookies-feature-desc">Made with quality ingredients you can trust.</p>
               </div>
-
+ 
               {/* Perfect Snack */}
               <div className="pookies-feature">
                 <div className="pookies-feature-icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <rect x="5" y="9" width="6" height="5" rx="1" stroke="#3a5c2a" strokeWidth="1.2"/>
-                    <path d="M6.5 9V7C6.5 5.62 7.17 4.5 8 4.5C8.83 4.5 9.5 5.62 9.5 7V9" stroke="#3a5c2a" strokeWidth="1.2" strokeLinecap="round"/>
-                    <circle cx="8" cy="3.5" r="1" stroke="#3a5c2a" strokeWidth="1.2"/>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 11V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v5"/>
+                    <path d="M12 18V4"/>
+                    <path d="M10 18h4"/>
+                    <rect x="6" y="11" width="12" height="7" rx="2"/>
                   </svg>
                 </div>
-                <span className="pookies-feature-label">Perfect<br/>Snack</span>
+                <span className="pookies-feature-label">Perfect Snack</span>
+                <p className="pookies-feature-desc">The perfect bite-sized treat for anytime, anywhere.</p>
               </div>
-
+ 
               {/* Loved by Everyone */}
               <div className="pookies-feature">
                 <div className="pookies-feature-icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 12.5C8 12.5 3 9.5 3 6.5C3 4.84 4.34 3.5 6 3.5C7 3.5 7.87 4 8 4.5C8.13 4 9 3.5 10 3.5C11.66 3.5 13 4.84 13 6.5C13 9.5 8 12.5 8 12.5Z" stroke="#3a5c2a" strokeWidth="1.2" strokeLinejoin="round"/>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
                   </svg>
                 </div>
-                <span className="pookies-feature-label">Loved by<br/>Everyone</span>
+                <span className="pookies-feature-label">Loved by Everyone</span>
+                <p className="pookies-feature-desc">Crafted for all ages to enjoy and savor together.</p>
               </div>
             </div>
 
             {/* CTA Button */}
-            <div className="pookies-reveal">
-              <Link href="/products?category=pookies" className="pookies-cta">
+            <div className="pookies-reveal w-full flex flex-col items-center gap-4">
+              <Link href="/products?category=pookies" className="pookies-cta !rounded-full !px-12 !py-5 !bg-[#2d3e24] !font-black !text-[13px]">
                 Explore Flavors
                 <span className="pookies-cta-arrow">→</span>
               </Link>
+              
+              <div className="flex items-center gap-2 text-[#666] text-[11px] font-medium">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 11a7 7 0 0 1-7 7c-1.1 0-1.35-.16-2-.5Z"/>
+                </svg>
+                Delicious moments in every pop
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42Z"/>
+                </svg>
+              </div>
             </div>
           </div>
         </div>

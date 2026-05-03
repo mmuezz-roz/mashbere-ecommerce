@@ -68,7 +68,7 @@ export default function ZeroRiskPartnership() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="relative bg-white border border-gray-100 rounded-[32px] p-8 sm:p-10 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.06)] flex flex-col items-center text-center max-w-[340px] w-full"
+                className="relative bg-white border border-gray-100 rounded-[32px] p-6 sm:p-10 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.06)] flex flex-col items-center text-center max-w-[340px] w-full"
               >
                 {/* Number Badge */}
                 <div className="absolute top-6 left-6 w-10 h-10 bg-[#708238] rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -114,7 +114,7 @@ export default function ZeroRiskPartnership() {
         <div className="container-responsive grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           {/* Left Content */}
           <div className="space-y-10">
-            <h2 className="text-5xl sm:text-7xl font-black text-gray-900 leading-[0.9] uppercase tracking-tighter">
+            <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black text-gray-900 leading-[0.9] uppercase tracking-tighter">
               WHY <br />
               <span className="text-[#708238]">MASHBERE</span> <br />
               SELLS FAST
@@ -172,7 +172,7 @@ export default function ZeroRiskPartnership() {
             <Handshake size={32} />
           </div>
 
-          <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter mb-4">
+        <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
             START EARNING
           </h2>
           <p className="text-base sm:text-lg font-medium text-white/80 max-w-2xl mx-auto mb-8">

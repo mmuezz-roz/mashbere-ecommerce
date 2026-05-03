@@ -5,7 +5,7 @@ import { ProductService } from '@/services/server/productService';
 import SipupDetailClient from './SipupDetailClient';
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function SipUpDetailPage({ params }: Props) {

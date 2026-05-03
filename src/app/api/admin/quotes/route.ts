@@ -54,6 +54,7 @@ export async function GET(req: NextRequest) {
       name: q.name,
       company: q.company,
       email: q.email,
+      phone: q.phone,
       equipmentInterest: q.equipment_interest,
       message: q.message,
       status: q.status,

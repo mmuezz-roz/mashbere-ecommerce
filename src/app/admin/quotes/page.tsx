@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Search, RefreshCw, ChevronLeft, ChevronRight, Mail } from 'lucide-react';
+import { Search, RefreshCw, ChevronLeft, ChevronRight, Mail, Phone } from 'lucide-react';
 import AdminHeader from '@/components/admin/AdminHeader';
 import StatusBadge from '@/components/admin/StatusBadge';
 import { toast } from 'sonner';
@@ -11,6 +11,7 @@ interface Quote {
   name: string;
   company?: string;
   email: string;
+  phone?: string;
   equipmentInterest: string;
   message: string;
   status: string;
@@ -117,14 +118,14 @@ export default function QuotesPage() {
                     {quote.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="min-w-0">
-                        <p className="font-bold text-gray-900">{quote.name}</p>
-                        <p className="text-xs text-gray-400 mt-0.5">{quote.email} {quote.company ? `· ${quote.company}` : ''}</p>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                      <div className="min-w-0 w-full sm:w-auto">
+                        <p className="font-bold text-gray-900 truncate">{quote.name}</p>
+                        <p className="text-xs text-gray-400 mt-0.5 truncate">{quote.email} {quote.company ? `· ${quote.company}` : ''}</p>
                         <p className="text-sm text-gray-600 mt-1 font-medium truncate">{quote.equipmentInterest}</p>
                       </div>
-                      <div className="flex items-center gap-3 flex-shrink-0">
-                        <span className="text-xs text-gray-400 whitespace-nowrap">{formatDate(quote.createdAt)}</span>
+                      <div className="flex flex-row sm:flex-col items-center sm:items-end gap-3 sm:gap-1.5 flex-shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-0 border-gray-50 mt-1 sm:mt-0">
+                        <span className="text-[10px] sm:text-xs text-gray-400 whitespace-nowrap">{formatDate(quote.createdAt)}</span>
                         <StatusBadge status={quote.status} />
                       </div>
                     </div>
@@ -134,19 +135,28 @@ export default function QuotesPage() {
                 {expanded === quote._id && (
                   <div className="px-5 pb-5 border-t border-gray-100 pt-4">
                     <p className="text-sm text-gray-600 leading-relaxed mb-4 bg-gray-50 rounded-xl p-4">{quote.message}</p>
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3">
                       <a
                         href={`mailto:${quote.email}`}
-                        className="flex items-center gap-2 px-4 py-2 bg-[#708238] text-white rounded-xl text-xs font-bold hover:bg-[#5a6a2c] transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 bg-[#708238] text-white rounded-xl text-xs font-bold hover:bg-[#5a6a2c] transition-colors flex-1 sm:flex-none justify-center sm:justify-start"
                       >
                         <Mail size={14} />
-                        Send Email
+                        <span className="whitespace-nowrap">Email</span>
                       </a>
+                      {quote.phone && (
+                        <a
+                          href={`tel:${quote.phone}`}
+                          className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold hover:bg-black transition-colors flex-1 sm:flex-none justify-center sm:justify-start"
+                        >
+                          <Phone size={14} />
+                          <span className="whitespace-nowrap">Call</span>
+                        </a>
+                      )}
                       <select
                         value={quote.status}
                         disabled={updatingId === quote._id}
                         onChange={(e) => updateStatus(quote._id, e.target.value)}
-                        className="px-3 py-2 rounded-xl border border-gray-200 text-xs font-semibold bg-white focus:outline-none focus:ring-2 focus:ring-[#708238]/30 disabled:opacity-50"
+                        className="px-3 py-2 rounded-xl border border-gray-200 text-xs font-semibold bg-white focus:outline-none focus:ring-2 focus:ring-[#708238]/30 disabled:opacity-50 w-full sm:w-auto"
                       >
                         {QUOTE_STATUSES.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                       </select>

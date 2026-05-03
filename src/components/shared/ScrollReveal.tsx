@@ -34,8 +34,8 @@ export const ScrollReveal = ({
     <div style={{ position: "relative", width, overflow: "hidden" }} className={className}>
       <motion.div
         variants={{
-          hidden: { ...getInitialPosition(), filter: "blur(10px)", scale: 0.95 },
-          visible: { y: 0, x: 0, opacity: 1, filter: "blur(0px)", scale: 1 },
+          hidden: { ...getInitialPosition(), opacity: 0, scale: 0.98 },
+          visible: { y: 0, x: 0, opacity: 1, scale: 1 },
         }}
         initial="hidden"
         whileInView="visible"

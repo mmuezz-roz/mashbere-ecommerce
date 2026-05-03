@@ -44,6 +44,7 @@ export async function submitInquiryAction(inquiry: Omit<Inquiry, 'id' | 'created
         name: inquiry.name,
         company: inquiry.company,
         email: inquiry.email,
+        phone: inquiry.phone,
         equipment_interest: inquiry.equipmentInterest,
         message: inquiry.message,
         status: 'new',

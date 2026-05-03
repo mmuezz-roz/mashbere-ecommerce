@@ -75,6 +75,7 @@ export interface Inquiry {
   name: string;
   company?: string;
   email: string;
+  phone: string;
   equipmentInterest: string;
   message: string;
   status: 'new' | 'contacted' | 'closed';

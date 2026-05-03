@@ -7,7 +7,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Star, ShoppingBag, ChevronRight } from 'lucide-react';
 import { POPSICLES } from '@/data/popsicles';
-import GooeyButton from '@/components/ui/GooeyButton';
 
 export default function PopsicleDetailPage() {
   const { id } = useParams();
@@ -113,12 +112,10 @@ export default function PopsicleDetailPage() {
               transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-6 w-full"
             >
-              <GooeyButton particleCount={15}>
-                <button className="bg-primary text-white px-10 py-5 rounded-3xl font-black text-base uppercase tracking-widest shadow-2xl shadow-primary/30 flex items-center gap-4 hover:scale-105 active:scale-95 transition-all">
-                  <ShoppingBag size={20} />
-                  Add to Cart
-                </button>
-              </GooeyButton>
+              <button className="bg-primary text-white px-10 py-5 rounded-3xl font-black text-base uppercase tracking-widest shadow-2xl shadow-primary/30 flex items-center gap-4 hover:scale-105 active:scale-95 transition-all">
+                <ShoppingBag size={20} />
+                Add to Cart
+              </button>
 
               <Link href="/products" className="group flex items-center gap-3 px-8 py-5 rounded-3xl font-black text-base text-gray-900 uppercase tracking-widest hover:text-primary transition-all">
                 <span>View All Flavors</span>

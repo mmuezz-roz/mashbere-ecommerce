@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ShoppingCart, Eye, Star, Heart, Sparkles } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { motion } from 'framer-motion';
-import GooeyButton from '@/components/ui/GooeyButton';
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +19,7 @@ interface ProductCardProps {
  * and use hover-reveal on desktop.
  */
 export function ProductCard({ product }: ProductCardProps) {
+  const router = useRouter();
   const { addToCart } = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -82,11 +83,27 @@ export function ProductCard({ product }: ProductCardProps) {
               - Desktop: slide-up on hover
           */}
           <div className="absolute bottom-3 sm:bottom-5 inset-x-3 sm:inset-x-5 flex gap-2 sm:gap-3 z-10">
-            <GooeyButton className="flex-1">
+            {product.slug === 'mashbere-retail-kiosk' || product.category === 'equipment' ? (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  router.push('/equipment#contact');
+                }}
+                className="flex-1 h-11 sm:h-14 bg-gray-900 text-white rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-2xl shadow-gray-900/40
+                  opacity-100 translate-y-0
+                  sm:opacity-0 sm:translate-y-6 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
+                  transition-all duration-400 flex items-center justify-center gap-1.5 sm:gap-2 hover:bg-primary"
+              >
+                <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                Enquiry
+              </motion.button>
+            ) : (
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleAddToCart}
-                className="w-full h-11 sm:h-14 bg-gray-900 text-white rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-2xl shadow-gray-900/40
+                className="flex-1 h-11 sm:h-14 bg-gray-900 text-white rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-2xl shadow-gray-900/40
                   /* Mobile: always visible */
                   opacity-100 translate-y-0
                   /* Desktop: hidden until hover */
@@ -96,20 +113,18 @@ export function ProductCard({ product }: ProductCardProps) {
                 <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 Add to cart
               </motion.button>
-            </GooeyButton>
-            <GooeyButton>
-              <motion.div
-                whileTap={{ scale: 0.95 }}
-                className="w-11 h-11 sm:w-14 sm:h-14 bg-white text-gray-900 rounded-[16px] sm:rounded-[20px] shadow-xl shadow-gray-900/10
-                  /* Mobile: always visible */
-                  opacity-100 translate-y-0
-                  /* Desktop: hidden until hover */
-                  sm:opacity-0 sm:translate-y-6 sm:delay-75 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
-                  transition-all duration-400 flex items-center justify-center border border-gray-100"
-              >
-                <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.div>
-            </GooeyButton>
+            )}
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              className="w-11 h-11 sm:w-14 sm:h-14 bg-white text-gray-900 rounded-[16px] sm:rounded-[20px] shadow-xl shadow-gray-900/10
+                /* Mobile: always visible */
+                opacity-100 translate-y-0
+                /* Desktop: hidden until hover */
+                sm:opacity-0 sm:translate-y-6 sm:delay-75 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
+                transition-all duration-400 flex items-center justify-center border border-gray-100"
+            >
+              <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+            </motion.div>
           </div>
 
           {/* Gradient overlay on hover (desktop) */}

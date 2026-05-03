@@ -22,6 +22,7 @@ export const metadata = {
 
 import { PageLoader } from '@/components/shared/PageLoader';
 import ClickSpark from '@/components/ui/ClickSpark';
+import SmoothScroll from '@/components/shared/SmoothScroll';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

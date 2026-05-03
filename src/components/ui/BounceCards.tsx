@@ -19,6 +19,7 @@ interface BounceCardsProps {
   animationStagger?: number;
   easeType?: string;
   transformStyles?: string[];
+  enableHover?: boolean;
   onCardClick?: (index: number) => void;
 }
 
