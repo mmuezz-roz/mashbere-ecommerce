@@ -109,8 +109,8 @@ export default function ProductShowcase() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 150,
-    damping: 25,
+    stiffness: 250,
+    damping: 30,
     restDelta: 0.001
   });
 
@@ -119,14 +119,14 @@ export default function ProductShowcase() {
     damping: 30
   });
 
-  const headingX = useTransform(scrollYProgress, [0, 0.15, 1], ["0%", "-20%", "-20%"]);
+  const headingX = useTransform(smoothProgress, [0, 0.15, 1], ["0%", "-20%", "-20%"]);
   const translateEnd = React.useMemo(() => {
     if (screenWidth < 640) return "-86%";
     return "-95%";
   }, [screenWidth]);
 
   const cardsX = useTransform(
-    scrollYProgress, 
+    smoothProgress, 
     [0, 1], 
     ["0%", translateEnd]
   );
