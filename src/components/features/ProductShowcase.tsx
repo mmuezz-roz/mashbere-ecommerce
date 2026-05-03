@@ -281,7 +281,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
       className="shrink-0 flex justify-center perspective-1000"
     >
       <motion.div 
-        whileHover={{ y: -8, scale: 1.01 }}
+        whileHover={isMobile ? undefined : { y: -8, scale: 1.01 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         onClick={handleCardClick}
         className="relative w-[90vw] md:w-[500px] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card cursor-pointer"
@@ -313,7 +313,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             
             {/* 2. Middle Layer (Chickku) - Overlaps Top */}
             <motion.div 
-              style={{ x: chickkuX, y: chickkuY }}
+              style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
@@ -326,11 +326,11 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
 
             {/* 3. Top Layer (Popsicle) - Overlaps Top + High Shadow */}
             <motion.div 
-              style={{ x: popsicleX, y: popsicleY }}
+              style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
-                animate={{ 
+                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
                   y: [0, -10, 0],
                   rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
                 }}
@@ -382,7 +382,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             
             {/* 2. Middle Layer (Mango Pieces) - Parallax */}
             <motion.div 
-              style={{ x: chickkuX, y: chickkuY }}
+              style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
@@ -395,11 +395,11 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
 
             {/* 3. Top Layer (Mango Popsicle) - Floating Animation */}
             <motion.div 
-              style={{ x: popsicleX, y: popsicleY }}
+              style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
-                animate={{ 
+                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
                   y: [0, -10, 0],
                   rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
                 }}
@@ -452,7 +452,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             
             {/* 2. Middle Layer (Tender Pieces) - Overlaps Top */}
             <motion.div 
-              style={{ x: chickkuX, y: chickkuY }}
+              style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
@@ -465,11 +465,11 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
 
             {/* 3. Top Layer (Tender Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
-              style={{ x: popsicleX, y: popsicleY }}
+              style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
-                animate={{ 
+                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
                   y: [0, -10, 0],
                   rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
                 }}
@@ -521,7 +521,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             
             {/* 2. Middle Layer (Strawberry Pieces) - Overlaps Top */}
             <motion.div 
-              style={{ x: chickkuX, y: chickkuY }}
+              style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
@@ -534,11 +534,11 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
 
             {/* 3. Top Layer (Strawberry Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
-              style={{ x: popsicleX, y: popsicleY }}
+              style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
-                animate={{ 
+                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
                   y: [0, -10, 0],
                   rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
                 }}
@@ -590,7 +590,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             
             {/* 2. Middle Layer (Pista Pieces) - Overlaps Top */}
             <motion.div 
-              style={{ x: chickkuX, y: chickkuY }}
+              style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
@@ -603,11 +603,11 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
 
             {/* 3. Top Layer (Pistachio Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
-              style={{ x: popsicleX, y: popsicleY }}
+              style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
-                animate={{ 
+                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
                   y: [0, -10, 0],
                   rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
                 }}
@@ -659,7 +659,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             
             {/* 2. Middle Layer (Chocolate Pieces) - Overlaps Top */}
             <motion.div 
-              style={{ x: chickkuX, y: chickkuY }}
+              style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
@@ -672,11 +672,11 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
 
             {/* 3. Top Layer (Chocolate Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
-              style={{ x: popsicleX, y: popsicleY }}
+              style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
-                animate={{ 
+                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
                   y: [0, -10, 0],
                   rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
                 }}
@@ -728,7 +728,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             
             {/* 2. Middle Layer (Guava Pieces) - Overlaps Top */}
             <motion.div 
-              style={{ x: chickkuX, y: chickkuY }}
+              style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
             >
               <Image 
@@ -741,11 +741,11 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
 
             {/* 3. Top Layer (Guava Popsicle) - Overlaps Top + Floating Animation */}
             <motion.div 
-              style={{ x: popsicleX, y: popsicleY }}
+              style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
               <motion.div
-                animate={{ 
+                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
                   y: [0, -10, 0],
                   rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
                 }}
