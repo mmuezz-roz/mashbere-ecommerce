@@ -48,17 +48,20 @@ export default function BounceCards({
   useEffect(() => {
     const ctx = gsap.context(() => {
       if (isMobile) {
-        // Simpler entrance for mobile, no scrub
+        // Entrance from random sides for mobile
         gsap.from('.card', {
-          y: 60,
+          x: () => (Math.random() - 0.5) * window.innerWidth * 1.5,
+          y: () => (Math.random() - 0.5) * window.innerHeight * 1.2,
           opacity: 0,
-          stagger: 0.1,
-          duration: 0.8,
-          ease: 'power3.out',
+          scale: 0.2,
+          rotate: () => (Math.random() - 0.5) * 180,
+          stagger: 0.04,
+          duration: 1.2,
+          ease: 'elastic.out(1, 0.75)',
           scrollTrigger: {
             trigger: containerRef.current,
-            start: 'top 85%',
-            once: true
+            start: 'top 100%', // Start immediately when the section top enters the screen
+            once: true 
           }
         });
         return;

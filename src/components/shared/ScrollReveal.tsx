@@ -10,6 +10,7 @@ interface ScrollRevealProps {
   delay?: number;
   direction?: 'up' | 'down' | 'left' | 'right';
   hideMask?: boolean;
+  disableAnimation?: boolean;
 }
 
 export const ScrollReveal = ({ 
@@ -18,7 +19,8 @@ export const ScrollReveal = ({
   className,
   delay = 0.2,
   direction = 'up',
-  hideMask = false
+  hideMask = false,
+  disableAnimation = false
 }: ScrollRevealProps) => {
   const getInitialPosition = () => {
     switch (direction) {
@@ -34,13 +36,13 @@ export const ScrollReveal = ({
     <div style={{ position: "relative", width, overflow: "hidden" }} className={className}>
       <motion.div
         variants={{
-          hidden: { ...getInitialPosition(), opacity: 0, scale: 0.98 },
+          hidden: disableAnimation ? { opacity: 0 } : { ...getInitialPosition(), opacity: 0, scale: 0.98 },
           visible: { y: 0, x: 0, opacity: 1, scale: 1 },
         }}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: disableAnimation ? 0.4 : 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
       >
         {children}
       </motion.div>

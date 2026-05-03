@@ -47,14 +47,22 @@ export default async function Home() {
       <ScrollReveal>
         <section className="container-responsive section-padding relative">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row justify-between items-end mb-10 sm:mb-16 lg:mb-20 gap-8">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-10 sm:mb-16 lg:mb-20 gap-8 pl-8 md:pl-0">
             <div className="space-y-4 max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-black text-xs uppercase tracking-widest">
                 <Star className="w-4 h-4 fill-current" />
                 <span>Our Selection</span>
               </div>
-              <h2 className="text-4xl sm:text-6xl lg:text-8xl font-display text-gray-900 leading-none tracking-tight uppercase">
-                Our Best <span className="text-primary ">Sellers</span>
+              <h2 className="flex flex-row items-center gap-2 sm:gap-4 font-display text-gray-900 uppercase leading-[0.75] tracking-tighter whitespace-nowrap">
+                <span className="text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl">
+                  Our Best
+                </span>
+                <div className="relative inline-block w-fit">
+                  <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+                  <span className="relative z-10 text-[11vw] sm:text-6xl md:text-7xl lg:text-8xl text-white px-3 sm:px-5 py-0 block">
+                    Sellers
+                  </span>
+                </div>
               </h2>
               <p className="text-gray-500 text-base sm:text-lg lg:text-xl font-medium leading-relaxed">
                 Discover the flavors that are taking the UAE by storm. Handcrafted, fresh, and irresistibly delicious.

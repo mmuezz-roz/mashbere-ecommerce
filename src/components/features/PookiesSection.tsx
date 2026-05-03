@@ -195,8 +195,12 @@ export default function PookiesSection() {
             border-top-right-radius: 40px;
           }
           .pookies-content-wrap {
-            padding: 110px 24px 64px 24px !important;
+            padding: 110px 32px 64px 32px !important;
             max-width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            text-align: left !important;
           }
           .pookies-section-inner {
             min-height: auto !important;
@@ -208,8 +212,10 @@ export default function PookiesSection() {
             font-size: clamp(16px, 5vw, 24px) !important;
           }
           .pookies-desc {
-            max-width: 100% !important;
+            max-width: 280px !important;
             font-size: 14px !important;
+            margin-left: 0 !important;
+            text-align: left !important;
           }
           .pookies-features {
             flex-wrap: wrap;
@@ -275,11 +281,7 @@ export default function PookiesSection() {
           }}
         />
 
-        {/* Swipe Down Indicator (Mobile Only) */}
-        <div className="absolute top-8 left-0 right-0 z-20 flex flex-col items-center justify-center md:hidden pointer-events-none">
-          <div className="w-10 h-1 bg-black/15 rounded-full mb-2"></div>
-          <span className="font-display uppercase text-[#2d3e24] tracking-[0.18em] text-[11px] font-bold opacity-70 text-center">Swipe down for Pookies</span>
-        </div>
+
 
         {/* Content */}
         <div
@@ -333,11 +335,21 @@ export default function PookiesSection() {
               <div className="pookies-badge-line" />
             </div>
 
-            {/* POOKIES */}
-            <h2 className="pookies-title pookies-reveal">POOKEE</h2>
-
-            {/* Small Pops. Big Joy. */}
-            <p className="pookies-subtitle pookies-reveal">Small Pops. Big Joy.</p>
+            {/* Refined Heading in "Freaking Delicious" Style */}
+            <h2 className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter mb-10 pookies-reveal">
+              <div className="relative inline-block w-fit mb-3 lg:mb-6">
+                <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+                <span className="relative z-10 text-[14vw] sm:text-7xl md:text-8xl lg:text-[10rem] text-white px-5 py-0 block leading-none">
+                  POOKEE
+                </span>
+              </div>
+              <span className="text-[7vw] sm:text-4xl md:text-5xl lg:text-6xl">
+                Small Pops.
+              </span>
+              <span className="text-[10vw] sm:text-6xl md:text-7xl lg:text-[8rem] lg:whitespace-nowrap">
+                Big Joy.
+              </span>
+            </h2>
 
             {/* Description */}
             <p className="pookies-desc pookies-reveal">

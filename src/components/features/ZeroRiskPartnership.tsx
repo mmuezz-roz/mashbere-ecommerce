@@ -113,11 +113,20 @@ export default function ZeroRiskPartnership() {
 
         <div className="container-responsive grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           {/* Left Content */}
-          <div className="space-y-10">
-            <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black text-gray-900 leading-[0.9] uppercase tracking-tighter">
-              WHY <br />
-              <span className="text-[#708238]">MASHBERE</span> <br />
-              SELLS FAST
+          <div className="space-y-10 pl-8 sm:pl-0">
+            <h2 className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter">
+              <span className="text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl">
+                WHY 
+              </span>
+              <div className="relative inline-block w-fit my-2 lg:my-4">
+                <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+                <span className="relative z-10 text-[12vw] sm:text-6xl md:text-7xl lg:text-[8rem] text-white px-5 py-0 block">
+                  MASHBERE
+                </span>
+              </div>
+              <span className="text-[12vw] sm:text-6xl md:text-7xl lg:text-[9rem] lg:whitespace-nowrap">
+                SELLS FAST
+              </span>
             </h2>
 
             <div className="space-y-4 max-w-sm">
@@ -144,17 +153,17 @@ export default function ZeroRiskPartnership() {
         </div>
 
         {/* Quote Box */}
-        <div className="max-w-2xl mx-auto mt-12">
+        <div className="max-w-2xl mx-auto mt-6 sm:mt-12 px-6 sm:px-0">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-[#1E2710] border border-white/10 rounded-[24px] p-6 sm:p-8 relative flex flex-col items-center text-center group shadow-2xl"
+            className="bg-[#1E2710] border border-white/10 rounded-[20px] sm:rounded-[24px] p-5 sm:p-8 relative flex flex-col items-center text-center group shadow-2xl"
           >
             <Quote className="absolute top-4 left-4 text-[#C4EB54]/10 w-8 h-8 rotate-180" />
             <Quote className="absolute bottom-4 right-4 text-[#C4EB54]/10 w-8 h-8" />
             
-            <p className="text-base sm:text-xl text-white font-bold leading-relaxed max-w-lg">
+            <p className="text-sm sm:text-xl text-white font-bold leading-relaxed max-w-lg">
               Our products combine premium quality with fast turnover, ensuring consistent sales and customer satisfaction.
             </p>
           </motion.div>

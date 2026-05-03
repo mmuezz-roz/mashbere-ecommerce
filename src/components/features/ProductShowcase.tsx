@@ -119,7 +119,7 @@ export default function ProductShowcase() {
     damping: 30
   });
 
-  const headingX = useTransform(smoothProgress, [0, 0.15, 1], ["0%", "-20%", "-20%"]);
+  const headingX = useTransform(smoothProgress, [0, 0.15, 1], ["0%", "-50%", "-50%"]);
   const translateEnd = React.useMemo(() => {
     if (screenWidth < 640) return "-86%";
     return "-95%";
@@ -140,6 +140,12 @@ export default function ProductShowcase() {
   
   const textOpacity3 = useTransform(smoothReveal, [0.4, 0.8], [0, 1]);
   const textY3 = useTransform(smoothReveal, [0.4, 0.8], [60, 0]);
+
+  // Mobile: Swipe Down Indicator (appears at 2nd card)
+  // Index 0: 0.15 start, 0.25 end
+  // Index 1: 0.25 start, 0.35 end
+  const swipeIndicatorOpacity = useTransform(smoothProgress, [0.22, 0.3], [0, 1]);
+  const swipeIndicatorY = useTransform(smoothProgress, [0.22, 0.3], [20, 0]);
 
   return (
     <section ref={targetRef} className={`relative bg-[#FDFBF3] ${isMobile ? 'h-[600vh]' : 'h-[1200vh]'}`}>
@@ -201,7 +207,7 @@ export default function ProductShowcase() {
             >
               <Link 
                 href="/products"
-                className="w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 rounded-full bg-[#1C2410] text-white flex flex-col items-center justify-center gap-2 sm:gap-4 transition-all duration-500 hover:scale-110 hover:bg-[#708238] shadow-2xl group/cta"
+                className="w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 rounded-full bg-transparent border-2 sm:border-4 border-[#7E8D5F] text-[#7E8D5F] flex flex-col items-center justify-center gap-2 sm:gap-4 transition-all duration-500 hover:scale-110 hover:bg-[#7E8D5F] hover:text-white shadow-xl hover:shadow-2xl group/cta"
               >
                 <span className="font-display uppercase text-xl sm:text-2xl lg:text-3xl text-center leading-[1.1] tracking-wide">
                   Explore <br /> All <br /> Flavours
@@ -212,7 +218,27 @@ export default function ProductShowcase() {
           </motion.div>
         </div>
         
-
+        {/* Swipe Down for Pookies Indicator (Mobile Only) */}
+        {isMobile && (
+          <motion.div 
+            style={{ opacity: swipeIndicatorOpacity, y: swipeIndicatorY }}
+            className="absolute bottom-10 left-0 right-0 z-[50] flex flex-col items-center justify-center pointer-events-none"
+          >
+            <div className="w-12 h-1.5 bg-black/10 rounded-full mb-3" />
+            <span className="font-display uppercase text-gray-900 tracking-[0.2em] text-[11px] sm:text-xs font-black opacity-60 text-center px-4">
+              Swipe down for Pookies
+            </span>
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="mt-2 text-gray-900/40"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m7 13 5 5 5-5M7 6l5 5 5-5" />
+              </svg>
+            </motion.div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

@@ -21,7 +21,7 @@ const SplitWords = ({ text, className, isMobile }: { text: string; className?: s
           <motion.span
             className={`inline-block ${className ?? ''}`}
             variants={{
-              hidden: { y: '110%', opacity: 0, rotateX: isMobile ? 0 : -40 },
+              hidden: { y: '110%', opacity: 0, rotateX: -40 },
               visible: { y: '0%', opacity: 1, rotateX: 0 },
             }}
             style={{ display: 'inline-block', transformOrigin: 'top' }}
@@ -102,22 +102,17 @@ export default function SipUpSection({ sipups = [] }: Props) {
         <div className="relative z-10 flex flex-col items-center justify-center w-full px-4 py-24 sm:py-32">
 
           {/* ── Heading: word-by-word 3D flip-up ── */}
-          <motion.h2
-            className="text-4xl sm:text-6xl lg:text-8xl font-display text-gray-900 leading-none tracking-tight uppercase text-center mb-4 sm:mb-6 perspective-[800px]"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.09, delayChildren: 0.1 },
-              },
-            }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-          >
-            <SplitWords text="Signature" isMobile={isMobile} />
-            {' '}
-            <SplitWords text="SipUps" className="text-primary" isMobile={isMobile} />
-          </motion.h2>
+          <h2 className="flex flex-row items-center justify-center gap-2 sm:gap-4 font-display text-gray-900 uppercase leading-[0.75] tracking-tighter whitespace-nowrap mb-8 sm:mb-12">
+            <span className="text-[7vw] sm:text-5xl md:text-6xl lg:text-8xl">
+              Signature
+            </span>
+            <div className="relative inline-block w-fit">
+              <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+              <span className="relative z-10 text-[9vw] sm:text-6xl md:text-7xl lg:text-9xl text-white px-3 sm:px-5 py-0 block">
+                SipUps
+              </span>
+            </div>
+          </h2>
 
           {/* ── Paragraph: fade + slide up ── */}
           <motion.p
