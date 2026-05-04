@@ -31,13 +31,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.5, type: 'spring', stiffness: 100 }}
-      className="group relative"
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="group relative hover:-translate-y-1.5 transition-transform duration-300 ease-out"
     >
       <Link
         href={product.category === 'sip-up' ? `/sipups/${product.slug}` : `/products/${product.slug}`}
@@ -56,15 +54,17 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.featured && (
               <motion.div
                 initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                className="bg-white/80 backdrop-blur-xl text-primary text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg border border-white/20 flex items-center gap-1.5"
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="bg-white/90 text-primary text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg border border-white/30 flex items-center gap-1.5"
               >
                 <Sparkles className="w-2.5 h-2.5 fill-primary" />
                 Bestseller
               </motion.div>
             )}
             {product.stock !== undefined && product.stock < 10 && (
-              <div className="bg-red-500/80 backdrop-blur-md text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
+              <div className="bg-red-500/90 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
                 Low Stock
               </div>
             )}
@@ -73,7 +73,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Wishlist Button */}
           <button
             onClick={(e) => { e.preventDefault(); setIsWishlisted(!isWishlisted); }}
-            className="absolute top-3 sm:top-5 right-3 sm:right-5 p-2.5 sm:p-3 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl transition-all border border-white/20 z-10 hover:scale-110"
+            className="absolute top-3 sm:top-5 right-3 sm:right-5 p-2.5 sm:p-3 bg-white/90 rounded-xl sm:rounded-2xl transition-transform duration-200 border border-white/30 z-10 hover:scale-110"
           >
             <Heart className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-primary'}`} />
           </button>
@@ -99,31 +99,30 @@ export function ProductCard({ product }: ProductCardProps) {
                 <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 Enquiry
               </motion.button>
-            ) : (
+            ) : null /* (
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleAddToCart}
                 className="flex-1 h-11 sm:h-14 bg-gray-900 text-white rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-2xl shadow-gray-900/40
-                  /* Mobile: always visible */
                   opacity-100 translate-y-0
-                  /* Desktop: hidden until hover */
                   sm:opacity-0 sm:translate-y-6 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
                   transition-all duration-400 flex items-center justify-center gap-1.5 sm:gap-2 hover:bg-primary"
               >
                 <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 Add to cart
               </motion.button>
-            )}
+            ) */}
             <motion.div
               whileTap={{ scale: 0.95 }}
-              className="w-11 h-11 sm:w-14 sm:h-14 bg-white text-gray-900 rounded-[16px] sm:rounded-[20px] shadow-xl shadow-gray-900/10
+              className="flex-1 h-11 sm:h-14 bg-white text-gray-900 rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-xl shadow-gray-900/10
                 /* Mobile: always visible */
                 opacity-100 translate-y-0
                 /* Desktop: hidden until hover */
                 sm:opacity-0 sm:translate-y-6 sm:delay-75 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
-                transition-all duration-400 flex items-center justify-center border border-gray-100"
+                transition-all duration-400 flex items-center justify-center gap-2 border border-gray-100"
             >
               <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+              View Details
             </motion.div>
           </div>
 

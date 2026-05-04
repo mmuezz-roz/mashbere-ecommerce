@@ -10,8 +10,8 @@ import { useAuth } from '@/hooks/useAuth';
 
 const NAV_ITEMS = [
   { name: 'Home', href: '/', icon: Home },
-  { name: 'Shop', href: '/products', icon: LayoutGrid },
-  { name: 'Cart', href: '/cart', icon: ShoppingBag },
+  { name: 'Products', href: '/products', icon: LayoutGrid },
+  // { name: 'Cart', href: '/cart', icon: ShoppingBag },
   { name: 'Search', href: '?search=true', icon: Search },
 ];
 

@@ -4,35 +4,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import BounceCards from '@/components/ui/BounceCards';
-import { ScrollReveal } from '@/components/shared/ScrollReveal';
+import { BodyReveal } from '@/components/shared/TextReveal';
+import { ScrollRevealHeading } from '@/components/shared/ScrollRevealHeading';
 
 import { useRouter } from 'next/navigation';
 import { SIPUPS } from '@/data/sipups';
 
-/* ── Animation helpers ── */
 
-// Splits text into individual word spans for staggered reveal
-const SplitWords = ({ text, className, isMobile }: { text: string; className?: string; isMobile?: boolean }) => {
-  const words = text.split(' ');
-  return (
-    <>
-      {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
-          <motion.span
-            className={`inline-block ${className ?? ''}`}
-            variants={{
-              hidden: { y: '110%', opacity: 0, rotateX: -40 },
-              visible: { y: '0%', opacity: 1, rotateX: 0 },
-            }}
-            style={{ display: 'inline-block', transformOrigin: 'top' }}
-          >
-            {word}
-          </motion.span>
-        </span>
-      ))}
-    </>
-  );
-};
+
 
 interface Props {
   sipups?: any[];
@@ -70,8 +49,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
   };
 
   return (
-    <ScrollReveal hideMask={true}>
-      <section className="w-full relative overflow-x-clip min-h-[600px] sm:min-h-[800px] flex items-center justify-center">
+    <section className="w-full relative overflow-x-clip min-h-[600px] sm:min-h-[800px] flex items-center justify-center">
 
         {/* Mobile background image */}
         <div className="absolute inset-0 sm:hidden">
@@ -101,30 +79,30 @@ export default function SipUpSection({ sipups = [] }: Props) {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center justify-center w-full px-4 py-24 sm:py-32">
 
-          {/* ── Heading: word-by-word 3D flip-up ── */}
-          <h2 className="flex flex-row items-center justify-center gap-2 sm:gap-4 font-display text-gray-900 uppercase leading-[0.75] tracking-tighter whitespace-nowrap mb-8 sm:mb-12">
-            <span className="text-[7vw] sm:text-5xl md:text-6xl lg:text-8xl">
-              Signature
-            </span>
-            <div className="relative inline-block w-fit">
-              <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
-              <span className="relative z-10 text-[9vw] sm:text-6xl md:text-7xl lg:text-9xl text-white px-3 sm:px-5 py-0 block">
-                SipUps
-              </span>
-            </div>
-          </h2>
+          {/* ── Heading — scroll-scrubbing reveal ── */}
+          <ScrollRevealHeading
+            lines={[
+              <span key="l1" className="text-[7vw] sm:text-5xl md:text-6xl lg:text-8xl">
+                Signature
+              </span>,
+              <div key="l2" className="relative inline-block w-fit mt-2 lg:mt-4">
+                <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+                <span className="relative z-10 text-[9vw] sm:text-6xl md:text-7xl lg:text-9xl text-white px-3 sm:px-5 py-0 block">
+                  SipUps
+                </span>
+              </div>,
+            ]}
+            className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter items-center justify-center mb-8 sm:mb-12"
+          />
 
-          {/* ── Paragraph: fade + slide up ── */}
-          <motion.p
+          {/* ── Paragraph ── */}
+          <BodyReveal
             className="text-gray-600 text-base sm:text-lg lg:text-xl font-medium leading-relaxed max-w-2xl text-center"
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            delay={0.15}
           >
             Experience our vibrant and refreshing SipUps. Handcrafted to perfection,
             each flavor bursts with natural goodness.
-          </motion.p>
+          </BodyReveal>
 
           {/* ── BounceCards ── */}
           <motion.div
@@ -132,7 +110,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="w-full max-w-5xl flex justify-center transform scale-75 sm:scale-100">
               <BounceCards
@@ -152,6 +130,5 @@ export default function SipUpSection({ sipups = [] }: Props) {
 
         </div>
       </section>
-    </ScrollReveal>
   );
 }

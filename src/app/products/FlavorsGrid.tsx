@@ -46,8 +46,28 @@ export default function FlavorsGrid({ flavors }: Props) {
     return matchSearch && matchTag && matchCategory;
   });
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToGrid = () => {
+    if (containerRef.current) {
+      const y = containerRef.current.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  const handleCategoryClick = (id: string) => {
+    setActiveCategory(id);
+    setActiveTag('All');
+    scrollToGrid();
+  };
+
+  const handleTagClick = (tag: string) => {
+    setActiveTag(tag);
+    scrollToGrid();
+  };
+
   return (
-    <>
+    <div ref={containerRef}>
       {/* Sticky Filter Bar */}
       <div className="sticky top-0 z-40 bg-[#FDFCFA]/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="container-responsive py-4">
@@ -63,7 +83,7 @@ export default function FlavorsGrid({ flavors }: Props) {
               ].map(cat => (
                 <button
                   key={cat.id}
-                  onClick={() => setActiveCategory(cat.id as any)}
+                  onClick={() => handleCategoryClick(cat.id)}
                   className={`shrink-0 px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
                     activeCategory === cat.id
                       ? 'bg-[#1C2410] text-[#C4EB54] shadow-lg shadow-[#1C2410]/20'
@@ -92,7 +112,7 @@ export default function FlavorsGrid({ flavors }: Props) {
               {ALL_TAGS.map(tag => (
                 <button
                   key={tag}
-                  onClick={() => setActiveTag(tag)}
+                  onClick={() => handleTagClick(tag)}
                   className={`shrink-0 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
                     activeTag === tag
                       ? 'bg-[#708238] text-white shadow-lg shadow-[#708238]/20'
@@ -211,6 +231,6 @@ export default function FlavorsGrid({ flavors }: Props) {
           Showing {filtered.length} of {flavors.length} flavours
         </motion.p>
       </div>
-    </>
+    </div>
   );
 }

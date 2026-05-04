@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { TextReveal, BodyReveal } from '@/components/shared/TextReveal';
+import { ScrollRevealHeading } from '@/components/shared/ScrollRevealHeading';
 
 export default function PookiesSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -232,7 +234,7 @@ export default function PookiesSection() {
           .pookies-bg {
             background-image: url('/photos/ChatGPT Image May 3, 2026, 04_41_21 PM.png') !important;
             background-size: cover !important;
-            background-position: center 55% !important;
+            background-position: center center !important;
           }
           .pookies-cta {
             padding: 14px 24px !important;
@@ -259,8 +261,8 @@ export default function PookiesSection() {
           className="absolute inset-0 w-full h-full pookies-bg"
           style={{
             backgroundImage: `url('/photos/ChatGPT Image May 2, 2026, 11_13_00 PM.png')`,
-            backgroundSize: '110%',
-            backgroundPosition: '60% center',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
           }}
         />
@@ -269,15 +271,15 @@ export default function PookiesSection() {
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to right, rgba(245,240,232,0.97) 0%, rgba(245,240,232,0.92) 38%, rgba(245,240,232,0.55) 58%, rgba(245,240,232,0) 75%)',
+            background: 'linear-gradient(to right, rgba(245,240,232,0.95) 0%, rgba(245,240,232,0.85) 35%, rgba(245,240,232,0.4) 55%, rgba(245,240,232,0) 75%)',
           }}
         />
 
-        {/* Top and Bottom soft transition overlay */}
+        {/* Top and Bottom soft transition overlay - reduced to prevent 'cutting' look */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, rgba(245,240,232,1) 0%, rgba(245,240,232,0) 15%, rgba(245,240,232,0) 85%, rgba(245,240,232,1) 100%)',
+            background: 'linear-gradient(to bottom, rgba(245,240,232,0.8) 0%, rgba(245,240,232,0) 8%, rgba(245,240,232,0) 92%, rgba(245,240,232,0.8) 100%)',
           }}
         />
 
@@ -335,26 +337,31 @@ export default function PookiesSection() {
               <div className="pookies-badge-line" />
             </div>
 
-            {/* Refined Heading in "Freaking Delicious" Style */}
-            <h2 className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter mb-10 pookies-reveal">
-              <div className="relative inline-block w-fit mb-3 lg:mb-6">
-                <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
-                <span className="relative z-10 text-[14vw] sm:text-7xl md:text-8xl lg:text-[10rem] text-white px-5 py-0 block leading-none">
-                  POOKEE
-                </span>
-              </div>
-              <span className="text-[7vw] sm:text-4xl md:text-5xl lg:text-6xl">
-                Small Pops.
-              </span>
-              <span className="text-[10vw] sm:text-6xl md:text-7xl lg:text-[8rem] lg:whitespace-nowrap">
-                Big Joy.
-              </span>
-            </h2>
+            {/* Heading — editorial clip-mask reveal matching ProductShowcase */}
+            <ScrollRevealHeading
+              lines={[
+                <div key="pookee" className="relative inline-block w-fit mb-3 lg:mb-6">
+                  <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+                  <span className="relative z-10 text-[14vw] sm:text-7xl md:text-8xl lg:text-[10rem] text-white px-5 py-0 block leading-none">
+                    POOKEE
+                  </span>
+                </div>,
+                <span key="small" className="text-[7vw] sm:text-4xl md:text-5xl lg:text-6xl">
+                  Small Pops.
+                </span>,
+                <span key="big" className="text-[10vw] sm:text-6xl md:text-7xl lg:text-[8rem] lg:whitespace-nowrap">
+                  Big Joy.
+                </span>,
+              ]}
+              className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter mb-10"
+            />
 
             {/* Description */}
-            <p className="pookies-desc pookies-reveal">
-              Bite-sized indulgence crafted with real ingredients. Perfect for quick cravings and everyday treats.
-            </p>
+            <BodyReveal delay={0.4}>
+              <p className="pookies-desc">
+                Bite-sized indulgence crafted with real ingredients. Perfect for quick cravings and everyday treats.
+              </p>
+            </BodyReveal>
             {/* Feature icons */}
             <div className="pookies-features pookies-reveal">
               {/* Real Ingredients */}

@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { UserMenu } from '@/components/auth/UserMenu';
+import { ArrowLeft } from 'lucide-react';
 import GooeyNav from '@/components/ui/GooeyNav';
 
 export default function Header() {
@@ -96,7 +97,7 @@ export default function Header() {
                   <GooeyNav
                     items={[
                       { label: 'Home', href: '/' },
-                      { label: 'Shop', href: '/products' },
+                      { label: 'Products', href: '/products' },
                       { label: 'For Business', href: '/equipment' },
                     ]}
                     initialActiveIndex={
@@ -111,10 +112,21 @@ export default function Header() {
                   />
                 </nav>
 
-                {/* LOGO: Left on Mobile, Center on Desktop */}
-                <div className="flex items-center lg:absolute lg:left-1/2 lg:-translate-x-1/2">
+                {/* LOGO & BACK: Left on Mobile, Center on Desktop */}
+                <div className="flex items-center lg:absolute lg:left-1/2 lg:-translate-x-1/2 gap-2 sm:gap-4">
+                  {/* MOBILE BACK BUTTON (Visible only on mobile, and not on home page) */}
+                  {pathname !== '/' && (
+                    <button 
+                      onClick={() => router.back()}
+                      className="lg:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                      aria-label="Go back"
+                    >
+                      <ArrowLeft size={16} />
+                    </button>
+                  )}
+
                   <Link href="/" className="group flex items-center">
-                    <div className="relative w-36 sm:w-44 lg:w-80 h-20 sm:h-20 lg:h-32 transition-all group-hover:scale-105">
+                    <div className="relative w-32 sm:w-44 lg:w-80 h-16 sm:h-20 lg:h-32 transition-all group-hover:scale-105">
                       {/* English Logo (Default) */}
                       <Image
                         src="/photos/mashbere_logo_no_bg.png"
@@ -152,14 +164,14 @@ export default function Header() {
                     >
                       <Search className="w-5 h-5" />
                     </button>
-                    <Link href="/cart" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white shadow-lg hover:bg-white hover:text-[#708238] transition-all relative">
+                    {/* <Link href="/cart" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white shadow-lg hover:bg-white hover:text-[#708238] transition-all relative">
                       <ShoppingBag className="w-5 h-5" />
                       {cartCount > 0 && (
                         <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#708238] text-white text-[9px] font-black flex items-center justify-center rounded-full border border-white/40">
                           {cartCount}
                         </span>
                       )}
-                    </Link>
+                    </Link> */}
                     <UserMenu />
                   </div>
                 </div>

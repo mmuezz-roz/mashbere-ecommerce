@@ -65,7 +65,7 @@ export function UserMenu() {
             </Link>
           </DropdownMenu.Item>
 
-          <DropdownMenu.Item asChild>
+          {/* <DropdownMenu.Item asChild>
             <Link 
               href="/cart"
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/10 text-white/80 hover:text-white transition-colors outline-none cursor-pointer sm:hidden"
@@ -73,7 +73,7 @@ export function UserMenu() {
               <ShoppingBag size={16} />
               <span className="text-xs font-bold">My Cart</span>
             </Link>
-          </DropdownMenu.Item>
+          </DropdownMenu.Item> */}
 
           {user.role === 'admin' && (
             <DropdownMenu.Item asChild>

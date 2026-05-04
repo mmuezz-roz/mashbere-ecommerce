@@ -71,6 +71,12 @@
   .will-change-transform {
     will-change: transform;
   }
+  /* ─── CSS Paint Containment: isolate section repaints ─── */
+  /* contain:paint prevents scroll-triggered repaints from cascading upward.  */
+  /* We skip contain:layout which would break position:sticky in ProductShowcase */
+  .section-contain {
+    contain: paint;
+  }
 }
 
 /* Custom Scrollbar */
@@ -85,3 +91,43 @@
 ::-webkit-scrollbar-thumb {
   @apply bg-[#e2e8d5] rounded-full border-4 border-solid border-gray-50 hover:bg-[#708238]/30 transition-colors;
 }
+
+/* ─── GPU-only float animations for popsicle cards ─── */
+/* These run on the compositor (no JS/layout) eliminating 14 Framer Motion loops */
+@keyframes floatEven {
+  0%, 100% { transform: translateY(0px) rotate(12deg); }
+  50%       { transform: translateY(-10px) rotate(15deg); }
+}
+@keyframes floatOdd {
+  0%, 100% { transform: translateY(0px) rotate(-12deg); }
+  50%       { transform: translateY(-10px) rotate(-15deg); }
+}
+.card-float-even {
+  animation: floatEven 4s ease-in-out infinite;
+  will-change: transform;
+}
+.card-float-odd {
+  animation: floatOdd 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ─── Swipe bounce indicator (CSS replaces motion.div infinite) ─── */
+@keyframes swipeBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+.swipe-bounce {
+  animation: swipeBounce 1.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ─── Scroll indicator bounce in HeroSection ─── */
+@keyframes scrollDot {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+.scroll-indicator-dot {
+  animation: scrollDot 2s ease-in-out infinite;
+  will-change: transform;
+}
+

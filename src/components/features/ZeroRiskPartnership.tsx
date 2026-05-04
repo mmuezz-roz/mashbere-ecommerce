@@ -16,6 +16,8 @@ import {
   Leaf
 } from 'lucide-react';
 import Link from 'next/link';
+import { TextReveal, BodyReveal } from '@/components/shared/TextReveal';
+import { ScrollRevealHeading } from '@/components/shared/ScrollRevealHeading';
 
 const STEPS = [
   {
@@ -53,9 +55,13 @@ export default function ZeroRiskPartnership() {
         {/* Section Header with Lines */}
         <div className="flex items-center justify-center gap-4 mb-12">
           <div className="h-px w-12 sm:w-20 bg-[#708238]" />
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 uppercase tracking-tight text-center">
-            NO INVESTMENT. NO EFFORT. <span className="text-[#708238]">PURE PROFIT.</span>
-          </h2>
+          <TextReveal
+            text="NO INVESTMENT. NO EFFORT. PURE PROFIT."
+            className="text-2xl sm:text-3xl font-black text-gray-900 uppercase tracking-tight text-center"
+            stagger={0.04}
+            duration={0.6}
+            yOffset={110}
+          />
           <div className="h-px w-12 sm:w-20 bg-[#708238]" />
         </div>
 
@@ -67,7 +73,7 @@ export default function ZeroRiskPartnership() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 className="relative bg-white border border-gray-100 rounded-[32px] p-6 sm:p-10 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.06)] flex flex-col items-center text-center max-w-[340px] w-full"
               >
                 {/* Number Badge */}
@@ -108,36 +114,41 @@ export default function ZeroRiskPartnership() {
             backgroundImage: "url('/photos/ChatGPT Image Apr 30, 2026, 03_21_47 PM.png')",
             backgroundSize: 'cover',
             backgroundPosition: 'center right',
+            willChange: 'auto',
+            contain: 'paint',
           }} 
         />
 
         <div className="container-responsive grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           {/* Left Content */}
           <div className="space-y-10 pl-8 sm:pl-0">
-            <h2 className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter">
-              <span className="text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl">
-                WHY 
-              </span>
-              <div className="relative inline-block w-fit my-2 lg:my-4">
-                <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
-                <span className="relative z-10 text-[12vw] sm:text-6xl md:text-7xl lg:text-[8rem] text-white px-5 py-0 block">
-                  MASHBERE
-                </span>
-              </div>
-              <span className="text-[12vw] sm:text-6xl md:text-7xl lg:text-[9rem] lg:whitespace-nowrap">
-                SELLS FAST
-              </span>
-            </h2>
+            <ScrollRevealHeading
+              lines={[
+                <span key="why" className="text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl">
+                  WHY
+                </span>,
+                <div key="mashbere" className="relative inline-block w-fit my-2 lg:my-4">
+                  <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+                  <span className="relative z-10 text-[12vw] sm:text-6xl md:text-7xl lg:text-[8rem] text-white px-5 py-0 block">
+                    MASHBERE
+                  </span>
+                </div>,
+                <span key="sells" className="text-[12vw] sm:text-6xl md:text-7xl lg:text-[9rem] lg:whitespace-nowrap">
+                  SELLS FAST
+                </span>,
+              ]}
+              className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter"
+            />
 
             <div className="space-y-4 max-w-sm">
               {SELLING_POINTS.map((item, i) => (
                 <motion.div 
                   key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex items-center gap-4 bg-white/90 backdrop-blur-sm px-6 py-4 rounded-full shadow-sm border border-gray-100"
+                  transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex items-center gap-4 bg-white/90 px-6 py-4 rounded-full shadow-sm border border-gray-100"
                 >
                   <div className="w-10 h-10 bg-[#708238] rounded-full flex items-center justify-center text-white">
                     <item.icon size={20} />
@@ -181,12 +192,16 @@ export default function ZeroRiskPartnership() {
             <Handshake size={32} />
           </div>
 
-        <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
-            START EARNING
-          </h2>
-          <p className="text-base sm:text-lg font-medium text-white/80 max-w-2xl mx-auto mb-8">
+          <TextReveal
+            text="START EARNING"
+            className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 justify-center"
+            stagger={0.06}
+            duration={0.75}
+            yOffset={110}
+          />
+          <BodyReveal className="text-base sm:text-lg font-medium text-white/80 max-w-2xl mx-auto mb-8" delay={0.2}>
             Partner with Mashbere today and turn your store into a high-profit destination.
-          </p>
+          </BodyReveal>
 
           <Link href="/equipment">
             <motion.button 

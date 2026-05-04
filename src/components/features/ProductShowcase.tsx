@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Star, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 
 const SHOWCASE_ITEMS = [
@@ -108,15 +108,17 @@ export default function ProductShowcase() {
     offset: ["start 100%", "start 30%"]
   });
 
+  // Single spring on scroll — don't double-spring (was causing lag)
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 250,
-    damping: 30,
+    stiffness: 400,
+    damping: 40,
     restDelta: 0.001
   });
 
+  // Light spring for reveal — keep it snappy
   const smoothReveal = useSpring(revealProgress, {
-    stiffness: 100,
-    damping: 30
+    stiffness: 200,
+    damping: 35
   });
 
   const headingX = useTransform(smoothProgress, [0, 0.15, 1], ["0%", "-50%", "-50%"]);
@@ -126,20 +128,40 @@ export default function ProductShowcase() {
   }, [screenWidth]);
 
   const cardsX = useTransform(
-    smoothProgress, 
-    [0, 1], 
+    smoothProgress,
+    [0, 1],
     ["0%", translateEnd]
   );
 
-  // Scroll Reveal for Heading Lines (now tied to early revealProgress)
-  const textOpacity1 = useTransform(smoothReveal, [0, 0.4], [0, 1]);
-  const textY1 = useTransform(smoothReveal, [0, 0.4], [60, 0]);
-  
-  const textOpacity2 = useTransform(smoothReveal, [0.2, 0.6], [0, 1]);
-  const textY2 = useTransform(smoothReveal, [0.2, 0.6], [60, 0]);
-  
-  const textOpacity3 = useTransform(smoothReveal, [0.4, 0.8], [0, 1]);
-  const textY3 = useTransform(smoothReveal, [0.4, 0.8], [60, 0]);
+  // Premium Entrance Animations for Text
+  const headingVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      }
+    }
+  };
+
+  const lineVariants = {
+    hidden: { y: "100%", filter: "blur(8px)" },
+    visible: { 
+      y: "0%", 
+      filter: "blur(0px)",
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } 
+    }
+  };
+
+  const centerClipVariants = {
+    hidden: { clipPath: "inset(-20% 50% -20% 50%)", filter: "blur(8px)", scale: 0.95 },
+    visible: { 
+      clipPath: "inset(-20% -20% -20% -20%)", 
+      filter: "blur(0px)",
+      scale: 1,
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
 
   // Mobile: Swipe Down Indicator (appears at 2nd card)
   // Index 0: 0.15 start, 0.25 end
@@ -156,29 +178,41 @@ export default function ProductShowcase() {
             className="shrink-0 w-full sm:w-auto pl-8 sm:pl-12 lg:pl-[15vw] mb-12 sm:mb-0 sm:mr-16 lg:mr-60 flex flex-col justify-center z-10"
           >
             <div className="flex flex-col items-start text-left max-w-4xl">
-              <h2 className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter">
-                <motion.span 
-                  style={{ opacity: textOpacity1, y: textY1 }}
-                  className="text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl"
-                >
-                  WE HAVE 
-                </motion.span>
+              <motion.h2 
+                variants={headingVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, margin: "-10%" }}
+                className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter"
+              >
+                <div className="overflow-hidden pb-1">
+                  <motion.span 
+                    variants={lineVariants}
+                    className="block text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl will-change-transform"
+                  >
+                    WE HAVE 
+                  </motion.span>
+                </div>
+                
                 <motion.div 
-                  style={{ opacity: textOpacity2, y: textY2 }}
-                  className="relative inline-block w-fit my-2 lg:my-4"
+                  variants={centerClipVariants}
+                  className="relative inline-block w-fit my-2 lg:my-4 will-change-transform"
                 >
                   <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
                   <span className="relative z-10 text-[12vw] sm:text-6xl md:text-7xl lg:text-[9rem] xl:text-[11rem] text-white px-5 py-0 block">
                     FREAKING
                   </span>
                 </motion.div>
-                <motion.span 
-                  style={{ opacity: textOpacity3, y: textY3 }}
-                  className="text-[12vw] sm:text-6xl md:text-7xl lg:text-[10rem] xl:text-[12rem] lg:whitespace-nowrap"
-                >
-                  DELICIOUS FLAVORS
-                </motion.span>
-              </h2>
+
+                <div className="overflow-hidden pt-1">
+                  <motion.span 
+                    variants={lineVariants}
+                    className="block text-[12vw] sm:text-6xl md:text-7xl lg:text-[10rem] xl:text-[12rem] lg:whitespace-nowrap will-change-transform"
+                  >
+                    DELICIOUS FLAVORS
+                  </motion.span>
+                </div>
+              </motion.h2>
             </div>
           </motion.div>
 
@@ -228,15 +262,11 @@ export default function ProductShowcase() {
             <span className="font-display uppercase text-gray-900 tracking-[0.2em] text-[11px] sm:text-xs font-black opacity-60 text-center px-4">
               Swipe down for Pookies
             </span>
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="mt-2 text-gray-900/40"
-            >
+            <div className="mt-2 text-gray-900/40 swipe-bounce">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="m7 13 5 5 5-5M7 6l5 5 5-5" />
               </svg>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </div>
@@ -246,8 +276,7 @@ export default function ProductShowcase() {
 
 function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, index: number, smoothProgress: any, isMobile: boolean }) {
   const router = useRouter();
-  
-  // Define mapped popsicle data based on index
+
   const popsicleMap: Record<number, string> = {
     0: 'chikku',
     1: 'mango',
@@ -260,19 +289,19 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
 
   const handleCardClick = () => {
     const slug = popsicleMap[index];
-    if (slug) {
-      router.push(`/products/${slug}`);
-    }
+    if (slug) router.push(`/products/${slug}`);
   };
-  const mouseX = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
-  const mouseY = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
+
+  // Parallax mouse tracking — only on desktop
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 200, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 200, damping: 30 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
   };
 
   const handleMouseLeave = () => {
@@ -280,38 +309,31 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
     mouseY.set(0);
   };
 
-  const start = 0.15 + (index * 0.1);
-  const end = start + 0.1;
-  const scale = useTransform(smoothProgress, [start - 0.05, start, end], [0.9, 1, 0.9]);
+  // Parallax transforms
+  const chickkuX = useTransform(springX, [-0.5, 0.5], [15, -15]);
+  const chickkuY = useTransform(springY, [-0.5, 0.5], [15, -15]);
+  const popsicleX = useTransform(springX, [-0.5, 0.5], [40, -40]);
+  const popsicleY = useTransform(springY, [-0.5, 0.5], [40, -40]);
 
-  // Parallax transforms: Hover right (0.5) -> move left (-X)
-  const chickkuX = useTransform(mouseX, [-0.5, 0.5], [15, -15]);
-  const chickkuY = useTransform(mouseY, [-0.5, 0.5], [15, -15]);
-  
-  const popsicleX = useTransform(mouseX, [-0.5, 0.5], [40, -40]);
-  const popsicleY = useTransform(mouseY, [-0.5, 0.5], [40, -40]);
+  // Float direction alternates per card — CSS handles the infinite loop (GPU-accelerated, no JS)
+  const floatClass = index % 2 === 0 ? 'card-float-even' : 'card-float-odd';
 
   return (
-    <motion.div 
-      style={{ scale }}
-      initial={{ x: isMobile ? 20 : 40, opacity: 0, scale: 0.95 }}
-      whileInView={{ x: 0, opacity: 1, scale: 1 }}
-      transition={{ 
-        duration: 0.6, 
-        delay: 0, 
-        ease: [0.22, 1, 0.36, 1] 
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      viewport={{ once: true, margin: isMobile ? "100px" : "100px" }}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: '100px' }}
+      onMouseMove={isMobile ? undefined : handleMouseMove}
+      onMouseLeave={isMobile ? undefined : handleMouseLeave}
       className="shrink-0 flex justify-center perspective-1000"
     >
-      <motion.div 
-        whileHover={isMobile ? undefined : { y: -8, scale: 1.01 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      <motion.div
+        whileHover={isMobile ? undefined : { y: -8, scale: 1.02 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         onClick={handleCardClick}
         className="relative w-[90vw] md:w-[500px] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card cursor-pointer"
-        style={{ 
+        style={{
           backgroundColor: item.bgColor,
           rotate: index % 2 === 0 ? '-3deg' : '3deg'
         }}
@@ -350,22 +372,14 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
               />
             </motion.div>
 
-            {/* 3. Top Layer (Popsicle) - Overlaps Top + High Shadow */}
+            {/* 3. Top Layer (Popsicle) - CSS float animation (GPU-only, no JS) */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
-                  y: [0, -10, 0],
-                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
-                }}
-                transition={{ 
-                  duration: 4, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
+              <div
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
                   src="/photos/ChatGPT_Image_Apr_30__2026__05_31_32_PM-removebg-preview.png"
@@ -375,7 +389,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   className="object-contain scale-75 lg:scale-100"
                   priority={false}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           </>
         )}
@@ -419,22 +433,14 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
               />
             </motion.div>
 
-            {/* 3. Top Layer (Mango Popsicle) - Floating Animation */}
+            {/* 3. Top Layer (Mango Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
-                  y: [0, -10, 0],
-                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
-                }}
-                transition={{ 
-                  duration: 4, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
+              <div
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
                   src="/photos/mango popsicle.webp"
@@ -444,7 +450,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   className="object-contain scale-85 lg:scale-115"
                   priority={false}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           </>
         )}
@@ -489,22 +495,14 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
               />
             </motion.div>
 
-            {/* 3. Top Layer (Tender Popsicle) - Overlaps Top + Floating Animation */}
+            {/* 3. Top Layer (Tender Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
-                  y: [0, -10, 0],
-                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
-                }}
-                transition={{ 
-                  duration: 4, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
+              <div
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
                   src="/photos/tender popsicle.png"
@@ -514,7 +512,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   className="object-contain scale-75 lg:scale-100"
                   priority={false}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           </>
         )}
@@ -558,22 +556,14 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
               />
             </motion.div>
 
-            {/* 3. Top Layer (Strawberry Popsicle) - Overlaps Top + Floating Animation */}
+            {/* 3. Top Layer (Strawberry Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
-                  y: [0, -10, 0],
-                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
-                }}
-                transition={{ 
-                  duration: 4, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
+              <div
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
                   src="/photos/strwberry ppsicle.webp"
@@ -583,7 +573,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   className="object-contain scale-75 lg:scale-100"
                   priority={false}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           </>
         )}
@@ -627,22 +617,14 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
               />
             </motion.div>
 
-            {/* 3. Top Layer (Pistachio Popsicle) - Overlaps Top + Floating Animation */}
+            {/* 3. Top Layer (Pistachio Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
-                  y: [0, -10, 0],
-                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
-                }}
-                transition={{ 
-                  duration: 4, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
+              <div
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
                   src="/photos/pistatio popsicle.webp"
@@ -652,7 +634,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   className="object-contain scale-75 lg:scale-100"
                   priority={false}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           </>
         )}
@@ -696,22 +678,14 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
               />
             </motion.div>
 
-            {/* 3. Top Layer (Chocolate Popsicle) - Overlaps Top + Floating Animation */}
+            {/* 3. Top Layer (Chocolate Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
-                  y: [0, -10, 0],
-                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
-                }}
-                transition={{ 
-                  duration: 4, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
+              <div
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
                   src="/photos/chcolate popsicle.webp"
@@ -721,7 +695,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   className="object-contain scale-85 lg:scale-115"
                   priority={false}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           </>
         )}
@@ -765,22 +739,14 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
               />
             </motion.div>
 
-            {/* 3. Top Layer (Guava Popsicle) - Overlaps Top + Floating Animation */}
+            {/* 3. Top Layer (Guava Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
               className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={isMobile ? { rotate: index % 2 === 0 ? 12 : -12 } : { 
-                  y: [0, -10, 0],
-                  rotate: index % 2 === 0 ? [12, 15, 12] : [-12, -15, -12]
-                }}
-                transition={{ 
-                  duration: 4, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform"
+              <div
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
                   src="/photos/guava poposicle.webp"
@@ -790,7 +756,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   className="object-contain scale-85 lg:scale-115"
                   priority={false}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           </>
         )}
