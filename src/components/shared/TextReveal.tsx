@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 /**
  * TextReveal — editorial clip-mask word/line reveal.
@@ -21,7 +21,7 @@ interface TextRevealProps {
   /** Multiple lines — each line animates as a block (not split into words) */
   lines?: React.ReactNode[];
   /** The element to render the outer wrapper as (default 'div') */
-  as?: keyof JSX.IntrinsicElements;
+  as?: React.ElementType;
   className?: string;
   /** Per-word stagger in seconds (default 0.06) */
   stagger?: number;
@@ -38,7 +38,7 @@ interface TextRevealProps {
   children?: React.ReactNode;
 }
 
-const containerVariants = (stagger: number, delay: number) => ({
+const containerVariants = (stagger: number, delay: number): Variants => ({
   hidden: {},
   visible: {
     transition: {
@@ -48,27 +48,27 @@ const containerVariants = (stagger: number, delay: number) => ({
   },
 });
 
-const wordVariants = (yOffset: number, duration: number) => ({
+const wordVariants = (yOffset: number, duration: number): Variants => ({
   hidden: { y: `${yOffset}%`, opacity: 0 },
   visible: {
     y: '0%',
     opacity: 1,
     transition: {
       duration,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   },
 });
 
 // Simple line reveal (no word splitting) — for when you need full lines
-const lineVariants = (yOffset: number, duration: number) => ({
+const lineVariants = (yOffset: number, duration: number): Variants => ({
   hidden: { y: yOffset, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
       duration,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   },
 });
@@ -176,7 +176,7 @@ export function BodyReveal({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin }}
-      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] as const }}
     >
       {children}
     </motion.div>

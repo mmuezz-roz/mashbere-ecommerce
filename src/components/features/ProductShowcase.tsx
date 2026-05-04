@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, Variants } from 'framer-motion';
 
 const SHOWCASE_ITEMS = [
   { 
@@ -134,7 +134,7 @@ export default function ProductShowcase() {
   );
 
   // Premium Entrance Animations for Text
-  const headingVariants = {
+  const headingVariants: Variants = {
     hidden: {},
     visible: {
       transition: {
@@ -144,22 +144,22 @@ export default function ProductShowcase() {
     }
   };
 
-  const lineVariants = {
+  const lineVariants: Variants = {
     hidden: { y: "100%", filter: "blur(8px)" },
     visible: { 
       y: "0%", 
       filter: "blur(0px)",
-      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } 
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const } 
     }
   };
 
-  const centerClipVariants = {
+  const centerClipVariants: Variants = {
     hidden: { clipPath: "inset(-20% 50% -20% 50%)", filter: "blur(8px)", scale: 0.95 },
     visible: { 
       clipPath: "inset(-20% -20% -20% -20%)", 
       filter: "blur(0px)",
       scale: 1,
-      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const }
     }
   };
 
@@ -235,7 +235,7 @@ export default function ProductShowcase() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
               viewport={{ once: true, margin: isMobile ? "100px" : "100px" }}
               className="shrink-0 flex justify-center items-center h-[50vh] px-8 sm:px-16"
             >
@@ -322,7 +322,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] as const }}
       viewport={{ once: true, margin: '100px' }}
       onMouseMove={isMobile ? undefined : handleMouseMove}
       onMouseLeave={isMobile ? undefined : handleMouseLeave}
@@ -330,7 +330,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
     >
       <motion.div
         whileHover={isMobile ? undefined : { y: -8, scale: 1.02 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] as const }}
         onClick={handleCardClick}
         className="relative w-[90vw] md:w-[500px] lg:w-[779.23px] aspect-[779.23/571.58] rounded-[48px] overflow-visible shadow-2xl group/card cursor-pointer"
         style={{
