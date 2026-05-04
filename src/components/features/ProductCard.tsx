@@ -99,19 +99,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 Enquiry
               </motion.button>
-            ) : null /* (
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={handleAddToCart}
-                className="flex-1 h-11 sm:h-14 bg-gray-900 text-white rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-2xl shadow-gray-900/40
-                  opacity-100 translate-y-0
-                  sm:opacity-0 sm:translate-y-6 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
-                  transition-all duration-400 flex items-center justify-center gap-1.5 sm:gap-2 hover:bg-primary"
-              >
-                <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                Add to cart
-              </motion.button>
-            ) */}
+            ) : null}
             <motion.div
               whileTap={{ scale: 0.95 }}
               className="flex-1 h-11 sm:h-14 bg-white text-gray-900 rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-xl shadow-gray-900/10

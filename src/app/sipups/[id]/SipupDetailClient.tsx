@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Star, ShoppingBag, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Star, ChevronRight } from 'lucide-react';
 
 interface Props {
   sipup: any;
@@ -22,18 +22,10 @@ export default function SipupDetailClient({ sipup }: Props) {
         style={{ background: `radial-gradient(circle at 50% 50%, ${sipup.accentColor}, transparent)` }}
       />
 
-      <div className="container-responsive py-10 lg:py-20 relative z-10">
+      <div className="container-responsive pt-28 sm:pt-36 lg:pt-44 pb-10 lg:pb-20 relative z-10">
         {/* Header Navigation */}
         <div className="flex items-center justify-between mb-12 lg:mb-20">
-          <button 
-            onClick={() => router.back()}
-            className="group flex items-center gap-3 text-gray-900 font-black text-sm uppercase tracking-widest hover:text-[#708238] transition-colors"
-          >
-            <div className="w-10 h-10 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-sm group-hover:bg-[#708238] group-hover:text-white transition-all">
-              <ArrowLeft size={18} />
-            </div>
-            <span>Back</span>
-          </button>
+
 
           <div className="flex items-center gap-2 bg-[#708238]/10 px-4 py-2 rounded-full text-[#708238] font-black text-xs uppercase tracking-widest">
             <Star className="w-4 h-4 fill-current" />
@@ -97,12 +89,7 @@ export default function SipupDetailClient({ sipup }: Props) {
               transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-6 w-full"
             >
-              <button className="bg-[#1C2410] text-white px-10 py-5 rounded-3xl font-black text-base uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-4 hover:bg-[#708238] hover:scale-105 active:scale-95 transition-all">
-                <ShoppingBag size={20} />
-                Add to Cart
-              </button>
-
-              <Link href="/#sipups" className="group flex items-center gap-3 px-8 py-5 rounded-3xl font-black text-base text-gray-900 uppercase tracking-widest hover:text-[#708238] transition-all">
+              <Link href="/#sipups" className="group flex items-center gap-3 px-10 py-5 rounded-3xl font-black text-base text-gray-900 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 w-full sm:w-auto justify-center">
                 <span>View More Flavors</span>
                 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>

@@ -182,7 +182,7 @@ export default function PookiesSection() {
             margin-top: 32px;
           }
           .pookies-content-wrap {
-            padding: 80px 0 80px 5vw !important;
+            padding: 160px 0 80px 5vw !important;
             max-width: 480px !important;
           }
           .pookies-bg {
@@ -197,7 +197,7 @@ export default function PookiesSection() {
             border-top-right-radius: 40px;
           }
           .pookies-content-wrap {
-            padding: 110px 32px 64px 32px !important;
+            padding: 140px 32px 64px 32px !important;
             max-width: 100% !important;
             display: flex !important;
             flex-direction: column !important;
@@ -292,7 +292,7 @@ export default function PookiesSection() {
         >
           <div
             className="pookies-content-wrap"
-            style={{ maxWidth: '520px', padding: '100px 0 100px 7vw' }}
+            style={{ maxWidth: '520px', padding: '180px 0 100px 7vw' }}
           >
             {/* Pookies ICE Logo — hover to toggle Arabic version */}
             <div

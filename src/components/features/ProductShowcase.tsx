@@ -171,7 +171,7 @@ export default function ProductShowcase() {
 
   return (
     <section ref={targetRef} className={`relative bg-[#FDFBF3] ${isMobile ? 'h-[600vh]' : 'h-[1200vh]'}`}>
-      <div className="sticky top-0 h-screen flex flex-col sm:flex-row items-start sm:items-center pt-20 sm:pt-0 overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col sm:flex-row items-start sm:items-center pt-32 lg:pt-48 overflow-hidden">
         <div className="flex flex-col sm:flex-row items-start sm:items-center h-full w-full">
           <motion.div 
             style={{ x: isMobile ? 0 : headingX }}

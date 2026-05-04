@@ -13,17 +13,8 @@ interface ProductDetailsClientProps {
 }
 
 export default function ProductDetailsClient({ product }: ProductDetailsClientProps) {
-  const { addToCart } = useCart();
-  const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0] || '');
   const [selectedFlavor, setSelectedFlavor] = useState(product.flavors?.[0] || '');
-  const [addedToCart, setAddedToCart] = useState(false);
-
-  const handleAddToCart = () => {
-    addToCart(product, quantity, selectedVariant);
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 3000);
-  };
 
   const isEquipment = product.category === 'equipment';
 
@@ -136,45 +127,12 @@ export default function ProductDetailsClient({ product }: ProductDetailsClientPr
 
           {/* Action Footer */}
           <div className="flex flex-col sm:flex-row gap-4">
-            {!isEquipment && (
-              <div className="flex items-center bg-gray-100 p-2 rounded-2xl w-fit">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-12 h-12 rounded-xl hover:bg-white hover:shadow-sm transition-all flex items-center justify-center font-bold text-xl"
-                >
-                  -
-                </button>
-                <span className="w-12 text-center font-black text-lg">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-12 h-12 rounded-xl hover:bg-white hover:shadow-sm transition-all flex items-center justify-center font-bold text-xl"
-                >
-                  +
-                </button>
-              </div>
-            )}
-
-            <button
-              onClick={handleAddToCart}
-              disabled={addedToCart}
-              className={`flex-1 py-4 sm:py-5 px-6 sm:px-8 rounded-2xl font-black text-sm sm:text-base lg:text-lg shadow-2xl transition-all flex items-center justify-center gap-2 sm:gap-3 uppercase tracking-widest ${
-                addedToCart 
-                ? 'bg-green-500 text-white' 
-                : 'bg-gray-900 text-white hover:bg-primary hover:-translate-y-1 active:scale-95 shadow-gray-200'
-              }`}
+            <Link 
+              href="/products"
+              className="flex-1 py-4 sm:py-5 px-6 sm:px-8 rounded-2xl font-black text-sm sm:text-base lg:text-lg bg-gray-900 text-white hover:bg-primary transition-all flex items-center justify-center gap-2 sm:gap-3 uppercase tracking-widest hover:-translate-y-1 active:scale-95 shadow-2xl"
             >
-              {addedToCart ? (
-                <>
-                  <Check className="w-6 h-6" />
-                  Successfully Added
-                </>
-              ) : (
-                <>
-                  <ShoppingCart className="w-6 h-6" />
-                  Add to Cart
-                </>
-              )}
-            </button>
+              View More Flavors
+            </Link>
           </div>
         </motion.div>
       </div>

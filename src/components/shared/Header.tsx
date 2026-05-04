@@ -164,14 +164,7 @@ export default function Header() {
                     >
                       <Search className="w-5 h-5" />
                     </button>
-                    {/* <Link href="/cart" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white shadow-lg hover:bg-white hover:text-[#708238] transition-all relative">
-                      <ShoppingBag className="w-5 h-5" />
-                      {cartCount > 0 && (
-                        <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#708238] text-white text-[9px] font-black flex items-center justify-center rounded-full border border-white/40">
-                          {cartCount}
-                        </span>
-                      )}
-                    </Link> */}
+
                     <UserMenu />
                   </div>
                 </div>

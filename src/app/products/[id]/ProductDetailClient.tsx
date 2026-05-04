@@ -27,17 +27,9 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
 
       <div className="relative z-10">
         {/* Top Nav */}
-        <div className="container-responsive pt-10 pb-6">
+        <div className="container-responsive pt-28 sm:pt-36 lg:pt-44 pb-12 sm:pb-16 lg:pb-20">
           <div className="flex items-center justify-between">
-            <button
-              onClick={() => router.back()}
-              className="group flex items-center gap-3 text-gray-700 font-black text-xs uppercase tracking-widest hover:text-[#708238] transition-colors"
-            >
-              <div className="w-10 h-10 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center group-hover:bg-[#708238] group-hover:border-[#708238] group-hover:text-white transition-all">
-                <ArrowLeft size={16} />
-              </div>
-              Back
-            </button>
+            <div className="lg:hidden" />
 
             <Link href="/products" className="flex items-center gap-2 text-gray-400 hover:text-gray-700 text-xs font-bold uppercase tracking-widest transition-colors">
               All Flavours
@@ -202,10 +194,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                   </Link>
                 ) : (
                   <>
-                    {/* <button className="group bg-[#1C2410] text-white px-10 py-5 rounded-3xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-3 hover:bg-[#708238] hover:shadow-[#708238]/30 transition-all">
-                      <ShoppingBag size={18} />
-                      Add to Order
-                    </button> */}
+
                     <Link
                       href="/products"
                       className="group flex items-center gap-2 px-8 py-5 rounded-3xl font-black text-sm text-gray-500 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100"
