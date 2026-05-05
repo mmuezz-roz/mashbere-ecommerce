@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { ProductService } from '@/services/server/productService';
 import FlavorsGrid from './FlavorsGrid';
+import { Suspense } from 'react';
 
 export default async function ProductsPage() {
   // Fetch from Supabase
@@ -53,7 +54,9 @@ export default async function ProductsPage() {
       </div>
 
       {/* Interactive Client Component for Search/Filter/Grid */}
-      <FlavorsGrid flavors={allItems} />
+      <Suspense fallback={<div className="container-responsive py-20 text-center text-gray-400">Loading catalog...</div>}>
+        <FlavorsGrid flavors={allItems} />
+      </Suspense>
     </main>
   );
 }

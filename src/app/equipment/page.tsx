@@ -2,6 +2,7 @@ import { ProductService } from '@/services/server/productService';
 import { ProductCard } from '@/components/features';
 import EquipmentInquiryForm from './EquipmentInquiryForm';
 import { Quote, Package, ChevronDown } from 'lucide-react';
+import { Suspense } from 'react';
 
 /**
  * Equipment Page (Server Component)
@@ -86,7 +87,9 @@ export default async function EquipmentPage() {
             Business <span className="text-primary">Inquiry</span>
           </h2>
         </div>
-        <EquipmentInquiryForm />
+        <Suspense fallback={<div className="h-96 bg-white rounded-[40px] animate-pulse flex items-center justify-center text-gray-300">Loading Form...</div>}>
+          <EquipmentInquiryForm />
+        </Suspense>
       </section>
     </div>
   );

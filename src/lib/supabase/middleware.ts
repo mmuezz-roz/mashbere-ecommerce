@@ -41,14 +41,21 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(new URL('/auth/login', request.url));
     }
 
-    // Check if user has admin role in profiles
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single();
+    try {
+      // Check if user has admin role in profiles
+      // We use a shorter timeout or skip if possible during build
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
 
-    if (profile?.role !== 'admin') {
+      if (profileError || profile?.role !== 'admin') {
+        return NextResponse.redirect(new URL('/', request.url));
+      }
+    } catch (e) {
+      // If DB check fails during build/edge, don't crash, just redirect to safe zone
+      console.error('Middleware Admin Check Error:', e);
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
