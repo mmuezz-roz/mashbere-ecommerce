@@ -5,6 +5,7 @@ import { Send, Info, Phone } from 'lucide-react';
 import { submitInquiryAction } from '@/app/actions';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { useSearchParams } from 'next/navigation';
 import { LogIn, Lock } from 'lucide-react';
 import Link from 'next/link';
 
@@ -39,7 +40,9 @@ export default function EquipmentInquiryForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Sync user info when logged in
+  const searchParams = useSearchParams();
+
+  // Sync user info and handle URL parameters
   useEffect(() => {
     if (user) {
       setFormData(prev => ({
@@ -48,7 +51,12 @@ export default function EquipmentInquiryForm() {
         email: user.email || prev.email,
       }));
     }
-  }, [user]);
+
+    const interest = searchParams.get('interest');
+    if (interest) {
+      setFormData(prev => ({ ...prev, equipmentInterest: interest }));
+    }
+  }, [user, searchParams]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>

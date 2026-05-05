@@ -1,8 +1,7 @@
-import { createBrowserClient } from '@supabase/ssr';
+/**
+ * Browser Supabase client — singleton re-exported from the unified lib.
+ * Kept for backward compatibility with files that import `{ supabase }`.
+ */
+import { createClient } from '@/lib/supabase/client';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
-
-export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient();

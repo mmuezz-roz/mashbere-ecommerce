@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { User } from '@/types';
 
 /**
@@ -10,6 +10,7 @@ export const ProfileService = {
    * Fetches the profile for a specific user ID
    */
   async getProfile(userId: string): Promise<User | null> {
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
@@ -28,6 +29,7 @@ export const ProfileService = {
    * Updates the profile data for a specific user
    */
   async updateProfile(userId: string, updates: Partial<User>) {
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from('profiles')
       .update({

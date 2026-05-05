@@ -186,7 +186,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
               >
                 {(flavor.category === 'equipment' || flavor.id === 'mashbere-retail-kiosk') ? (
                   <Link
-                    href="/equipment#contact"
+                    href={`/equipment?interest=${encodeURIComponent(flavor.name)}#contact`}
                     className="group bg-[#1C2410] text-white px-10 py-5 rounded-3xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-3 hover:bg-[#708238] hover:shadow-[#708238]/30 transition-all w-full sm:w-auto justify-center"
                   >
                     <Send size={18} />

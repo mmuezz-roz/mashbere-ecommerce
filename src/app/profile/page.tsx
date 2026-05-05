@@ -17,7 +17,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { ProfileService } from '@/services/server/profileService';
+import { ProfileServiceClient as ProfileService } from '@/services/client/profileService';
 import { User } from '@/types';
 import { motion } from 'motion/react';
 import { toast } from 'sonner';

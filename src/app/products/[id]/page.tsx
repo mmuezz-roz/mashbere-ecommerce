@@ -8,6 +8,37 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+/**
+ * Dynamic Metadata for SEO
+ */
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const product = await ProductService.getProductById(id);
+
+  if (!product) {
+    return {
+      title: 'Product Not Found | Mashbere',
+    };
+  }
+
+  return {
+    title: `${product.name} | Mashbere`,
+    description: product.description,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: [
+        {
+          url: product.image,
+          width: 1200,
+          height: 630,
+          alt: product.name,
+        },
+      ],
+    },
+  };
+}
+
 export default async function ProductDetailPage({ params }: Props) {
   const { id } = await params;
 

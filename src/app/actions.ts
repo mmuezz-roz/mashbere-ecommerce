@@ -14,7 +14,7 @@ export async function processCheckoutAction(formData: DeliveryInfo) {
   }
 
   try {
-    // 2. Logic to save to MongoDB would go here
+    // 2. Logic to save order to database would go here
     console.log('Processing order on server for:', formData.email);
     
     // Simulate DB delay
