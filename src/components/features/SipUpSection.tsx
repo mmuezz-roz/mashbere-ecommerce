@@ -19,7 +19,10 @@ interface Props {
 
 export default function SipUpSection({ sipups = [] }: Props) {
   const router = useRouter();
-  const images = sipups.map(s => s.image);
+  
+  // Use database sipups if available, otherwise fallback to local data
+  const displaySipups = sipups.length > 0 ? sipups : SIPUPS;
+  const images = displaySipups.map(s => s.image);
   const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
@@ -42,7 +45,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
   ];
 
   const handleCardClick = (idx: number) => {
-    const sipup = sipups[idx];
+    const sipup = displaySipups[idx];
     if (sipup) {
       router.push(`/sipups/${sipup.id}`);
     }
@@ -112,13 +115,13 @@ export default function SipUpSection({ sipups = [] }: Props) {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-full max-w-5xl flex justify-center transform scale-75 sm:scale-100">
+            <div className="w-full max-w-5xl flex justify-center transform scale-90 sm:scale-100 z-20">
               <BounceCards
                 images={images}
                 containerWidth="100%"
-                containerHeight={400}
-                animationDelay={0.5}
-                animationStagger={0.08}
+                containerHeight={500}
+                animationDelay={0.3}
+                animationStagger={0.05}
                 easeType="elastic.out(1, 0.8)"
                 transformStyles={transformStyles}
                 enableHover={!isMobile}
