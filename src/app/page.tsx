@@ -49,7 +49,7 @@ export default async function Home() {
       <ScrollReveal delay={0.05}>
         <section className="container-responsive section-padding relative">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row justify-between items-end mb-10 sm:mb-16 lg:mb-20 gap-8 pl-8 md:pl-0">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-10 sm:mb-16 lg:mb-20 gap-8 pl-2 md:pl-0">
             <div className="space-y-4 max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-black text-xs uppercase tracking-widest">
                 <Star className="w-4 h-4 fill-current" />

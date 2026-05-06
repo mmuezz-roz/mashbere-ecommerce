@@ -20,9 +20,9 @@ const FOOTER_LINKS = {
     { name: 'Terms of Service', href: '#' },
   ],
   Contact: [
-    { icon: MapPin, text: 'Dubai Design District, Building 4, UAE' },
-    { icon: Phone, text: '+971 4 000 0000' },
-    { icon: Mail, text: 'hello@icedream.ae' },
+    { icon: MapPin, text: 'Jamees Food and Beverage Trading LLC - Dubai, UAE' },
+    { icon: Phone, text: '+971 502994974' },
+    { icon: Mail, text: 'info@Jameesfood.com' },
   ]
 };
 
@@ -117,6 +117,17 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
+              
+              <div className="mt-10 pt-8 border-t border-white/5 space-y-4">
+                <div className="space-y-1">
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-white/40">Manufactured by</h4>
+                  <p className="text-xs text-gray-400 font-medium">Jamees Food and Beverages Manufacturing LLC</p>
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-white/40">Marketed by</h4>
+                  <p className="text-xs text-gray-400 font-medium">Jamees Food and Beverage Trading LLC</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -146,7 +157,10 @@ export default function Footer() {
             <p className="text-sm font-bold text-white italic">© 2024 Mashbere Premium Frozen Treats.</p>
             <div className="flex flex-wrap justify-center md:justify-end gap-6 text-[10px] font-black uppercase tracking-widest text-white/40">
               <Link href="/admin" className="hover:text-[#C4EB54]">Admin Portal</Link>
-              <span>Authentic UAE Original</span>
+              <div className="flex items-center gap-2">
+                <span>Product Of UAE</span>
+                <span className="text-[12px] font-sans">صُنع في الإمارات العربية المتحدة</span>
+              </div>
             </div>
           </div>
         </div>

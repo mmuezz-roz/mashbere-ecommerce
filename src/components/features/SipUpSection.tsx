@@ -82,21 +82,54 @@ export default function SipUpSection({ sipups = [] }: Props) {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center justify-center w-full px-4 py-24 sm:py-32">
 
-          {/* ── Heading — scroll-scrubbing reveal ── */}
-          <ScrollRevealHeading
-            lines={[
-              <span key="l1" className="text-[7vw] sm:text-5xl md:text-6xl lg:text-8xl">
+          {/* Custom Heading for independent inline animations */}
+          <motion.h2
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+              }
+            }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, margin: "-10%" }}
+            className="flex flex-row items-center justify-center gap-0 sm:gap-0 lg:gap-0 font-display text-gray-900 uppercase leading-[0.75] tracking-tighter mb-8 sm:mb-12"
+          >
+            <div className="overflow-hidden py-1 flex">
+              <motion.span 
+                variants={{
+                  hidden: { y: "100%", filter: "blur(8px)" },
+                  visible: { 
+                    y: "0%", filter: "blur(0px)",
+                    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } 
+                  }
+                }}
+                className="block text-[10vw] sm:text-5xl md:text-6xl lg:text-8xl whitespace-nowrap will-change-transform"
+              >
                 Signature
-              </span>,
-              <div key="l2" className="relative inline-block w-fit mt-2 lg:mt-4">
-                <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
-                <span className="relative z-10 text-[9vw] sm:text-6xl md:text-7xl lg:text-9xl text-white px-3 sm:px-5 py-0 block">
-                  SipUps
-                </span>
-              </div>,
-            ]}
-            className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter items-center justify-center mb-8 sm:mb-12"
-          />
+              </motion.span>
+            </div>
+
+            <motion.div
+              variants={{
+                hidden: { clipPath: "inset(-20% 50% -20% 50%)", filter: "blur(8px)", scale: 0.95 },
+                visible: { 
+                  clipPath: "inset(-20% -20% -20% -20%)", filter: "blur(0px)", scale: 1,
+                  transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+                }
+              }}
+              className="relative inline-block w-fit will-change-transform"
+            >
+              <Image
+                src="/photos/sipUp writings.png"
+                alt="SipUps"
+                width={600}
+                height={200}
+                className="h-[14vw] sm:h-[70px] md:h-[90px] lg:h-[130px] w-auto object-contain"
+                priority
+              />
+            </motion.div>
+          </motion.h2>
 
           {/* ── Paragraph ── */}
           <BodyReveal
@@ -115,7 +148,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-full max-w-5xl flex justify-center transform scale-90 sm:scale-100 z-20">
+            <div className="w-full max-w-5xl flex justify-center transform scale-100 z-20">
               <BounceCards
                 images={images}
                 containerWidth="100%"

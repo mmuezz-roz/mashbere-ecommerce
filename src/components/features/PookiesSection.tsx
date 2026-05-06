@@ -197,7 +197,7 @@ export default function PookiesSection() {
             border-top-right-radius: 40px;
           }
           .pookies-content-wrap {
-            padding: 140px 32px 64px 32px !important;
+            padding: 140px 24px 64px 24px !important;
             max-width: 100% !important;
             display: flex !important;
             flex-direction: column !important;
@@ -339,6 +339,7 @@ export default function PookiesSection() {
 
             {/* Heading — editorial clip-mask reveal matching ProductShowcase */}
             <ScrollRevealHeading
+              variant="left"
               lines={[
                 <div key="pookee" className="relative inline-block w-fit mb-3 lg:mb-6">
                   <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />

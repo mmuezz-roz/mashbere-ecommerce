@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue, Variants } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, Variants, AnimatePresence } from 'framer-motion';
 
 const SHOWCASE_ITEMS = [
   { 
@@ -81,57 +81,33 @@ const SHOWCASE_ITEMS = [
 ];
 
 export default function ProductShowcase() {
-  const targetRef = useRef<HTMLDivElement | null>(null);
-  const [isMobile, setIsMobile] = React.useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const [screenWidth, setScreenWidth] = React.useState(1200);
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (!isMobile) return;
+    const container = e.currentTarget;
+    const scrollLeft = container.scrollLeft;
+    const width = container.offsetWidth;
+    if (width <= 0) return;
+    const index = Math.round(scrollLeft / width);
+    if (index !== activeIndex) setActiveIndex(index);
+  };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-      setIsMobile(window.innerWidth < 640);
+      setIsMobile(window.innerWidth < 1024);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
   
-  // Main scroll progress for the horizontal movement (sticky)
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"]
-  });
-
-  // Early reveal progress for the text entrance (triggers as it comes into view)
-  const { scrollYProgress: revealProgress } = useScroll({
-    target: targetRef,
-    offset: ["start 100%", "start 30%"]
-  });
-
-  // Single spring on scroll — don't double-spring (was causing lag)
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 400,
-    damping: 40,
-    restDelta: 0.001
-  });
-
-  // Light spring for reveal — keep it snappy
-  const smoothReveal = useSpring(revealProgress, {
-    stiffness: 200,
-    damping: 35
-  });
-
-  const headingX = useTransform(smoothProgress, [0, 0.15, 1], ["0%", "-50%", "-50%"]);
-  const translateEnd = React.useMemo(() => {
-    if (screenWidth < 640) return "-86%";
-    return "-95%";
-  }, [screenWidth]);
-
-  const cardsX = useTransform(
-    smoothProgress,
-    [0, 1],
-    ["0%", translateEnd]
-  );
+  // Use horizontal scroll progress directly for the heading to avoid double-spring lag
+  const { scrollXProgress } = useScroll({ container: scrollContainerRef });
+  const headingX = useTransform(scrollXProgress, [0, 0.15, 1], ["0%", "-50%", "-50%"]);
 
   // Premium Entrance Animations for Text
   const headingVariants: Variants = {
@@ -163,22 +139,153 @@ export default function ProductShowcase() {
     }
   };
 
-  // Mobile: Swipe Down Indicator (appears at 2nd card)
-  // Index 0: 0.15 start, 0.25 end
-  // Index 1: 0.25 start, 0.35 end
-  const swipeIndicatorOpacity = useTransform(smoothProgress, [0.22, 0.3], [0, 1]);
-  const swipeIndicatorY = useTransform(smoothProgress, [0.22, 0.3], [20, 0]);
+  // Wheel event listener to intuitively map vertical scroll to horizontal scroll when hovering the section
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      // Allow native horizontal scrolling to pass through seamlessly (trackpad swipes)
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+      const rect = container.getBoundingClientRect();
+      // Ensure the section is fully taking up the screen before we start intercepting scroll
+      const isFullyInView = rect.top <= 100 && rect.bottom >= window.innerHeight - 100;
+
+      if (!isFullyInView) return;
+
+      const isAtStart = container.scrollLeft <= 0;
+      const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 2;
+
+      if ((e.deltaY > 0 && !isAtEnd) || (e.deltaY < 0 && !isAtStart)) {
+        e.preventDefault();
+        // Synchronous 1:1 scroll update - zero lag, perfectly tracks the wheel/trackpad hardware
+        container.scrollLeft += e.deltaY;
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
+  }, []);
 
   return (
-    <section ref={targetRef} className={`relative bg-[#FDFBF3] ${isMobile ? 'h-[600vh]' : 'h-[1200vh]'}`}>
-      <div className="sticky top-0 h-screen flex flex-col sm:flex-row items-start sm:items-center overflow-hidden">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center h-full w-full">
-          <motion.div 
-            style={{ x: isMobile ? 0 : headingX }}
-            className="shrink-0 w-full sm:w-auto pl-8 sm:pl-12 lg:pl-[15vw] pt-32 lg:pt-0 mb-12 sm:mb-0 sm:mr-16 lg:mr-60 flex flex-col justify-center z-10"
+    <section className="relative bg-[#FDFBF3] flex flex-col overflow-hidden">
+      
+      {/* Scroll indicator - desktop only */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="absolute top-10 right-10 z-50 hidden lg:flex items-center gap-2 text-[#7E8D5F] font-black uppercase tracking-widest text-sm"
+      >
+        Scroll <ArrowRight className="w-4 h-4 animate-pulse" />
+      </motion.div>
+
+      {/* ── MOBILE: Heading stacked on top, then cards below ── */}
+      <div className="flex flex-col lg:hidden w-full">
+        {/* Heading Block */}
+        <div className="pt-20 pb-8 px-6">
+          <motion.h2
+            variants={headingVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, margin: "-10%" }}
+            className="flex flex-col font-display text-gray-900 uppercase leading-[0.8] tracking-tighter"
+          >
+            <div className="overflow-hidden pb-1">
+              <motion.span
+                variants={lineVariants}
+                className="block text-[10vw] sm:text-4xl"
+              >
+                WE HAVE
+              </motion.span>
+            </div>
+
+            <motion.div
+              variants={centerClipVariants}
+              className="relative inline-block w-fit my-2"
+            >
+              <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+              <span className="relative z-10 text-[14vw] sm:text-6xl text-white px-4 py-0 block">
+                FREAKING
+              </span>
+            </motion.div>
+
+            <div className="overflow-hidden pt-1">
+              <motion.span
+                variants={lineVariants}
+                className="block text-[9vw] sm:text-4xl"
+              >
+                DELICIOUS FLAVORS
+              </motion.span>
+            </div>
+          </motion.h2>
+        </div>
+
+        <div className="relative group/scroll">
+          {/* Horizontal scroll card strip */}
+          <div
+            ref={isMobile ? scrollContainerRef : undefined}
+            onScroll={handleScroll}
+            className="w-full overflow-x-auto scrollbar-hide pb-12 pt-20 snap-x snap-mandatory"
+            style={{ scrollBehavior: 'auto' }}
+          >
+            <motion.div 
+              initial={{ x: 0 }}
+              whileInView={isMobile ? { x: [0, -80, 0] } : {}}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 1.2, ease: "easeInOut", delay: 1.5 }}
+              className="flex items-center gap-6 min-w-max px-6"
+            >
+              {SHOWCASE_ITEMS.map((item, index) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  isMobile={isMobile}
+                />
+              ))}
+              {/* Explore CTA */}
+              <div className="shrink-0 flex justify-center items-center px-4 pr-8 snap-center">
+                <Link
+                  href="/products"
+                  className="w-36 h-36 sm:w-48 sm:h-48 rounded-full bg-transparent border-2 border-[#7E8D5F] text-[#7E8D5F] flex flex-col items-center justify-center gap-2 transition-all duration-500 active:scale-95 pointer-events-auto"
+                >
+                  <span className="font-display uppercase text-lg sm:text-xl text-center leading-[1.1] tracking-wide">
+                    Explore <br /> All <br /> Flavours
+                  </span>
+                  <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.5} />
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Minimal Mobile Pagination Dots */}
+          <div className="flex lg:hidden justify-center gap-2 pb-12">
+            {[...Array(SHOWCASE_ITEMS.length + 1)].map((_, i) => (
+              <div 
+                key={i}
+                className={`transition-all duration-300 rounded-full ${
+                  activeIndex === i 
+                    ? "w-6 h-1.5 bg-[#7E8D5F]" 
+                    : "w-1.5 h-1.5 bg-[#7E8D5F]/20"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── DESKTOP: Absolute heading slides, cards scroll horizontally ── */}
+      <div className="hidden lg:block relative min-h-screen">
+        {/* Heading - Absolute positioned so it stays on screen while cards scroll */}
+        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 pointer-events-none z-10 flex h-full">
+          <motion.div
+            style={{ x: headingX }}
+            className="w-full pl-[7vw] flex flex-col justify-center"
           >
             <div className="flex flex-col items-start text-left max-w-4xl">
-              <motion.h2 
+              <motion.h2
                 variants={headingVariants}
                 initial="hidden"
                 whileInView="visible"
@@ -186,28 +293,28 @@ export default function ProductShowcase() {
                 className="flex flex-col font-display text-gray-900 uppercase leading-[0.75] tracking-tighter"
               >
                 <div className="overflow-hidden pb-1">
-                  <motion.span 
+                  <motion.span
                     variants={lineVariants}
-                    className="block text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl will-change-transform"
+                    className="block text-7xl xl:text-8xl"
                   >
-                    WE HAVE 
+                    WE HAVE
                   </motion.span>
                 </div>
-                
-                <motion.div 
+
+                <motion.div
                   variants={centerClipVariants}
-                  className="relative inline-block w-fit my-2 lg:my-4 will-change-transform"
+                  className="relative inline-block w-fit my-4"
                 >
                   <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
-                  <span className="relative z-10 text-[12vw] sm:text-6xl md:text-7xl lg:text-[9rem] xl:text-[11rem] text-white px-5 py-0 block">
+                  <span className="relative z-10 text-[9rem] xl:text-[11rem] text-white px-5 py-0 block">
                     FREAKING
                   </span>
                 </motion.div>
 
                 <div className="overflow-hidden pt-1">
-                  <motion.span 
+                  <motion.span
                     variants={lineVariants}
-                    className="block text-[12vw] sm:text-6xl md:text-7xl lg:text-[10rem] xl:text-[12rem] lg:whitespace-nowrap will-change-transform"
+                    className="block text-[10rem] xl:text-[12rem] whitespace-nowrap"
                   >
                     DELICIOUS FLAVORS
                   </motion.span>
@@ -215,66 +322,57 @@ export default function ProductShowcase() {
               </motion.h2>
             </div>
           </motion.div>
-
-          {/* Cards Container - Independent Transform - Higher Z-Index */}
-          <motion.div 
-            style={{ x: cardsX }} 
-            className="flex items-center gap-8 sm:gap-12 lg:gap-20 pr-[20vw] z-30 pl-8 sm:pl-0"
-          >
-            {SHOWCASE_ITEMS.map((item, index) => (
-              <ProductCard 
-                key={item.id} 
-                item={item} 
-                index={index} 
-                smoothProgress={smoothProgress} 
-                isMobile={isMobile}
-              />
-            ))}
-            
-            {/* Explore All Flavours Circular Button */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
-              viewport={{ once: true, margin: isMobile ? "100px" : "100px" }}
-              className="shrink-0 flex justify-center items-center h-[50vh] px-8 sm:px-16"
-            >
-              <Link 
-                href="/products"
-                className="w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 rounded-full bg-transparent border-2 sm:border-4 border-[#7E8D5F] text-[#7E8D5F] flex flex-col items-center justify-center gap-2 sm:gap-4 transition-all duration-500 hover:scale-110 hover:bg-[#7E8D5F] hover:text-white shadow-xl hover:shadow-2xl group/cta"
-              >
-                <span className="font-display uppercase text-xl sm:text-2xl lg:text-3xl text-center leading-[1.1] tracking-wide">
-                  Explore <br /> All <br /> Flavours
-                </span>
-                <ArrowRight className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 group-hover/cta:translate-x-2 transition-transform duration-300" strokeWidth={2.5} />
-              </Link>
-            </motion.div>
-          </motion.div>
         </div>
-        
-        {/* Swipe Down for Pookies Indicator (Mobile Only) */}
-        {isMobile && (
-          <motion.div 
-            style={{ opacity: swipeIndicatorOpacity, y: swipeIndicatorY }}
-            className="absolute bottom-10 left-0 right-0 z-[50] flex flex-col items-center justify-center pointer-events-none"
-          >
-            <div className="w-12 h-1.5 bg-black/10 rounded-full mb-3" />
-            <span className="font-display uppercase text-gray-900 tracking-[0.2em] text-[11px] sm:text-xs font-black opacity-60 text-center px-4">
-              Swipe down for Pookies
-            </span>
-            <div className="mt-2 text-gray-900/40 swipe-bounce">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m7 13 5 5 5-5M7 6l5 5 5-5" />
-              </svg>
+
+        {/* Native Horizontal Scroll Container */}
+        <div
+          ref={!isMobile ? scrollContainerRef : undefined}
+          className="w-full flex items-center overflow-x-auto scrollbar-hide relative z-20 h-full pt-56 pb-32"
+          style={{ scrollBehavior: 'auto' }}
+        >
+          <div className="flex items-center min-w-max px-[15vw]">
+
+            {/* Spacer so heading is fully visible before first card */}
+            <div className="w-[80vw] shrink-0" />
+
+            {/* Cards */}
+            <div className="flex items-center gap-48">
+              {SHOWCASE_ITEMS.map((item, index) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  isMobile={isMobile}
+                />
+              ))}
+
+              {/* Explore All Flavours Circular Button */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
+                viewport={{ once: true }}
+                className="shrink-0 flex justify-center items-center h-[50vh] px-16 pr-[20vw]"
+              >
+                <Link
+                  href="/products"
+                  className="w-72 h-72 rounded-full bg-transparent border-4 border-[#7E8D5F] text-[#7E8D5F] flex flex-col items-center justify-center gap-4 transition-all duration-500 hover:scale-110 hover:bg-[#7E8D5F] hover:text-white shadow-xl hover:shadow-2xl group/cta pointer-events-auto"
+                >
+                  <span className="font-display uppercase text-3xl text-center leading-[1.1] tracking-wide">
+                    Explore <br /> All <br /> Flavours
+                  </span>
+                  <ArrowRight className="w-10 h-10 group-hover/cta:translate-x-2 transition-transform duration-300" strokeWidth={2.5} />
+                </Link>
+              </motion.div>
             </div>
-          </motion.div>
-        )}
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, index: number, smoothProgress: any, isMobile: boolean }) {
+function ProductCard({ item, index, isMobile }: { item: any, index: number, isMobile: boolean }) {
   const router = useRouter();
 
   const popsicleMap: Record<number, string> = {
@@ -319,14 +417,10 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
   const floatClass = index % 2 === 0 ? 'card-float-even' : 'card-float-odd';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] as const }}
-      viewport={{ once: true, margin: '100px' }}
+    <div
       onMouseMove={isMobile ? undefined : handleMouseMove}
       onMouseLeave={isMobile ? undefined : handleMouseLeave}
-      className="shrink-0 flex justify-center perspective-1000"
+      className="shrink-0 flex justify-center perspective-1000 snap-center"
     >
       <motion.div
         whileHover={isMobile ? undefined : { y: -8, scale: 1.02 }}
@@ -346,7 +440,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                 src="/photos/ChatGPT Image May 1, 2026, 03_10_13 PM.png"
                 alt="Card Background"
                 fill
-                className="object-cover will-change-transform"
+                className="object-cover"
               />
             </div>
 
@@ -354,7 +448,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none will-change-transform">
+              <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none">
                 CHIKKU
               </span>
             </div>
@@ -362,7 +456,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 2. Middle Layer (Chickku) - Overlaps Top */}
             <motion.div 
               style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
                 src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.png"
@@ -375,10 +469,10 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 3. Top Layer (Popsicle) - CSS float animation (GPU-only, no JS) */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
             >
               <div
-                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center ${floatClass}`}
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
@@ -402,7 +496,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                 src="/photos/mango cardbg.png"
                 alt="Mango Card Background"
                 fill
-                className="object-cover scale-[1.15] will-change-transform"
+                className="object-cover scale-[1.15]"
               />
             </div>
 
@@ -410,7 +504,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1 will-change-transform">
+              <div className="flex flex-col items-start gap-1">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   MANGO
                 </span>
@@ -423,7 +517,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 2. Middle Layer (Mango Pieces) - Parallax */}
             <motion.div 
               style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
                 src="/photos/mango pieces-Photoroom.png"
@@ -436,10 +530,10 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 3. Top Layer (Mango Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
             >
               <div
-                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center ${floatClass}`}
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
@@ -464,7 +558,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                 src="/photos/ChatGPT Image May 2, 2026, 05_20_20 PM.png"
                 alt="Tender Coconut Card Background"
                 fill
-                className="object-fill scale-[2.2] will-change-transform"
+                className="object-fill scale-[2.2]"
               />
             </div>
 
@@ -472,7 +566,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1 will-change-transform">
+              <div className="flex flex-col items-start gap-1">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   TENDER
                 </span>
@@ -485,7 +579,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 2. Middle Layer (Tender Pieces) - Overlaps Top */}
             <motion.div 
               style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
                 src="/photos/tender og pieces.png"
@@ -498,18 +592,18 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 3. Top Layer (Tender Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
             >
               <div
-                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center ${floatClass}`}
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/tender popsicle.png"
+                  src="/photos/tender og popsicle.png"
                   alt="Tender Coconut Popsicle"
-                  width={450}
-                  height={650}
-                  className="object-contain scale-75 lg:scale-100"
+                  width={550}
+                  height={750}
+                  className="object-contain scale-50 lg:scale-70"
                   priority={false}
                 />
               </div>
@@ -525,7 +619,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                 src="/photos/strawberry bg card.png"
                 alt="Strawberry Card Background"
                 fill
-                className="object-cover scale-110 will-change-transform"
+                className="object-cover scale-110"
               />
             </div>
 
@@ -533,7 +627,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1 will-change-transform">
+              <div className="flex flex-col items-start gap-1">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   STRAWBERRY
                 </span>
@@ -546,7 +640,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 2. Middle Layer (Strawberry Pieces) - Overlaps Top */}
             <motion.div 
               style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
                 src="/photos/Strawberry pices.webp"
@@ -559,18 +653,18 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 3. Top Layer (Strawberry Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
             >
               <div
-                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center ${floatClass}`}
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
                   src="/photos/strwberry ppsicle.webp"
                   alt="Strawberry Popsicle"
-                  width={450}
-                  height={650}
-                  className="object-contain scale-75 lg:scale-100"
+                  width={550}
+                  height={750}
+                  className="object-contain scale-85 lg:scale-110"
                   priority={false}
                 />
               </div>
@@ -586,7 +680,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                 src="/photos/pistatio bg card.webp"
                 alt="Pistachio Card Background"
                 fill
-                className="object-cover scale-110 will-change-transform"
+                className="object-cover scale-110"
               />
             </div>
 
@@ -594,7 +688,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1 will-change-transform">
+              <div className="flex flex-col items-start gap-1">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   PISTACHIO
                 </span>
@@ -607,7 +701,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 2. Middle Layer (Pista Pieces) - Overlaps Top */}
             <motion.div 
               style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
                 src="/photos/pista pieces.webp"
@@ -620,18 +714,18 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 3. Top Layer (Pistachio Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
             >
               <div
-                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center ${floatClass}`}
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/pistatio popsicle.webp"
+                  src="/photos/pistatio og popsicle.png"
                   alt="Pistachio Popsicle"
-                  width={450}
-                  height={650}
-                  className="object-contain scale-75 lg:scale-100"
+                  width={550}
+                  height={750}
+                  className="object-contain scale-50 lg:scale-70"
                   priority={false}
                 />
               </div>
@@ -647,7 +741,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                 src="/photos/chocolate bgcard.webp"
                 alt="Chocolate Card Background"
                 fill
-                className="object-cover scale-110 will-change-transform"
+                className="object-cover scale-110"
               />
             </div>
 
@@ -655,7 +749,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1 will-change-transform">
+              <div className="flex flex-col items-start gap-1">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   CHOCOLATE
                 </span>
@@ -668,7 +762,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 2. Middle Layer (Chocolate Pieces) - Overlaps Top */}
             <motion.div 
               style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
                 src="/photos/chcoalte peices.webp"
@@ -681,10 +775,10 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 3. Top Layer (Chocolate Popsicle) - CSS float animation */}
             <motion.div 
               style={isMobile ? {} : { x: popsicleX, y: popsicleY }}
-              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none will-change-transform"
+              className="absolute -top-16 lg:-top-40 inset-x-0 bottom-0 z-20 flex items-center justify-center p-6 lg:p-12 pointer-events-none"
             >
               <div
-                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center will-change-transform ${floatClass}`}
+                className={`relative w-full h-[110%] lg:h-[120%] flex items-center justify-center ${floatClass}`}
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
@@ -692,7 +786,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   alt="Chocolate Popsicle"
                   width={550}
                   height={750}
-                  className="object-contain scale-85 lg:scale-115"
+                  className="object-contain scale-95 lg:scale-125"
                   priority={false}
                 />
               </div>
@@ -708,7 +802,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                 src="/photos/guava bgCard.webp"
                 alt="Guava Card Background"
                 fill
-                className="object-cover scale-110 will-change-transform"
+                className="object-cover scale-110"
               />
             </div>
 
@@ -716,7 +810,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             <div 
               className="absolute inset-0 flex items-end justify-start pl-10 pb-8 lg:pl-14 lg:pb-12 z-[25] pointer-events-none"
             >
-              <div className="flex flex-col items-start gap-1 will-change-transform">
+              <div className="flex flex-col items-start gap-1">
                 <span className="font-display text-5xl lg:text-8xl text-white/90 uppercase tracking-tight select-none leading-none">
                   GUAVA
                 </span>
@@ -729,7 +823,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
             {/* 2. Middle Layer (Guava Pieces) - Overlaps Top */}
             <motion.div 
               style={isMobile ? {} : { x: chickkuX, y: chickkuY }}
-              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none will-change-transform"
+              className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
                 src="/photos/guava pieces seeds.webp"
@@ -753,7 +847,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
                   alt="Guava Popsicle"
                   width={550}
                   height={750}
-                  className="object-contain scale-85 lg:scale-115"
+                  className="object-contain scale-95 lg:scale-125"
                   priority={false}
                 />
               </div>
@@ -764,7 +858,7 @@ function ProductCard({ item, index, smoothProgress, isMobile }: { item: any, ind
         {/* Overlay for depth (inner border) */}
         <div className="absolute inset-0 border border-white/10 rounded-[48px] pointer-events-none z-30" />
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
 

@@ -7,6 +7,7 @@ interface ScrollRevealHeadingProps {
   lines: React.ReactNode[];
   className?: string;
   as?: React.ElementType;
+  variant?: 'center' | 'left';
 }
 
 const headingVariants: Variants = {
@@ -38,7 +39,22 @@ const centerClipVariants: Variants = {
   }
 };
 
-export function ScrollRevealHeading({ lines, className = '', as: Component = 'h2' }: ScrollRevealHeadingProps) {
+const leftClipVariants: Variants = {
+  hidden: { clipPath: "inset(0% 100% 0% 0%)", filter: "blur(8px)", x: -20 },
+  visible: { 
+    clipPath: "inset(0% 0% 0% 0%)", 
+    filter: "blur(0px)",
+    x: 0,
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const }
+  }
+};
+
+export function ScrollRevealHeading({ 
+  lines, 
+  className = '', 
+  as: Component = 'h2',
+  variant = 'center'
+}: ScrollRevealHeadingProps) {
   const MotionComponent = motion.create(Component as any);
 
   return (
@@ -59,8 +75,9 @@ export function ScrollRevealHeading({ lines, className = '', as: Component = 'h2
         }
 
         if (isHighlighted) {
+          const chosenVariant = variant === 'left' ? leftClipVariants : centerClipVariants;
           return (
-            <motion.div key={i} variants={centerClipVariants} className="will-change-transform w-fit">
+            <motion.div key={i} variants={chosenVariant} className="will-change-transform w-fit">
               {line}
             </motion.div>
           );

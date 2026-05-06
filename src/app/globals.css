@@ -32,10 +32,12 @@
 @layer utilities {
   .glass {
     @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(112,130,56,0.07)];
+    -webkit-backdrop-filter: blur(24px);
   }
   
   .glass-dark {
     @apply bg-black/50 backdrop-blur-xl border border-white/10 shadow-2xl;
+    -webkit-backdrop-filter: blur(24px);
   }
 
   .text-gradient {
@@ -82,6 +84,7 @@
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
+  height: 0px; /* Hide horizontal scrollbar track */
 }
 
 ::-webkit-scrollbar-track {
@@ -90,6 +93,15 @@
 
 ::-webkit-scrollbar-thumb {
   @apply bg-[#e2e8d5] rounded-full border-4 border-solid border-gray-50 hover:bg-[#708238]/30 transition-colors;
+}
+
+/* Utility: hide scrollbar completely (used on horizontal scroll containers) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
 
 /* ─── GPU-only float animations for popsicle cards ─── */
@@ -105,10 +117,14 @@
 .card-float-even {
   animation: floatEven 4s ease-in-out infinite;
   will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .card-float-odd {
   animation: floatOdd 4s ease-in-out infinite;
   will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* ─── Swipe bounce indicator (CSS replaces motion.div infinite) ─── */

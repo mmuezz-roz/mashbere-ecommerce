@@ -267,7 +267,7 @@ export default function EquipmentInquiryForm() {
           <p className="text-sm text-gray-500 mb-2 uppercase font-bold tracking-widest">
             Support Hotline
           </p>
-          <p className="text-2xl font-black text-gray-900">+971 4 000 0000</p>
+          <p className="text-2xl font-black text-gray-900">+971 502994974</p>
           <p className="text-xs text-gray-400 mt-2">Available Mon – Fri, 9 AM – 6 PM</p>
         </div>
       </div>

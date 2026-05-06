@@ -53,16 +53,39 @@ export default function ZeroRiskPartnership() {
       {/* Top Header & Steps */}
       <div className="container-responsive py-16">
         {/* Section Header with Lines */}
-        <div className="flex items-center justify-center gap-4 mb-12">
-          <div className="h-px w-12 sm:w-20 bg-[#708238]" />
-          <TextReveal
-            text="NO INVESTMENT. NO EFFORT. PURE PROFIT."
-            className="text-2xl sm:text-3xl font-black text-gray-900 uppercase tracking-tight text-center"
-            stagger={0.04}
-            duration={0.6}
-            yOffset={110}
+        <div className="flex flex-col items-start pl-2 sm:pl-0 mb-16">
+          <ScrollRevealHeading
+            variant="left"
+            lines={[
+              <span key="no1" className="text-[8vw] sm:text-4xl md:text-5xl lg:text-6xl text-gray-400">
+                NO INVESTMENT.
+              </span>,
+              <span key="no2" className="text-[8vw] sm:text-4xl md:text-5xl lg:text-6xl text-gray-400">
+                NO EFFORT.
+              </span>,
+              <div key="profit" className="relative inline-block w-fit mt-2 lg:mt-4">
+                <div className="absolute inset-0 bg-[#7E8D5F] -rotate-1 transform scale-y-110" />
+                <span className="relative z-10 text-[12vw] sm:text-7xl md:text-8xl lg:text-[9rem] text-white px-5 py-0 block">
+                  PURE PROFIT.
+                </span>
+              </div>,
+            ]}
+            className="flex flex-col font-display text-gray-900 uppercase leading-[0.8] tracking-tighter"
           />
-          <div className="h-px w-12 sm:w-20 bg-[#708238]" />
+        </div>
+        {/* Secondary Header based on screenshot */}
+        <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-px w-8 sm:w-12 bg-[#7E8D5F]/30" />
+            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-[#7E8D5F]">How it works</span>
+            <div className="h-px w-8 sm:w-12 bg-[#7E8D5F]/30" />
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-black text-gray-900 mb-4 tracking-tight">
+            Start Earning in 3 Simple Steps
+          </h2>
+          <BodyReveal className="text-gray-500 font-medium text-sm sm:text-lg lg:text-xl" delay={0.2}>
+            We handle the hard work, you enjoy the profit.
+          </BodyReveal>
         </div>
 
         {/* Steps Grid */}
@@ -89,9 +112,9 @@ export default function ZeroRiskPartnership() {
                 <h3 className="text-xl font-black text-[#708238] mb-4">
                   {step.title}
                 </h3>
-                <p className="text-gray-600 font-medium text-sm sm:text-base leading-relaxed">
+                <BodyReveal className="text-gray-600 font-medium text-sm sm:text-base leading-relaxed" delay={0.15 + i * 0.1}>
                   {step.desc}
-                </p>
+                </BodyReveal>
               </motion.div>
 
               {/* Connector Arrow */}
@@ -121,7 +144,7 @@ export default function ZeroRiskPartnership() {
 
         <div className="container-responsive grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           {/* Left Content */}
-          <div className="space-y-10 pl-8 sm:pl-0">
+          <div className="space-y-10 pl-2 sm:pl-0">
             <ScrollRevealHeading
               lines={[
                 <span key="why" className="text-[8vw] sm:text-4xl md:text-5xl lg:text-7xl">
