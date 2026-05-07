@@ -137,24 +137,16 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <div className="flex items-center justify-between pt-2 sm:pt-4">
             <div className="flex flex-col">
-              <span className="text-xs text-gray-400 font-bold line-through">
-                AED {(product.price * 1.2).toFixed(2)}
-              </span>
-              <div className="flex items-baseline gap-1">
-                <span className="text-[10px] sm:text-xs font-black text-gray-900">AED</span>
-                <span className="text-xl sm:text-3xl font-black bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                  {product.price.toFixed(2)}
-                </span>
+              <div className="flex items-center gap-1">
+                <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Top Rated</span>
               </div>
             </div>
 
             <div className="flex flex-col items-end gap-1">
-              <div className="flex items-center gap-0.5 text-yellow-500">
-                {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />)}
-              </div>
-              <p className="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-tighter">
-                Highly Rated
-              </p>
+              <span className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-tighter bg-primary/5 px-2 py-0.5 rounded-full">
+                View Details
+              </span>
             </div>
           </div>
         </div>

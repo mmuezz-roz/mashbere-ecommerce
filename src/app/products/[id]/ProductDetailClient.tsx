@@ -96,6 +96,19 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 <h1 className="text-7xl sm:text-8xl lg:text-9xl font-display text-gray-900 uppercase leading-[0.85] tracking-tighter">
                   {flavor.name}
                 </h1>
+
+                {/* Price Display */}
+                {flavor.price > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    className="flex items-baseline gap-2 mt-4 sm:mt-6"
+                  >
+                    <span className="text-2xl sm:text-3xl font-black text-gray-300 uppercase tracking-widest">AED</span>
+                    <span className="text-6xl sm:text-7xl font-black text-[#708238] tracking-tighter">{flavor.price}</span>
+                  </motion.div>
+                )}
               </motion.div>
 
               {/* Highlight badge */}

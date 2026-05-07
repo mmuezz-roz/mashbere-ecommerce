@@ -14,17 +14,16 @@ interface ProductListingClientProps {
 const CATEGORIES = [
   { value: 'all', label: 'All Products' },
   { value: 'sip-up', label: 'Sip Up' },
-  { value: 'ice-cream', label: 'Ice Cream' },
   { value: 'popsicle', label: 'Popsicles' },
+  { value: 'pookies', label: 'Pookies' },
   { value: 'equipment', label: 'Equipment' },
 ];
 
 const PRICE_RANGES = [
   { value: 'all', label: 'All Prices' },
-  { value: 'under-5', label: 'Under AED 5' },
-  { value: '5-10', label: 'AED 5 – 10' },
-  { value: '10-100', label: 'AED 10 – 100' },
-  { value: 'over-100', label: 'Over AED 100' },
+  { value: '2', label: 'SipUp & Pookies' },
+  { value: '5', label: 'Popsicles' },
+  { value: 'other', label: 'Other' },
 ];
 
 export default function ProductListingClient({ initialProducts }: ProductListingClientProps) {
@@ -46,10 +45,9 @@ export default function ProductListingClient({ initialProducts }: ProductListing
       if (selectedType !== 'all' && product.type !== selectedType) return false;
       if (priceRange !== 'all') {
         const price = product.price;
-        if (priceRange === 'under-5' && price >= 5) return false;
-        if (priceRange === '5-10' && (price < 5 || price > 10)) return false;
-        if (priceRange === '10-100' && (price < 10 || price > 100)) return false;
-        if (priceRange === 'over-100' && price <= 100) return false;
+        if (priceRange === '2' && price !== 2) return false;
+        if (priceRange === '5' && price !== 5) return false;
+        if (priceRange === 'other' && (price === 2 || price === 5)) return false;
       }
       return true;
     });

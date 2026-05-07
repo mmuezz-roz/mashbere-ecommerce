@@ -42,7 +42,7 @@ const STEPS = [
 
 const SELLING_POINTS = [
   { icon: Leaf, text: '100% real fruit pulp' },
-  { icon: CircleDollarSign, text: 'Affordable pricing (AED 2–5)' },
+  { icon: CircleDollarSign, text: 'Affordable premium pricing' },
   { icon: ShoppingBag, text: 'High impulse-buy product' },
   { icon: Sun, text: 'Designed for UAE climate' },
 ];

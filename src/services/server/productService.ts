@@ -49,10 +49,14 @@ export const ProductService = {
    */
   async getProductById(id: string): Promise<Product | null> {
     const supabase = await createClient();
+    
+    // Validate if the input is a UUID to avoid Postgres type mismatch errors
+    const isUuid = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
+    
     const { data, error } = await supabase
       .from('products')
       .select('*')
-      .or(`id.eq.${id},slug.eq.${id}`)
+      .or(isUuid ? `id.eq.${id},slug.eq.${id}` : `slug.eq.${id}`)
       .single();
 
     if (error) {

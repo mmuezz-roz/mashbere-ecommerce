@@ -72,6 +72,19 @@ export default function SipupDetailClient({ sipup }: Props) {
               <h1 className="text-6xl sm:text-8xl lg:text-9xl font-display text-gray-900 leading-[0.85] uppercase tracking-tighter">
                 {sipup.name}
               </h1>
+
+              {/* Price Display */}
+              {sipup.price > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="flex items-baseline gap-2 mt-4"
+                >
+                  <span className="text-2xl font-black text-gray-300 uppercase tracking-widest">AED</span>
+                  <span className="text-6xl font-black text-[#708238] tracking-tighter">{sipup.price}</span>
+                </motion.div>
+              )}
             </motion.div>
 
             <motion.p

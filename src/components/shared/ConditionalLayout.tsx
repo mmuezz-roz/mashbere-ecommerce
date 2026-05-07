@@ -5,6 +5,7 @@ import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import BottomNav from '@/components/shared/BottomNav';
 import SmoothScroll from '@/components/shared/SmoothScroll';
+import WhatsAppWidget from '@/components/shared/WhatsAppWidget';
 import { Suspense } from 'react';
 
 const AUTH_ROUTES = ['/auth/login', '/auth/register', '/auth/forgot-password'];
@@ -31,6 +32,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
         <Suspense fallback={null}>
           <BottomNav />
         </Suspense>
+        <WhatsAppWidget />
       </div>
     </SmoothScroll>
   );
