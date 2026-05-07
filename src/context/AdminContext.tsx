@@ -46,6 +46,10 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           .eq('id', session.user.id)
           .single();
 
+        console.log("Admin Check - Session User ID:", session.user.id);
+        console.log("Admin Check - Profile Data:", profile);
+        console.log("Admin Check - Error:", error);
+
         if (error || profile?.role !== 'admin') {
           setIsUnauthorized(true);
           toast.error('ACCESS DENIED: Administrative Privileges Required', {
