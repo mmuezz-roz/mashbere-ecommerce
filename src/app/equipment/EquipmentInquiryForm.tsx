@@ -81,24 +81,8 @@ export default function EquipmentInquiryForm() {
 
       if (result.success) {
         setSubmitted(true);
-        
-        // Prepare WhatsApp message
-        const whatsappNumber = "971502994974";
-        const messageText = `*New Business Inquiry (Equipment)*\n\n` +
-          `*Name:* ${formData.name}\n` +
-          `*Company:* ${formData.company || 'N/A'}\n` +
-          `*Email:* ${formData.email}\n` +
-          `*Phone:* ${formData.phone}\n` +
-          `*Interest:* ${formData.equipmentInterest}\n` +
-          `*Message:* ${formData.message || 'No message provided'}`;
-        
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(messageText)}`;
-        
-        // Open WhatsApp in a new tab
-        window.open(whatsappUrl, '_blank');
-        
         setFormData(INITIAL_STATE);
-        toast.success('Inquiry sent! Opening WhatsApp for instant notification...');
+        toast.success('Inquiry submitted! Our team will contact you via email shortly.');
       }
     } catch (err) {
       console.error('Submission error:', err);
