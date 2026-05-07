@@ -55,26 +55,28 @@ export default function SipUpSection({ sipups = [] }: Props) {
     <section className="w-full relative overflow-x-clip min-h-[600px] sm:min-h-[800px] flex items-center justify-center">
 
         {/* Mobile background image */}
-        <div className="absolute inset-0 sm:hidden">
-          <Image
-            src="/photos/ChatGPT Image Apr 29, 2026, 01_24_11 PM.png"
-            alt=""
-            aria-hidden="true"
-            fill
-            className="object-cover object-center"
-          />
-        </div>
+        <div 
+          className="absolute inset-0 sm:hidden"
+          style={{ 
+            backgroundImage: 'url("/photos/ChatGPT Image Apr 29, 2026, 01_24_11 PM.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+          aria-hidden="true"
+        />
 
         {/* Desktop/Tablet background image */}
-        <div className="absolute inset-0 hidden sm:block">
-          <Image
-            src="/photos/ChatGPT Image Apr 28, 2026, 07_48_22 PM.png"
-            alt=""
-            aria-hidden="true"
-            fill
-            className="object-cover object-center"
-          />
-        </div>
+        <div 
+          className="absolute inset-0 hidden sm:block"
+          style={{ 
+            backgroundImage: 'url("/photos/ChatGPT Image Apr 28, 2026, 07_48_22 PM.png")',
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+          aria-hidden="true"
+        />
 
         {/* Very light overlay */}
         <div className="absolute inset-0 bg-white/10" />
