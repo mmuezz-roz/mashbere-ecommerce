@@ -12,6 +12,7 @@ import { X } from 'lucide-react';
 export default function WhatsAppWidget() {
   const [isVisible, setIsVisible] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,7 +29,7 @@ export default function WhatsAppWidget() {
   }, [isVisible]);
 
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && !isDismissed) {
       // Delay the message box by 3 seconds after the logo appears
       const showTimer = setTimeout(() => {
         setShowTooltip(true);
@@ -39,7 +40,7 @@ export default function WhatsAppWidget() {
       
       return () => clearTimeout(showTimer);
     }
-  }, [isVisible]);
+  }, [isVisible, isDismissed]);
 
   const whatsappNumber = "971502994974";
   const message = "Hi Mashbere! I need some help with...";
@@ -48,7 +49,7 @@ export default function WhatsAppWidget() {
   return (
     <div 
       className="fixed bottom-20 lg:bottom-6 right-6 z-[9999] flex flex-col items-end gap-4 pointer-events-none"
-      onMouseEnter={() => setShowTooltip(true)}
+      onMouseEnter={() => !isDismissed && setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
       <AnimatePresence>
@@ -68,6 +69,20 @@ export default function WhatsAppWidget() {
                   exit={{ opacity: 0, x: 20, scale: 0.8, y: 10 }}
                   className="absolute bottom-[calc(100%+16px)] right-0 w-64 bg-white rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100"
                 >
+                  {/* Close Button */}
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowTooltip(false);
+                      setIsDismissed(true);
+                    }}
+                    className="absolute top-3 right-3 text-gray-300 hover:text-rose-500 transition-colors p-1"
+                    aria-label="Close message"
+                  >
+                    <X size={14} strokeWidth={3} />
+                  </button>
+
                   <div className="flex items-start gap-3">
                     <div className="flex-1 space-y-1.5">
                       <div className="flex items-center gap-2">
