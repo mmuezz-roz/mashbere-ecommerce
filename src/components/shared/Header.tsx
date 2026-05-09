@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingBag, Search, User } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -22,6 +22,7 @@ export default function Header() {
   const category = searchParams.get('category');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -149,13 +150,14 @@ export default function Header() {
 
                 {/* ACTIONS (Right) */}
                 <div className="flex items-center gap-2">
-                  {/* Mobile Account Trigger (Swapped from Search) */}
-                  <Link 
-                    href={user ? '/profile' : '/auth/login'}
+                  {/* Mobile Menu Trigger */}
+                  <button 
+                    onClick={() => setIsMenuOpen(true)}
                     className="lg:hidden w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white"
+                    aria-label="Open menu"
                   >
-                    <User className="w-5 h-5" />
-                  </Link>
+                    <Menu className="w-5 h-5" />
+                  </button>
 
                   <div className="hidden lg:flex items-center gap-3">
                     <button 
@@ -248,6 +250,75 @@ export default function Header() {
                 ))}
               </div>
             </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[300] bg-[#141A0B] lg:hidden flex flex-col"
+          >
+            {/* Menu Header */}
+            <div className="flex items-center justify-between px-2 py-1 border-b border-white/5">
+              <Link href="/" onClick={() => setIsMenuOpen(false)} className="group flex items-center">
+                <div className="relative w-32 h-16">
+                  <Image
+                    src="/photos/mashbere_logo_no_bg.png"
+                    alt="Mashbere Logo"
+                    fill
+                    className="object-contain brightness-0 invert"
+                    priority
+                  />
+                </div>
+              </Link>
+              <button 
+                onClick={() => setIsMenuOpen(false)}
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white mr-4"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Menu Links */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-8">
+              <div className="space-y-1">
+                {[
+                  { label: 'Home', href: '/', icon: Home },
+                  { label: 'Products', href: '/products', icon: LayoutGrid },
+                  { label: 'For Business', href: '/equipment', icon: Building2 },
+                  { label: 'Account', href: user ? '/profile' : '/auth/login', icon: User },
+                ].map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center gap-4 py-4 px-2 text-2xl font-display uppercase tracking-wider text-white hover:text-[#C4EB54] transition-colors border-b border-white/5"
+                  >
+                    <item.icon className="w-6 h-6 text-[#C4EB54]" />
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Menu Footer */}
+            <div className="p-8 bg-white/5">
+              <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                Premium Ice Cream & Equipment
+              </p>
+              <div className="flex justify-between items-end">
+                <span className="text-[#C4EB54] text-xs font-bold">© 2026 Mashbere</span>
+                <div className="flex gap-4">
+                  {/* Social links could go here */}
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

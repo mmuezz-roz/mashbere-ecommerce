@@ -154,7 +154,7 @@ export default function Footer() {
           </div>
 
           <div className="text-center md:text-right space-y-2 order-1 md:order-2">
-            <p className="text-sm font-bold text-white italic">© 2024 Mashbere Premium Frozen Treats.</p>
+            <p className="text-sm font-bold text-white italic">© 2026 Mashbere Premium Frozen Treats.</p>
             <div className="flex flex-wrap justify-center md:justify-end gap-6 text-[10px] font-black uppercase tracking-widest text-white/40">
               <Link href="/admin" className="hover:text-[#C4EB54]">Admin Portal</Link>
               <div className="flex items-center gap-2">

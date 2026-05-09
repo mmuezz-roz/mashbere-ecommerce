@@ -3,7 +3,6 @@
 import { usePathname } from 'next/navigation';
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
-import BottomNav from '@/components/shared/BottomNav';
 import SmoothScroll from '@/components/shared/SmoothScroll';
 import WhatsAppWidget from '@/components/shared/WhatsAppWidget';
 import { Suspense } from 'react';
@@ -27,11 +26,9 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
         <Suspense fallback={<div className="h-20" />}>
           <Header />
         </Suspense>
-        <main className="flex-grow pb-[var(--bottom-nav-height)] lg:pb-0">{children}</main>
+        <main className="flex-grow">{children}</main>
         <Footer />
-        <Suspense fallback={null}>
-          <BottomNav />
-        </Suspense>
+
         <WhatsAppWidget />
       </div>
     </SmoothScroll>

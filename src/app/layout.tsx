@@ -18,6 +18,9 @@ const bebas = Bebas_Neue({
 export const metadata = {
   title: 'Mashbere | Premium Ice Cream & Equipment',
   description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
+  icons: {
+    icon: '/photos/mashbere icon.png',
+  },
 };
 
 import { PageLoader } from '@/components/shared/PageLoader';
