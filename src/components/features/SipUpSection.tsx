@@ -34,15 +34,15 @@ export default function SipUpSection({ sipups = [] }: Props) {
 
   const transformStyles = isMobile 
     ? [
-        'rotate(15deg) translate(-180px)',
-        'rotate(-10deg) translate(-135px)',
-        'rotate(5deg) translate(-90px)',
-        'rotate(-8deg) translate(-45px)',
-        'rotate(0deg) translate(0px)',
-        'rotate(12deg) translate(45px)',
-        'rotate(-5deg) translate(90px)',
-        'rotate(10deg) translate(135px)',
-        'rotate(-15deg) translate(180px)',
+        'rotate(15deg) translate(-44vw)',
+        'rotate(-10deg) translate(-33vw)',
+        'rotate(5deg) translate(-22vw)',
+        'rotate(-8deg) translate(-11vw)',
+        'rotate(0deg) translate(0vw)',
+        'rotate(12deg) translate(11vw)',
+        'rotate(-5deg) translate(22vw)',
+        'rotate(10deg) translate(33vw)',
+        'rotate(-15deg) translate(44vw)',
       ]
     : [
         'rotate(15deg) translate(-280px)',
