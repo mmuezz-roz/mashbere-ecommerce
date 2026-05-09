@@ -480,7 +480,7 @@ function ProductCard({ item, index, isMobile }: { item: any, index: number, isMo
                   alt="Premium Popsicle"
                   width={450}
                   height={650}
-                  className="object-contain scale-75 lg:scale-100"
+                  className="object-contain scale-65 lg:scale-100"
                   priority={false}
                 />
               </div>
