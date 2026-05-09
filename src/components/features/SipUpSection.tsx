@@ -32,17 +32,29 @@ export default function SipUpSection({ sipups = [] }: Props) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const transformStyles = [
-    'rotate(15deg) translate(-280px)',
-    'rotate(-10deg) translate(-210px)',
-    'rotate(5deg) translate(-140px)',
-    'rotate(-8deg) translate(-70px)',
-    'rotate(0deg) translate(0px)',
-    'rotate(12deg) translate(70px)',
-    'rotate(-5deg) translate(140px)',
-    'rotate(10deg) translate(210px)',
-    'rotate(-15deg) translate(280px)',
-  ];
+  const transformStyles = isMobile 
+    ? [
+        'rotate(15deg) translate(-180px)',
+        'rotate(-10deg) translate(-135px)',
+        'rotate(5deg) translate(-90px)',
+        'rotate(-8deg) translate(-45px)',
+        'rotate(0deg) translate(0px)',
+        'rotate(12deg) translate(45px)',
+        'rotate(-5deg) translate(90px)',
+        'rotate(10deg) translate(135px)',
+        'rotate(-15deg) translate(180px)',
+      ]
+    : [
+        'rotate(15deg) translate(-280px)',
+        'rotate(-10deg) translate(-210px)',
+        'rotate(5deg) translate(-140px)',
+        'rotate(-8deg) translate(-70px)',
+        'rotate(0deg) translate(0px)',
+        'rotate(12deg) translate(70px)',
+        'rotate(-5deg) translate(140px)',
+        'rotate(10deg) translate(210px)',
+        'rotate(-15deg) translate(280px)',
+      ];
 
   const handleCardClick = (idx: number) => {
     const sipup = displaySipups[idx];
