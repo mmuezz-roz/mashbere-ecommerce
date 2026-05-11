@@ -68,7 +68,7 @@ export default function WhatsAppWidget() {
                   initial={{ opacity: 0, x: 20, scale: 0.8, y: 10 }}
                   animate={{ opacity: 1, x: 0, scale: 1, y: 0 }}
                   exit={{ opacity: 0, x: 20, scale: 0.8, y: 10 }}
-                  className="absolute bottom-[calc(100%+16px)] right-0 w-[360px] bg-white rounded-[24px] p-7 pl-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)] border border-gray-100 overflow-hidden"
+                  className="absolute bottom-[calc(100%+16px)] right-0 w-[calc(100vw-40px)] sm:w-[360px] bg-white rounded-[24px] p-5 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.2)] border border-gray-100"
                 >
                   {/* Close Button */}
                   <button 
@@ -78,25 +78,16 @@ export default function WhatsAppWidget() {
                       setShowTooltip(false);
                       setIsDismissed(true);
                     }}
-                    className="absolute top-3 right-3 text-gray-300 hover:text-rose-500 transition-colors p-1"
+                    className="absolute top-3 right-3 text-gray-400 hover:text-rose-500 transition-colors p-1 z-20"
                     aria-label="Close message"
                   >
-                    <X size={14} strokeWidth={3} />
+                    <X size={16} strokeWidth={3} />
                   </button>
 
-                  <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
-                    <Image 
-                      src="/photos/joyfull popsicles.webp"
-                      alt="Popsicles"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-
                   <div className="relative z-10 flex items-start gap-3">
-                    <div className="flex-1 space-y-1.5">
+                    <div className="flex-1 space-y-2 pr-12"> {/* pr-12 to avoid overlapping with the overflow image text-wise */}
                       <div className="flex items-center gap-2">
-                        <span className="text-[14px] font-black text-gray-900 uppercase tracking-wider">
+                        <span className="text-[15px] font-black text-gray-900 uppercase tracking-wider">
                           Let's Chat
                         </span>
                         <motion.span
@@ -107,15 +98,26 @@ export default function WhatsAppWidget() {
                           🍦
                         </motion.span>
                       </div>
-                      <p className="text-[12px] font-medium text-gray-700 leading-tight">
-                        Our flavor experts are <br />
-                        online and ready to help.
+                      <p className="text-[13px] font-semibold text-gray-700 leading-snug">
+                        Our flavor experts are online <br className="hidden sm:block" /> and ready to help.
                       </p>
                       <div className="pt-1">
-                        <span className="text-[11px] font-black uppercase tracking-widest text-[#075E54] bg-[#25D366]/10 px-2 py-0.5 rounded-full">
+                        <span className="text-[11px] font-black uppercase tracking-widest text-[#075E54] bg-[#25D366]/15 px-3 py-1 rounded-full border border-[#25D366]/20">
                           Open WhatsApp
                         </span>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Overflow Image - Bottom Right */}
+                  <div className="absolute -bottom-4 -right-4 w-40 h-40 sm:w-52 sm:h-52 pointer-events-none z-0">
+                    <div className="relative w-full h-full transform rotate-[12deg]">
+                      <Image 
+                        src="/photos/joyfull popsicles.webp"
+                        alt="Popsicles"
+                        fill
+                        className="object-contain drop-shadow-2xl"
+                      />
                     </div>
                   </div>
                   
