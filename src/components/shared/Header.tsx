@@ -26,6 +26,12 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSuppressed, setIsSuppressed] = useState(false);
+  const suppressedRef = React.useRef(false);
+
+  useEffect(() => {
+    suppressedRef.current = isSuppressed;
+  }, [isSuppressed]);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -37,7 +43,7 @@ export default function Header() {
       
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsHidden(true);
-      } else if (currentScrollY < lastScrollY) {
+      } else if (currentScrollY < lastScrollY && !suppressedRef.current) {
         setIsHidden(false);
       }
       
@@ -47,6 +53,36 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Reset visibility and suppression on page change
+  useEffect(() => {
+    setIsHidden(false);
+    setIsSuppressed(false);
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isVisible = entries.some(entry => entry.isIntersecting);
+        
+        // If we were suppressed and are now leaving the section, force show the header
+        if (!isVisible && suppressedRef.current) {
+          setIsHidden(false);
+        }
+        
+        setIsSuppressed(isVisible);
+      },
+      { 
+        threshold: 0,
+        rootMargin: "0px"
+      }
+    );
+
+    const sections = document.querySelectorAll('[data-hide-header="true"]');
+    if (sections.length > 0) {
+      sections.forEach(s => observer.observe(s));
+    }
+
+    return () => observer.disconnect();
+  }, [pathname]);
 
   // Handle mobile search trigger from URL
   useEffect(() => {
@@ -75,7 +111,7 @@ export default function Header() {
     <>
       <header 
         className={`fixed left-1/2 -translate-x-1/2 z-[100] w-[95%] max-w-7xl transition-all duration-500 ease-in-out ${
-          isHidden 
+          (isHidden || isSuppressed) 
             ? 'top-0 -translate-y-[150%] opacity-0 pointer-events-none' 
             : 'top-3 sm:top-6 translate-y-0 opacity-100 pointer-events-auto'
         }`}
@@ -94,23 +130,39 @@ export default function Header() {
                 className="w-full flex items-center justify-between relative"
               >
                 {/* DESKTOP: Navigation Links (Left) */}
-                <nav className="hidden lg:flex items-center">
-                  <GooeyNav
-                    items={[
-                      { label: 'Home', href: '/' },
-                      { label: 'Products', href: '/products' },
-                      { label: 'For Business', href: '/equipment' },
-                    ]}
-                    initialActiveIndex={
-                      pathname === '/' 
-                        ? 0 
-                        : pathname.startsWith('/equipment')
-                          ? 2
-                          : pathname.startsWith('/products')
-                            ? 1
-                            : 0
-                    }
-                  />
+                <nav className="hidden lg:flex items-center gap-2">
+                  {[
+                    { label: 'Home', href: '/' },
+                    { label: 'Products', href: '/products' },
+                    { label: 'For Business', href: '/equipment' },
+                  ].map((item) => {
+                    const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+                    return (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        className="relative px-6 py-2 group overflow-hidden"
+                      >
+                        {/* Hover Background */}
+                        <div className="absolute inset-0 bg-white/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 origin-center" />
+                        
+                        <span className={`relative z-10 text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 ${
+                          isActive ? 'text-[#C4EB54]' : 'text-white/70 group-hover:text-white'
+                        }`}>
+                          {item.label}
+                        </span>
+
+                        {/* Active Indicator Line */}
+                        {isActive && (
+                          <motion.div 
+                            layoutId="header-nav-underline"
+                            className="absolute bottom-1 left-6 right-6 h-[2px] bg-[#C4EB54] rounded-full"
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+                      </Link>
+                    );
+                  })}
                 </nav>
 
                 {/* LOGO & BACK: Left on Mobile, Center on Desktop */}
@@ -162,7 +214,7 @@ export default function Header() {
                   <div className="hidden lg:flex items-center gap-3">
                     <button 
                       onClick={() => setIsSearchOpen(true)}
-                      className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white shadow-lg hover:bg-white hover:text-[#708238] transition-all"
+                      className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white transition-colors hover:bg-[#C4EB54] hover:text-[#1E2710]"
                     >
                       <Search className="w-5 h-5" />
                     </button>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
@@ -67,7 +68,7 @@ export default function WhatsAppWidget() {
                   initial={{ opacity: 0, x: 20, scale: 0.8, y: 10 }}
                   animate={{ opacity: 1, x: 0, scale: 1, y: 0 }}
                   exit={{ opacity: 0, x: 20, scale: 0.8, y: 10 }}
-                  className="absolute bottom-[calc(100%+16px)] right-0 w-64 bg-white rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100"
+                  className="absolute bottom-[calc(100%+16px)] right-0 w-[360px] bg-white rounded-[24px] p-7 pl-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)] border border-gray-100 overflow-hidden"
                 >
                   {/* Close Button */}
                   <button 
@@ -83,33 +84,43 @@ export default function WhatsAppWidget() {
                     <X size={14} strokeWidth={3} />
                   </button>
 
-                  <div className="flex items-start gap-3">
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
+                    <Image 
+                      src="/photos/joyfull popsicles.webp"
+                      alt="Popsicles"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <div className="relative z-10 flex items-start gap-3">
                     <div className="flex-1 space-y-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-[16px] font-black text-gray-900 tracking-tight">
-                          hi
+                        <span className="text-[14px] font-black text-gray-900 uppercase tracking-wider">
+                          Let's Chat
                         </span>
                         <motion.span
                           animate={{ rotate: [0, 15, -5, 15, 0] }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            repeatDelay: 1,
-                            ease: "easeInOut"
-                          }}
-                          className="inline-block origin-[70%_70%] text-xl"
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="text-lg"
                         >
-                          👋
+                          🍦
                         </motion.span>
                       </div>
-                      <p className="text-[13px] font-bold text-gray-500 leading-snug">
-                        need help? chat with us on <span className="text-[#25D366]">whatsapp!</span>
+                      <p className="text-[12px] font-medium text-gray-700 leading-tight">
+                        Our flavor experts are <br />
+                        online and ready to help.
                       </p>
+                      <div className="pt-1">
+                        <span className="text-[11px] font-black uppercase tracking-widest text-[#075E54] bg-[#25D366]/10 px-2 py-0.5 rounded-full">
+                          Open WhatsApp
+                        </span>
+                      </div>
                     </div>
                   </div>
                   
                   {/* Triangle tail */}
-                  <div className="absolute bottom-[-8px] right-6 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45" />
+                  <div className="absolute bottom-[-8px] right-6 w-4 h-4 bg-white rotate-45 border-r border-b border-gray-100" />
                 </motion.div>
               )}
             </AnimatePresence>

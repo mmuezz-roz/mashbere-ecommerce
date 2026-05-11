@@ -9,11 +9,12 @@ interface Props {
 }
 
 /**
- * Dynamic Metadata for SEO
+ * Dynamic Metadata for SEO & Social Sharing
  */
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   const product = await ProductService.getProductById(id);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com';
 
   if (!product) {
     return {
@@ -21,20 +22,34 @@ export async function generateMetadata({ params }: Props) {
     };
   }
 
+  const fullImageUrl = product.image && product.image.startsWith('http') 
+    ? product.image 
+    : `${baseUrl}${product.image}`;
+
   return {
     title: `${product.name} | Mashbere`,
     description: product.description,
     openGraph: {
       title: product.name,
       description: product.description,
+      url: `${baseUrl}/products/${product.slug || id}`,
+      siteName: 'Mashbere',
       images: [
         {
-          url: product.image,
+          url: fullImageUrl,
           width: 1200,
           height: 630,
           alt: product.name,
         },
       ],
+      locale: 'en_AE',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.description,
+      images: [fullImageUrl],
     },
   };
 }

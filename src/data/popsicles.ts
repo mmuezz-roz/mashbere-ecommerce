@@ -28,7 +28,7 @@ export const POPSICLES = [
     name: 'Strawberry',
     label: 'Berry Fresh',
     desc: 'Bursting with the flavor of sun-ripened organic strawberries and natural fruit chunks. A sweet and tart delight.',
-    image: '/photos/strwberry ppsicle.webp',
+    image: '/photos/strawberry-popsicle.webp',
     accentColor: '#F3E7F0'
   },
   {
@@ -36,7 +36,7 @@ export const POPSICLES = [
     name: 'Pistachio',
     label: 'Nutty Perfection',
     desc: 'Roasted premium pistachios from Bronte, Sicily, providing an unmatched earthy richness and a sophisticated nutty crunch.',
-    image: '/photos/pistatio popsicle.webp',
+    image: '/photos/pistachio-popsicle.webp',
     accentColor: '#EAF3DA'
   },
   {
@@ -44,7 +44,7 @@ export const POPSICLES = [
     name: 'Belgian Chocolate',
     label: 'Rich & Indulgent',
     desc: 'Pure Belgian cocoa blended with organic cream for a velvety, dark chocolate experience. Deeply satisfying and decadently rich.',
-    image: '/photos/chcolate popsicle.webp',
+    image: '/photos/chocolate-popsicle.webp',
     accentColor: '#F5E6DA'
   },
   {
@@ -52,7 +52,7 @@ export const POPSICLES = [
     name: 'Pink Guava',
     label: 'Tropical Bliss',
     desc: 'The classic tropical flavor of pink guava with a smooth, pulpy texture and a signature aroma that transports you to the tropics.',
-    image: '/photos/guava poposicle.webp',
+    image: '/photos/guava-popsicle.webp',
     accentColor: '#FCE4EC'
   }
 ];

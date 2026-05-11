@@ -34,7 +34,7 @@ export default function HeroSection() {
               &quot;SCOOP UP SOME
             </span>,
             <div key="l2" className="relative inline-block w-fit -mt-2 sm:-mt-4 lg:-mt-6">
-              <div className="absolute inset-0 bg-[#C4EB54] -rotate-2 transform scale-y-110 shadow-[0_0_40px_rgba(196,235,84,0.3)]" />
+              <div className="absolute inset-0 bg-[#C4EB54] -rotate-2 transform scale-y-110" />
               <span className="relative z-10 text-[17vw] sm:text-7xl md:text-8xl lg:text-[10rem] font-display text-[#141A0B] px-4 sm:px-8 py-0 block tracking-tight">
                 SWEETNESS!&quot;
               </span>

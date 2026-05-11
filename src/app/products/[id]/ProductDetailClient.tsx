@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Star, ShoppingBag, ChevronRight, Leaf, Send } from 'lucide-react';
+import { ShareButton } from '@/components/shared/ShareButton';
 
 interface Props {
   flavor: any;
@@ -26,15 +27,22 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
       />
 
       <div className="relative z-10">
-        {/* Top Nav */}
-        <div className="container-responsive pt-28 sm:pt-36 lg:pt-44 pb-12 sm:pb-16 lg:pb-20">
+        {/* Top Nav - Optimized for cinematic feel and Header spacing */}
+        <div className="container-responsive pt-24 sm:pt-28 lg:pt-36 pb-4 sm:pb-6 lg:pb-8">
           <div className="flex items-center justify-between">
-            <div className="lg:hidden" />
-
-            <Link href="/products" className="flex items-center gap-2 text-gray-400 hover:text-gray-700 text-xs font-bold uppercase tracking-widest transition-colors">
-              All Flavours
-              <ChevronRight size={14} />
-            </Link>
+            <button 
+              onClick={() => router.back()}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-gray-800 hover:bg-white hover:scale-110 transition-all duration-300"
+              aria-label="Go back"
+            >
+              <ArrowLeft size={18} />
+            </button>
+            
+            <ShareButton 
+              name={flavor.name} 
+              description={flavor.description} 
+              slug={flavor.id} 
+            />
           </div>
         </div>
 

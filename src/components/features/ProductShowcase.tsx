@@ -1,55 +1,15 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue, Variants, AnimatePresence } from 'framer-motion';
 
 const SHOWCASE_ITEMS = [
   { 
     id: 1, 
-    name: "Tender Coconut", 
-    label: "Creamy & Fresh",
-    desc: "Crafted with 100% real coconut water and tender pulp for a refreshing island escape.",
-    bgColor: "#E7F3F3", 
-    textColor: "#1E3D3D", 
-    image: "/photos/01.jpg",
-    accentImage: "/photos/01.jpg" // Using same for floating effect
-  },
-  { 
-    id: 2, 
-    name: "Chocolate", 
-    label: "Rich & Indulgent",
-    desc: "Pure Belgian cocoa blended with organic cream for a velvety, dark chocolate experience.",
-    bgColor: "#F5E6DA", 
-    textColor: "#4A2C10", 
-    image: "/photos/02.jpg",
-    accentImage: "/photos/02.jpg"
-  },
-  { 
-    id: 3, 
-    name: "Pistachio", 
-    label: "Nutty Perfection",
-    desc: "Roasted premium pistachios from Bronte, Sicily, providing an unmatched earthy richness.",
-    bgColor: "#EAF3DA", 
-    textColor: "#2D361C", 
-    image: "/photos/03.jpg",
-    accentImage: "/photos/03.jpg"
-  },
-  { 
-    id: 4, 
-    name: "Watermelon", 
-    label: "Summer Bliss",
-    desc: "High-juice content watermelon with a hint of lime for the ultimate summer cooldown.",
-    bgColor: "#F3E7EA", 
-    textColor: "#4D1F28", 
-    image: "/photos/04.jpg",
-    accentImage: "/photos/04.jpg"
-  },
-  { 
-    id: 5, 
     name: "Chikku", 
     label: "Natural Sweetness",
     desc: "The unique, malty sweetness of farm-fresh Sapota (Chikku) in every creamy bite.",
@@ -59,31 +19,94 @@ const SHOWCASE_ITEMS = [
     accentImage: "/photos/05.jpg"
   },
   { 
-    id: 6, 
+    id: 2, 
+    name: "Mango", 
+    label: "King of Fruits",
+    desc: "Sun-ripened Alphonso mangoes blended into a smooth, golden tropical delight.",
+    bgColor: "#FEF3C7", 
+    textColor: "#92400E", 
+    image: "/photos/02.jpg",
+    accentImage: "/photos/02.jpg"
+  },
+  { 
+    id: 3, 
+    name: "Tender Coconut", 
+    label: "Creamy & Fresh",
+    desc: "Crafted with 100% real coconut water and tender pulp for a refreshing island escape.",
+    bgColor: "#E7F3F3", 
+    textColor: "#1E3D3D", 
+    image: "/photos/01.jpg",
+    accentImage: "/photos/01.jpg"
+  },
+  { 
+    id: 4, 
     name: "Strawberry", 
     label: "Berry Fresh",
     desc: "Bursting with the flavor of sun-ripened organic strawberries and natural fruit chunks.",
-    bgColor: "#F3E7F0", 
-    textColor: "#4D1F43", 
-    image: "/photos/06.jpg",
-    accentImage: "/photos/06.jpg"
+    bgColor: "#FDF2F2", 
+    textColor: "#9B1C1C", 
+    image: "/photos/strawberry-popsicle.webp",
+    accentImage: "/photos/strawberry-popsicle.webp"
+  },
+  { 
+    id: 5, 
+    name: "Pistachio", 
+    label: "Nutty Perfection",
+    desc: "Roasted premium pistachios from Bronte, Sicily, providing an unmatched earthy richness.",
+    bgColor: "#EAF3DA", 
+    textColor: "#2D361C", 
+    image: "/photos/pistachio-popsicle.webp",
+    accentImage: "/photos/pistachio-popsicle.webp"
+  },
+  { 
+    id: 6, 
+    name: "Chocolate", 
+    label: "Rich & Indulgent",
+    desc: "Pure Belgian cocoa blended with organic cream for a velvety, dark chocolate experience.",
+    bgColor: "#F5E6DA", 
+    textColor: "#4A2C10", 
+    image: "/photos/chocolate-popsicle.webp",
+    accentImage: "/photos/chocolate-popsicle.webp"
   },
   { 
     id: 7, 
-    name: "Hazelnut", 
-    label: "Golden Roast",
-    desc: "Creamy hazelnut praline with crushed roasted bits for a sophisticated nutty crunch.",
-    bgColor: "#F3F3F3", 
-    textColor: "#333333", 
-    image: "/photos/07.jpg",
-    accentImage: "/photos/07.jpg"
+    name: "Guava", 
+    label: "Pink Bliss",
+    desc: "The exotic, sweet and tangy flavor of pink guava with a touch of chilli salt.",
+    bgColor: "#FDF2F8", 
+    textColor: "#9D174D", 
+    image: "/photos/guava-popsicle.webp",
+    accentImage: "/photos/guava-popsicle.webp"
   },
 ];
 
 export default function ProductShowcase() {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+      
+      if (cards.length > 0) {
+        const firstCard = cards[0];
+        // Position that centers the first card
+        const firstCardCenteredX = firstCard.offsetLeft - (clientWidth / 2) + (firstCard.clientWidth / 2);
+        
+        // Only show left arrow if we are significantly past the first card's center
+        setCanScrollLeft(scrollLeft > firstCardCenteredX + 100);
+      } else {
+        setCanScrollLeft(scrollLeft > 20);
+      }
+
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 50);
+    }
+  }, []);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     if (!isMobile) return;
@@ -101,8 +124,78 @@ export default function ProductShowcase() {
     };
     handleResize();
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScroll);
+      // Initial check after a brief delay to ensure layout
+      setTimeout(checkScroll, 100);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      container?.removeEventListener('scroll', checkScroll);
+    };
+  }, [checkScroll]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+      
+      if (cards.length === 0) return;
+
+      // Calculate positions relative to viewport for perfect centering
+      const containerRect = container.getBoundingClientRect();
+      const viewportCenter = containerRect.left + containerRect.width / 2;
+      
+      let closestIndex = 0;
+      let minDistance = Infinity;
+      
+      cards.forEach((card, index) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(viewportCenter - cardCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      // Special case: if we are at the very beginning and scroll right, 
+      // we might want to target the first card specifically.
+      if (container.scrollLeft < 100 && direction === 'right') {
+        closestIndex = -1; // Force next to be 0
+      }
+
+      const targetIndex = direction === 'left' 
+        ? Math.max(0, closestIndex - 1) 
+        : Math.min(cards.length - 1, closestIndex + 1);
+      
+      const targetCard = cards[targetIndex];
+      if (targetCard) {
+        // Vertical Align: Center the targeted CARD vertically in the viewport
+        const targetCardRect = targetCard.getBoundingClientRect();
+        const cardCenterY = targetCardRect.top + targetCardRect.height / 2;
+        const viewportCenterY = window.innerHeight / 2;
+        const verticalOffset = cardCenterY - viewportCenterY;
+
+        window.scrollBy({
+          top: verticalOffset,
+          behavior: 'smooth'
+        });
+
+        // Horizontal Align: Center the targeted CARD horizontally
+        const currentCardCenter = targetCardRect.left + targetCardRect.width / 2;
+        const horizontalOffset = currentCardCenter - viewportCenter;
+        
+        container.scrollTo({
+          left: container.scrollLeft + horizontalOffset,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
 
   
   // Use horizontal scroll progress directly for the heading to avoid double-spring lag
@@ -168,19 +261,23 @@ export default function ProductShowcase() {
     return () => container.removeEventListener('wheel', handleWheel);
   }, []);
 
-  return (
-    <section className="relative bg-[#FDFBF3] flex flex-col overflow-hidden">
-      
-      {/* Scroll indicator - desktop only */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="absolute top-10 right-10 z-50 hidden lg:flex items-center gap-2 text-[#7E8D5F] font-black uppercase tracking-widest text-sm"
-      >
-        Scroll <ArrowRight className="w-4 h-4 animate-pulse" />
-      </motion.div>
+  // Dynamic background color transition based on scroll
+  const bgColors = SHOWCASE_ITEMS.map(item => item.bgColor);
+  // Add a starting color (the section's default) and an ending color (white or default)
+  const allBgColors = ["#FDFBF3", ...bgColors, "#FDFBF3"];
+  // Create mapping points for the scroll progress
+  const colorPoints = [0, ...SHOWCASE_ITEMS.map((_, i) => (i + 1) / (SHOWCASE_ITEMS.length + 1)), 1];
+  
+  const backgroundColor = useTransform(scrollXProgress, colorPoints, allBgColors);
 
+  return (
+    <motion.section 
+      id="product-showcase"
+      data-hide-header="true"
+      style={{ backgroundColor }}
+      className="relative flex flex-col overflow-hidden transition-colors duration-700"
+    >
+      
       {/* ── MOBILE: Heading stacked on top, then cards below ── */}
       <div className="flex flex-col lg:hidden w-full">
         {/* Heading Block */}
@@ -232,9 +329,9 @@ export default function ProductShowcase() {
           >
             <motion.div 
               initial={{ x: 0 }}
-              whileInView={isMobile ? { x: [0, -80, 0] } : {}}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 1.2, ease: "easeInOut", delay: 1.5 }}
+              whileInView={{ x: [0, -80, 0] }}
+              viewport={{ once: false, amount: 0.4 }}
+              transition={{ duration: 1.2, ease: "easeInOut", delay: 0.5 }}
               className="flex items-center gap-6 min-w-max px-6"
             >
               {SHOWCASE_ITEMS.map((item, index) => (
@@ -324,6 +421,45 @@ export default function ProductShowcase() {
           </motion.div>
         </div>
 
+        {/* Navigation Controls - Desktop only */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-50 pointer-events-none flex justify-between px-10">
+          <AnimatePresence>
+            {canScrollLeft && (
+              <motion.button 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                onClick={() => scroll('left')}
+                className="group pointer-events-auto w-20 h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-[#7E8D5F] hover:border-[#7E8D5F] transition-all duration-500 shadow-2xl"
+              >
+                <ChevronLeft className="w-8 h-8 text-[#7E8D5F] group-hover:text-white transition-colors" />
+              </motion.button>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {canScrollRight && (
+              <motion.button 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                onClick={() => scroll('right')}
+                className="group pointer-events-auto w-20 h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-[#7E8D5F] hover:border-[#7E8D5F] transition-all duration-500 shadow-2xl ml-auto"
+              >
+                <ChevronRight className="w-8 h-8 text-[#7E8D5F] group-hover:text-white transition-colors" />
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Bottom Progress Bar */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 w-1/3 h-1 bg-gray-200/20 rounded-full overflow-hidden">
+          <motion.div 
+            style={{ scaleX: scrollXProgress, originX: 0 }}
+            className="w-full h-full bg-[#7E8D5F]"
+          />
+        </div>
+
         {/* Native Horizontal Scroll Container */}
         <div
           ref={!isMobile ? scrollContainerRef : undefined}
@@ -340,6 +476,7 @@ export default function ProductShowcase() {
               {SHOWCASE_ITEMS.map((item, index) => (
                 <ProductCard
                   key={item.id}
+                  ref={(el) => { cardRefs.current[index] = el; }}
                   item={item}
                   index={index}
                   isMobile={isMobile}
@@ -351,7 +488,7 @@ export default function ProductShowcase() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 className="shrink-0 flex justify-center items-center h-[50vh] px-16 pr-[20vw]"
               >
                 <Link
@@ -368,11 +505,12 @@ export default function ProductShowcase() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
-function ProductCard({ item, index, isMobile }: { item: any, index: number, isMobile: boolean }) {
+const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number, isMobile: boolean }>(
+  ({ item, index, isMobile }, ref) => {
   const router = useRouter();
 
   const popsicleMap: Record<number, string> = {
@@ -418,6 +556,7 @@ function ProductCard({ item, index, isMobile }: { item: any, index: number, isMo
 
   return (
     <div
+      ref={ref}
       onMouseMove={isMobile ? undefined : handleMouseMove}
       onMouseLeave={isMobile ? undefined : handleMouseLeave}
       className="shrink-0 flex justify-center perspective-1000 snap-center"
@@ -643,7 +782,7 @@ function ProductCard({ item, index, isMobile }: { item: any, index: number, isMo
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
-                src="/photos/Strawberry pices.webp"
+                src="/photos/strawberry-pieces.webp"
                 alt="Strawberry Pieces"
                 fill
                 className="object-contain"
@@ -660,12 +799,12 @@ function ProductCard({ item, index, isMobile }: { item: any, index: number, isMo
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/strwberry ppsicle.webp"
+                  src="/photos/strawberry-popsicle.webp"
                   alt="Strawberry Popsicle"
                   width={550}
                   height={750}
                   className="object-contain scale-85 lg:scale-110"
-                  priority={false}
+                  priority={true}
                 />
               </div>
             </motion.div>
@@ -677,7 +816,7 @@ function ProductCard({ item, index, isMobile }: { item: any, index: number, isMo
             {/* 1. Background Image - Stays clipped */}
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
-                src="/photos/pistatio bg card.webp"
+                src="/photos/pistachio-bg-card.webp"
                 alt="Pistachio Card Background"
                 fill
                 className="object-cover scale-110"
@@ -721,12 +860,12 @@ function ProductCard({ item, index, isMobile }: { item: any, index: number, isMo
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/pistatio og popsicle.png"
+                  src="/photos/pistachio-og-popsicle.png"
                   alt="Pistachio Popsicle"
                   width={550}
                   height={750}
                   className="object-contain scale-50 lg:scale-70"
-                  priority={false}
+                  priority={true}
                 />
               </div>
             </motion.div>
@@ -765,7 +904,7 @@ function ProductCard({ item, index, isMobile }: { item: any, index: number, isMo
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
-                src="/photos/chcoalte peices.webp"
+                src="/photos/chocolate-pieces.webp"
                 alt="Chocolate Pieces"
                 fill
                 className="object-contain"
@@ -860,5 +999,7 @@ function ProductCard({ item, index, isMobile }: { item: any, index: number, isMo
       </motion.div>
     </div>
   );
-}
+});
+
+ProductCard.displayName = 'ProductCard';
 
