@@ -18,11 +18,11 @@ interface Props {
 export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, currentIndex }: Props) {
   const router = useRouter();
   const isKiosk = flavor.id === 'mashbere-retail-kiosk';
-  const isIceGlass = flavor.id === 'mashbere-ice-glass';
+  const isIceGlass = flavor.id === 'uae-ice-cup-ready-to-use-ice-glass' || flavor.id === 'mashbere-ice-glass';
   const isB2B = isKiosk || isIceGlass;
   const displayImage = isKiosk ? '/photos/kiosk-main.jpeg' : flavor.image;
   const projectGreen = '#708238';
-  const mainAccent = isB2B ? projectGreen : flavor.accentColor;
+  const mainAccent = isB2B ? (isIceGlass ? '#BAE6FD' : projectGreen) : flavor.accentColor;
 
   // Split longDesc into first paragraph and the rest
   const paragraphs = (flavor.longDesc || '').split('\n\n');
@@ -30,7 +30,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
   const remainingContent = paragraphs.slice(1).join('\n\n');
 
   return (
-    <main className="min-h-screen font-sans" style={{ background: isB2B ? `linear-gradient(135deg, ${projectGreen}10 0%, #FFFFFF 100%)` : `linear-gradient(135deg, ${flavor.accentColor}, #FFFFFF)` }}>
+    <main className="min-h-screen font-sans" style={{ background: isB2B ? `linear-gradient(135deg, #F8F9FA 0%, #FDFCFB 100%)` : `linear-gradient(135deg, ${flavor.accentColor}, #FFFFFF)` }}>
       {/* Dynamic color glow */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -112,14 +112,9 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                   <span className="text-[#708238] font-bold text-sm">{flavor.highlight}</span>
                 </div>
 
-                {/* Flowing Description Text */}
-                <div className="space-y-10">
-                  <div className="text-gray-700 text-xl leading-relaxed font-medium">
-                    {firstPara}
-                  </div>
-                  <div className="text-gray-500 text-lg leading-relaxed font-normal whitespace-pre-line max-w-4xl">
-                    {remainingContent}
-                  </div>
+                {/* Main Description Text - Wraps around the floated image */}
+                <div className="text-gray-700 text-xl leading-relaxed font-medium whitespace-pre-line">
+                  {flavor.longDesc}
                 </div>
               </motion.div>
             </div>
@@ -203,7 +198,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
             )}
 
             {/* Mashbere Ice Glass - Interactive Section */}
-            {flavor.id === 'mashbere-ice-glass' && (
+            {isIceGlass && (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -231,9 +226,9 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                       </div>
                     </div>
                     <div className="space-y-3 px-2">
-                      <h4 className="text-2xl font-display text-gray-900 uppercase">Bulk Packaging</h4>
+                      <h4 className="text-2xl font-display text-gray-900 uppercase">Sealed Bulk Solutions</h4>
                       <p className="text-gray-500 text-sm leading-relaxed">
-                        Insulated B2B packaging designed for high-volume storage and rapid deployment in commercial settings.
+                        Engineered for efficiency, our insulated transport boxes contain 12 premium ice glasses, ensuring maximum freshness and easy inventory management for high-traffic venues.
                       </p>
                     </div>
                   </div>
@@ -249,27 +244,27 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                       />
                     </div>
                     <div className="space-y-3 px-2">
-                      <h4 className="text-2xl font-display text-gray-900 uppercase">Premium Service</h4>
+                      <h4 className="text-2xl font-display text-gray-900 uppercase">Modern Refreshment</h4>
                       <p className="text-gray-500 text-sm leading-relaxed">
-                        Elevate the customer experience with crystal-clear ice served in a sleek, hygienic cup format.
+                        The perfect companion for travel, events, and offices. Our ready-to-use sealed cups eliminate the need for loose ice, providing a sophisticated and hygienic experience.
                       </p>
                     </div>
                   </div>
 
-                  {/* Product Detail Display */}
+                  {/* Lifestyle Display */}
                   <div className="flex flex-col gap-6 group">
                     <div className="relative w-full aspect-square rounded-[32px] overflow-hidden bg-white/40 border border-white group-hover:border-[#708238]/20 transition-all duration-500 shadow-sm hover:shadow-xl">
                       <Image 
                         src="/photos/ice-glass-lifestyle.jpeg" 
-                        alt="Mashbere Ice Glass Close-up" 
+                        alt="Mashbere Ice Glass Lifestyle" 
                         fill 
                         className="object-cover group-hover:scale-105 transition-transform duration-700" 
                       />
                     </div>
                     <div className="space-y-3 px-2">
-                      <h4 className="text-2xl font-display text-gray-900 uppercase">Crystal Quality</h4>
+                      <h4 className="text-2xl font-display text-gray-900 uppercase">Cinematic Experience</h4>
                       <p className="text-gray-500 text-sm leading-relaxed">
-                        Food-grade, UV-purified ice cubes with a high melt-resistance for long-lasting cooling performance.
+                        Crafted for the modern lifestyle, our crystal ice glasses offer a slow-melt performance that preserves the flavor and aesthetic of your most sophisticated beverages.
                       </p>
                     </div>
                   </div>

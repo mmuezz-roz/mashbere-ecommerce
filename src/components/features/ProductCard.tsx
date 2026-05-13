@@ -78,35 +78,12 @@ export function ProductCard({ product }: ProductCardProps) {
             <Heart className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-primary'}`} />
           </button>
 
-          {/* Action Buttons:
-              - Mobile: always visible at bottom of image
-              - Desktop: slide-up on hover
-          */}
-          <div className="absolute bottom-3 sm:bottom-5 inset-x-3 sm:inset-x-5 flex gap-2 sm:gap-3 z-10">
-            {product.slug === 'mashbere-retail-kiosk' || product.category === 'equipment' ? (
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  router.push('/equipment#contact');
-                }}
-                className="flex-1 h-11 sm:h-14 bg-gray-900 text-white rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-2xl shadow-gray-900/40
-                  opacity-100 translate-y-0
-                  sm:opacity-0 sm:translate-y-6 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
-                  transition-all duration-400 flex items-center justify-center gap-1.5 sm:gap-2 hover:bg-primary"
-              >
-                <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                Enquiry
-              </motion.button>
-            ) : null}
+          <div className="absolute bottom-3 sm:bottom-5 inset-x-3 sm:inset-x-5 flex z-10">
             <motion.div
               whileTap={{ scale: 0.95 }}
               className="flex-1 h-11 sm:h-14 bg-white text-gray-900 rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-xl shadow-gray-900/10
-                /* Mobile: always visible */
                 opacity-100 translate-y-0
-                /* Desktop: hidden until hover */
-                sm:opacity-0 sm:translate-y-6 sm:delay-75 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
+                sm:opacity-0 sm:translate-y-6 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
                 transition-all duration-400 flex items-center justify-center gap-2 border border-gray-100"
             >
               <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
