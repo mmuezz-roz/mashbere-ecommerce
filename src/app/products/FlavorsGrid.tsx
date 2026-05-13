@@ -79,7 +79,7 @@ export default function FlavorsGrid({ flavors }: Props) {
                 { id: 'popsicle', label: 'Signature Popsicles' },
                 { id: 'sip-up', label: 'Premium SipUps' },
                 { id: 'pookies', label: 'Pookies' },
-                { id: 'equipment', label: 'B2B Equipment' }
+                { id: 'equipment', label: 'B2B Products' }
               ].map(cat => (
                 <button
                   key={cat.id}
@@ -157,7 +157,7 @@ export default function FlavorsGrid({ flavors }: Props) {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Link href={flavor.category === 'sip-up' ? `/sipups/${flavor.id}` : `/products/${flavor.id}`}>
+                  <Link href={(flavor.category === 'sip-up' && flavor.id !== 'mashbere-ice-glass') ? `/sipups/${flavor.id}` : `/products/${flavor.id}`}>
                     <div
                       className="group relative rounded-[28px] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
                       style={{ backgroundColor: flavor.accentColor }}

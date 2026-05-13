@@ -5,6 +5,7 @@ import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import SmoothScroll from '@/components/shared/SmoothScroll';
 import WhatsAppWidget from '@/components/shared/WhatsAppWidget';
+import ScrollProgress from '@/components/shared/ScrollProgress';
 import { Suspense } from 'react';
 
 const AUTH_ROUTES = ['/auth/login', '/auth/register', '/auth/forgot-password'];
@@ -23,6 +24,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
   return (
     <SmoothScroll>
       <div className="flex flex-col min-h-screen">
+        <ScrollProgress />
         <Suspense fallback={<div className="h-20" />}>
           <Header />
         </Suspense>

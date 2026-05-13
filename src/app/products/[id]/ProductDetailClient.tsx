@@ -17,18 +17,29 @@ interface Props {
 
 export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, currentIndex }: Props) {
   const router = useRouter();
+  const isKiosk = flavor.id === 'mashbere-retail-kiosk';
+  const isIceGlass = flavor.id === 'mashbere-ice-glass';
+  const isB2B = isKiosk || isIceGlass;
+  const displayImage = isKiosk ? '/photos/kiosk-main.jpeg' : flavor.image;
+  const projectGreen = '#708238';
+  const mainAccent = isB2B ? projectGreen : flavor.accentColor;
+
+  // Split longDesc into first paragraph and the rest
+  const paragraphs = (flavor.longDesc || '').split('\n\n');
+  const firstPara = paragraphs[0];
+  const remainingContent = paragraphs.slice(1).join('\n\n');
 
   return (
-    <main className="min-h-screen font-sans" style={{ background: `linear-gradient(135deg, ${flavor.accentColor}, #FFFFFF)` }}>
+    <main className="min-h-screen font-sans" style={{ background: isB2B ? `linear-gradient(135deg, ${projectGreen}10 0%, #FFFFFF 100%)` : `linear-gradient(135deg, ${flavor.accentColor}, #FFFFFF)` }}>
       {/* Dynamic color glow */}
       <div
         className="fixed inset-0 pointer-events-none"
-        style={{ background: `radial-gradient(ellipse at 60% 30%, ${flavor.accentColor}80, transparent 60%)` }}
+        style={{ background: `radial-gradient(ellipse at 60% 30%, ${mainAccent}40, transparent 60%)` }}
       />
 
       <div className="relative z-10">
         {/* Top Nav - Optimized for cinematic feel and Header spacing */}
-        <div className="container-responsive pt-24 sm:pt-28 lg:pt-36 pb-4 sm:pb-6 lg:pb-8">
+        <div className={`container-responsive ${isKiosk ? 'pt-24 sm:pt-26 lg:pt-32' : 'pt-24 sm:pt-28 lg:pt-36'} pb-4 sm:pb-6 lg:pb-8`}>
           <div className="flex items-center justify-between">
             <button 
               onClick={() => router.back()}
@@ -48,135 +59,251 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
 
         {/* Main Content */}
         <div className="container-responsive pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+          <div className="block lg:flow-root"> {/* Clearfix container */}
             
-            {/* Image Section */}
+            {/* Image Section - Floated for B2B text wrap */}
             <motion.div
               initial={{ opacity: 0, x: -40, rotate: -3 }}
               animate={{ opacity: 1, x: 0, rotate: 0 }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="relative"
+              className={`relative mb-10 lg:mb-6 ${isB2B ? 'lg:float-left lg:w-1/2 lg:pr-12' : 'lg:w-1/2'}`}
             >
-              {/* Glow */}
               <div
-                className="absolute inset-[10%] rounded-full blur-[60px] opacity-50 animate-pulse"
-                style={{ backgroundColor: flavor.accentColor }}
+                className="absolute inset-[10%] rounded-full blur-[60px] opacity-30 animate-pulse"
+                style={{ backgroundColor: mainAccent }}
               />
 
-
-              <div className="relative aspect-square rounded-[40px] overflow-hidden shadow-2xl bg-white/40 backdrop-blur-sm">
+              <div className="relative aspect-square rounded-[40px] overflow-hidden shadow-2xl bg-white/40 backdrop-blur-sm border border-white/40">
                 <Image
-                  src={flavor.image}
+                  src={displayImage}
                   alt={flavor.name}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
                   priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-              </div>
-
-              {/* Tags floating below */}
-              <div className="flex gap-2 mt-4 justify-center flex-wrap">
-                {(flavor.tags || []).map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="px-4 py-1.5 bg-white/80 backdrop-blur-sm rounded-full text-xs font-black uppercase tracking-widest text-gray-600 shadow-sm border border-white"
-                  >
-                    {tag}
-                  </span>
-                ))}
+                
+                <div className="absolute top-8 left-8 flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
+                    <Image src="/photos/mashbere_logo_no_bg.png" alt="Mashbere" width={24} height={24} />
+                  </div>
+                  <div className="px-4 py-2 bg-black/80 backdrop-blur-md rounded-xl border border-white/20">
+                    <p className="text-white font-black text-[10px] uppercase tracking-widest">Premium Selection</p>
+                  </div>
+                </div>
               </div>
             </motion.div>
 
-            {/* Content Section */}
-            <div className="flex flex-col space-y-8">
-              {/* Label + Name */}
+            {/* Typography & Description - Flowing around image */}
+            <div className="relative z-10">
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
+                className="mb-8"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <Star className="w-4 h-4 text-[#708238] fill-current" />
-                  <span className="text-[#708238] font-black uppercase tracking-[0.3em] text-xs">{flavor.label}</span>
-                </div>
                 <p className="text-gray-400 font-black uppercase tracking-[0.2em] text-sm mb-2">{flavor.subtitle}</p>
-                <h1 className="text-7xl sm:text-8xl lg:text-9xl font-display text-gray-900 uppercase leading-[0.85] tracking-tighter">
+                <h1 className="text-6xl sm:text-7xl lg:text-8xl font-display text-gray-900 uppercase leading-[0.85] tracking-tighter mb-6">
                   {flavor.name}
                 </h1>
 
-                {/* Price Display */}
-                {flavor.price > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                    className="flex items-baseline gap-2 mt-4 sm:mt-6"
-                  >
-                    <span className="text-2xl sm:text-3xl font-black text-gray-300 uppercase tracking-widest">AED</span>
-                    <span className="text-6xl sm:text-7xl font-black text-[#708238] tracking-tighter">{flavor.price}</span>
-                  </motion.div>
-                )}
-              </motion.div>
+                {/* Highlight badge */}
+                <div className="inline-flex items-center gap-3 bg-[#708238]/10 px-5 py-2.5 rounded-2xl mb-8">
+                  <Leaf className="w-4 h-4 text-[#708238]" />
+                  <span className="text-[#708238] font-bold text-sm">{flavor.highlight}</span>
+                </div>
 
-              {/* Highlight badge */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.35 }}
-                className="inline-flex items-center gap-3 bg-[#708238]/10 px-5 py-3 rounded-2xl self-start"
-              >
-                <Leaf className="w-4 h-4 text-[#708238]" />
-                <span className="text-[#708238] font-bold text-sm">{flavor.highlight}</span>
+                {/* Flowing Description Text */}
+                <div className="space-y-10">
+                  <div className="text-gray-700 text-xl leading-relaxed font-medium">
+                    {firstPara}
+                  </div>
+                  <div className="text-gray-500 text-lg leading-relaxed font-normal whitespace-pre-line max-w-4xl">
+                    {remainingContent}
+                  </div>
+                </div>
               </motion.div>
+            </div>
 
-              {/* Long description */}
+            <div className="clear-both" />
+          </div>
+
+            {flavor.id === 'mashbere-retail-kiosk' && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-gray-600 text-lg leading-relaxed max-w-xl whitespace-pre-line"
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="mt-20 border-t border-gray-100 pt-16"
               >
-                {flavor.longDesc}
-              </motion.div>
-
-              {flavor.category === 'equipment' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.45 }}
-                  className="flex flex-col gap-6 mt-8 p-6 bg-white rounded-[32px] shadow-sm border border-gray-100"
-                >
-                  <h3 className="font-display text-gray-900 text-2xl uppercase">Kiosk Dimensions</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="flex flex-col items-center gap-3">
-                      <p className="text-sm font-black uppercase tracking-widest text-[#708238]">Compact Kiosk</p>
-                      <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">
-                        <Image src="/photos/KIOSK Size 2.jpeg" alt="Compact Kiosk Size" fill className="object-contain p-4" />
-                      </div>
-                      <p className="text-xs text-gray-500 text-center font-medium">114cm (W) x 70cm (D) x 200cm (H)</p>
+                <div className="flex flex-col gap-1 mb-12">
+                  <p className="text-[#708238] font-black uppercase tracking-[0.3em] text-[10px]">Specifications</p>
+                  <h3 className="font-display text-gray-900 text-4xl uppercase tracking-tighter">Available Sizes</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  {/* Compact Size */}
+                  <div className="flex flex-col gap-6 group">
+                    <div className="relative w-full aspect-[4/3] rounded-[32px] overflow-hidden bg-white/40 border border-white group-hover:border-[#708238]/20 transition-colors duration-500">
+                      <Image 
+                        src="/photos/kiosk-size-compact.jpeg" 
+                        alt="Compact Retail Kiosk" 
+                        fill 
+                        className="object-contain p-8" 
+                      />
                     </div>
-                    <div className="flex flex-col items-center gap-3">
-                      <p className="text-sm font-black uppercase tracking-widest text-[#708238]">Signature Kiosk</p>
-                      <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">
-                        <Image src="/photos/KIOSK SIze.jpeg" alt="Signature Kiosk Size" fill className="object-contain p-4" />
+                    <div className="space-y-4 px-2">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-2xl font-display text-gray-900 uppercase">Compact Edition</h4>
+                        <span className="text-[#708238] font-black text-xs uppercase tracking-widest">114cm Width</span>
                       </div>
-                      <p className="text-xs text-gray-500 text-center font-medium">147cm (W) x 70cm (D) x 200cm (H)</p>
+                      <div className="flex items-center gap-6 text-gray-400">
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-black uppercase tracking-widest mb-1">Depth</span>
+                          <span className="text-sm font-bold text-gray-600">70cm</span>
+                        </div>
+                        <div className="w-px h-6 bg-gray-100" />
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-black uppercase tracking-widest mb-1">Height</span>
+                          <span className="text-sm font-bold text-gray-600">200cm</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </motion.div>
-              )}
 
+                  {/* Signature Size */}
+                  <div className="flex flex-col gap-6 group">
+                    <div className="relative w-full aspect-[4/3] rounded-[32px] overflow-hidden bg-white/40 border border-white group-hover:border-[#708238]/20 transition-colors duration-500">
+                      <Image 
+                        src="/photos/kiosk-size-signature.jpeg" 
+                        alt="Signature Retail Kiosk" 
+                        fill 
+                        className="object-contain p-8" 
+                      />
+                    </div>
+                    <div className="space-y-4 px-2">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-2xl font-display text-gray-900 uppercase">Signature Edition</h4>
+                        <span className="text-[#708238] font-black text-xs uppercase tracking-widest">147cm Width</span>
+                      </div>
+                      <div className="flex items-center gap-6 text-gray-400">
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-black uppercase tracking-widest mb-1">Depth</span>
+                          <span className="text-sm font-bold text-gray-600">70cm</span>
+                        </div>
+                        <div className="w-px h-6 bg-gray-100" />
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-black uppercase tracking-widest mb-1">Height</span>
+                          <span className="text-sm font-bold text-gray-600">200cm</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Mashbere Ice Glass - Interactive Section */}
+            {flavor.id === 'mashbere-ice-glass' && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="mt-20 border-t border-gray-100 pt-16"
+              >
+                <div className="flex flex-col gap-1 mb-12">
+                  <p className="text-[#708238] font-black uppercase tracking-[0.3em] text-[10px]">Packaging & Quality</p>
+                  <h3 className="font-display text-gray-900 text-4xl uppercase tracking-tighter">Bulk Solutions for B2B</h3>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {/* Box Display */}
+                  <div className="flex flex-col gap-6 group">
+                    <div className="relative w-full aspect-square rounded-[32px] overflow-hidden bg-white/40 border border-white group-hover:border-[#708238]/20 transition-all duration-500 shadow-sm hover:shadow-xl">
+                      <Image 
+                        src="/photos/ice-glass-box.jpeg" 
+                        alt="Mashbere Ice Glass Bulk Box" 
+                        fill 
+                        className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                      />
+                      <div className="absolute top-6 right-6 px-4 py-2 bg-[#708238] rounded-full text-white text-[10px] font-black uppercase tracking-widest shadow-lg">
+                        12 Cups Per Box
+                      </div>
+                    </div>
+                    <div className="space-y-3 px-2">
+                      <h4 className="text-2xl font-display text-gray-900 uppercase">Bulk Packaging</h4>
+                      <p className="text-gray-500 text-sm leading-relaxed">
+                        Insulated B2B packaging designed for high-volume storage and rapid deployment in commercial settings.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* New Usage Image (ice cube 4) */}
+                  <div className="flex flex-col gap-6 group">
+                    <div className="relative w-full aspect-square rounded-[32px] overflow-hidden bg-white/40 border border-white group-hover:border-[#708238]/20 transition-all duration-500 shadow-sm hover:shadow-xl">
+                      <Image 
+                        src="/photos/ice-glass-usage.jpeg" 
+                        alt="Mashbere Ice Glass Usage" 
+                        fill 
+                        className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                      />
+                    </div>
+                    <div className="space-y-3 px-2">
+                      <h4 className="text-2xl font-display text-gray-900 uppercase">Premium Service</h4>
+                      <p className="text-gray-500 text-sm leading-relaxed">
+                        Elevate the customer experience with crystal-clear ice served in a sleek, hygienic cup format.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Product Detail Display */}
+                  <div className="flex flex-col gap-6 group">
+                    <div className="relative w-full aspect-square rounded-[32px] overflow-hidden bg-white/40 border border-white group-hover:border-[#708238]/20 transition-all duration-500 shadow-sm hover:shadow-xl">
+                      <Image 
+                        src="/photos/ice-glass-lifestyle.jpeg" 
+                        alt="Mashbere Ice Glass Close-up" 
+                        fill 
+                        className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                      />
+                    </div>
+                    <div className="space-y-3 px-2">
+                      <h4 className="text-2xl font-display text-gray-900 uppercase">Crystal Quality</h4>
+                      <p className="text-gray-500 text-sm leading-relaxed">
+                        Food-grade, UV-purified ice cubes with a high melt-resistance for long-lasting cooling performance.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hygiene & Travel Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+                  {[
+                    { label: 'Hygienic', desc: '100% Sealed' },
+                    { label: 'Portable', desc: 'Travel Ready' },
+                    { label: 'Convenient', desc: 'Ready to Use' },
+                    { label: 'B2B', desc: 'Bulk Supply' }
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-white/40 backdrop-blur-sm p-6 rounded-3xl border border-white text-center hover:bg-[#708238]/5 transition-colors">
+                      <p className="text-[#708238] font-black text-[10px] uppercase tracking-widest mb-1">{item.label}</p>
+                      <p className="text-gray-900 font-bold text-sm">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
               {/* Ingredients */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
               >
-                <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Key Ingredients</p>
-                <div className="flex flex-wrap gap-2">
+                <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Key Features</p>
+                <div className="flex flex-wrap gap-3">
                   {(flavor.ingredients || []).map((ing: string) => (
-                    <span key={ing} className="px-3 py-1.5 bg-white rounded-full text-xs font-bold text-gray-700 shadow-sm border border-gray-100">
+                    <span key={ing} className="px-4 py-2 bg-white rounded-2xl text-sm font-bold text-gray-700 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                       {ing}
                     </span>
                   ))}
@@ -185,49 +312,47 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
 
               {/* Stats */}
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-200"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="grid grid-cols-2 sm:grid-cols-3 gap-6"
               >
                 {(flavor.stats || []).map((stat: any) => (
-                  <div key={stat.label} className="text-center">
-                    <p className="text-2xl font-display text-gray-900 mb-1">{stat.val}</p>
-                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{stat.label}</p>
+                  <div key={stat.label} className="bg-white/30 backdrop-blur-sm p-4 rounded-3xl border border-white/40">
+                    <p className="text-3xl font-display text-gray-900 mb-1">{stat.val}</p>
+                    <p className="text-[10px] font-black text-[#708238] uppercase tracking-widest">{stat.label}</p>
                   </div>
                 ))}
               </motion.div>
-
-              {/* CTA */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-                className="flex gap-4 flex-wrap"
-              >
-                {(flavor.category === 'equipment' || flavor.id === 'mashbere-retail-kiosk') ? (
-                  <Link
-                    href={`/equipment?interest=${encodeURIComponent(flavor.name)}#contact`}
-                    className="group bg-[#1C2410] text-white px-10 py-5 rounded-3xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-3 hover:bg-[#708238] hover:shadow-[#708238]/30 transition-all w-full sm:w-auto justify-center"
-                  >
-                    <Send size={18} />
-                    Enquiry
-                  </Link>
-                ) : (
-                  <>
-
-                    <Link
-                      href="/products"
-                      className="group flex items-center gap-2 px-8 py-5 rounded-3xl font-black text-sm text-gray-500 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100"
-                    >
-                      More Flavours
-                      <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </>
-                )}
-              </motion.div>
             </div>
-          </div>
+
+            {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex justify-center pt-8"
+            >
+              {(flavor.category === 'equipment' || flavor.id === 'mashbere-retail-kiosk' || flavor.id === 'mashbere-ice-glass') ? (
+                <Link
+                  href={`/equipment?interest=${encodeURIComponent(flavor.name)}#contact`}
+                  className="group bg-[#1C2410] text-white px-16 py-6 rounded-3xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-4 hover:bg-[#708238] hover:shadow-[#708238]/30 transition-all w-full sm:w-auto justify-center"
+                >
+                  <Send size={20} />
+                  Request Partnership Inquiry
+                </Link>
+              ) : (
+                <Link
+                  href="/products"
+                  className="group flex items-center gap-3 px-12 py-6 rounded-3xl font-black text-sm text-gray-600 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 hover:shadow-lg"
+                >
+                  More Flavours
+                  <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              )}
+            </motion.div>
 
           {/* Prev / Next Navigation */}
           {(prevFlavor || nextFlavor) && (

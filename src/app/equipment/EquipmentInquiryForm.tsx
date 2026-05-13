@@ -96,7 +96,7 @@ export default function EquipmentInquiryForm() {
     <div className="bg-white rounded-[40px] shadow-xl overflow-hidden grid lg:grid-cols-2">
       {/* Form Column */}
       <div className="p-8 sm:p-12 lg:p-16 border-r border-gray-100">
-        <h2 className="text-3xl font-bold mb-6">Request Business Inquiry</h2>
+        <h2 className="text-3xl font-black mb-6 text-primary uppercase tracking-tight">Request Business Inquiry</h2>
 
         {authLoading ? (
           <div className="py-20 flex flex-col items-center justify-center">

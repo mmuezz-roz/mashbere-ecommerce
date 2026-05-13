@@ -120,7 +120,7 @@ export const ProductService = {
     const { data, error } = await supabase
       .from('products')
       .select(`
-        id, name, description, price, image, featured, slug,
+        id, name, description, price, image, featured, slug, category,
         product_details (
           subtitle, label, accent_color, bg_gradient, text_color,
           long_desc, highlight, ingredients, stats, tags, image_path
@@ -153,6 +153,7 @@ export const ProductService = {
         tags: d?.tags ?? [],
         price: Number(p.price),
         featured: p.featured,
+        category: p.category,
       };
     });
   },
@@ -165,7 +166,7 @@ export const ProductService = {
     const { data, error } = await supabase
       .from('products')
       .select(`
-        id, name, description, price, image, featured, slug,
+        id, name, description, price, image, featured, slug, category,
         product_details (
           subtitle, label, accent_color, bg_gradient, text_color,
           long_desc, highlight, ingredients, stats, tags, image_path
@@ -202,6 +203,7 @@ export const ProductService = {
       tags: d?.tags ?? [],
       price: Number(data.price),
       featured: data.featured,
+      category: data.category,
     };
   },
 
@@ -213,7 +215,7 @@ export const ProductService = {
     const { data, error } = await supabase
       .from('products')
       .select(`
-        id, name, description, price, image, featured, slug,
+        id, name, description, price, image, featured, slug, category,
         product_details (
           subtitle, label, accent_color, bg_gradient, text_color,
           long_desc, highlight, ingredients, stats, tags, image_path
@@ -241,6 +243,7 @@ export const ProductService = {
         stats: d?.stats ?? [],
         price: Number(p.price),
         featured: p.featured,
+        category: p.category,
       };
     });
   },
@@ -253,7 +256,7 @@ export const ProductService = {
     const { data, error } = await supabase
       .from('products')
       .select(`
-        id, name, description, price, image, featured, slug,
+        id, name, description, price, image, featured, slug, category,
         product_details (
           subtitle, label, accent_color, bg_gradient, text_color,
           long_desc, highlight, ingredients, stats, tags, image_path
@@ -285,6 +288,7 @@ export const ProductService = {
       stats: d?.stats ?? [],
       price: Number(data.price),
       featured: data.featured,
+      category: data.category,
     };
   },
 
@@ -296,7 +300,7 @@ export const ProductService = {
     const { data, error } = await supabase
       .from('products')
       .select(`
-        id, name, description, price, image, featured, slug,
+        id, name, description, price, image, featured, slug, category,
         product_details (
           subtitle, label, accent_color, bg_gradient, text_color,
           long_desc, highlight, ingredients, stats, tags, image_path
@@ -324,6 +328,7 @@ export const ProductService = {
         stats: d?.stats ?? [],
         price: Number(p.price),
         featured: p.featured,
+        category: p.category,
       };
     });
   },
@@ -336,7 +341,7 @@ export const ProductService = {
     const { data, error } = await supabase
       .from('products')
       .select(`
-        id, name, description, price, image, featured, slug,
+        id, name, description, price, image, featured, slug, category,
         product_details (
           subtitle, label, accent_color, bg_gradient, text_color,
           long_desc, highlight, ingredients, stats, tags, image_path
@@ -364,6 +369,7 @@ export const ProductService = {
         stats: d?.stats ?? [],
         price: Number(p.price),
         featured: p.featured,
+        category: p.category,
       };
     });
   },
