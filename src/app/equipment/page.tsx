@@ -1,5 +1,5 @@
 import { ProductService } from '@/services/server/productService';
-import { ProductCard } from '@/components/features';
+import { B2BProductCard } from '@/components/features';
 import EquipmentInquiryForm from './EquipmentInquiryForm';
 import EquipmentHero from './EquipmentHero';
 import { Package } from 'lucide-react';
@@ -28,9 +28,9 @@ export default async function EquipmentPage() {
         </div>
 
         {equipment.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 lg:gap-10">
             {equipment.map(product => (
-              <ProductCard key={product.id} product={product} />
+              <B2BProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (

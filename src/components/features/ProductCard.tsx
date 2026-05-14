@@ -63,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 Bestseller
               </motion.div>
             )}
-            {product.stock !== undefined && product.stock < 10 && product.category === 'equipment' && (
+            {product.stock !== undefined && product.stock < 10 && product.category === 'equipment' && product.slug !== 'mashbere-retail-kiosk' && (
               <div className="bg-red-500/90 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
                 Low Stock
               </div>

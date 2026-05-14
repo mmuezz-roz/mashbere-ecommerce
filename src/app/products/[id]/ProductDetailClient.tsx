@@ -462,10 +462,11 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
               {(flavor.category === 'equipment' || flavor.id === 'mashbere-retail-kiosk' || flavor.id === 'mashbere-ice-glass') ? (
                 <Link
                   href={`/equipment?interest=${encodeURIComponent(flavor.name)}#contact`}
-                  className="group bg-[#1C2410] text-white px-16 py-6 rounded-3xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-black/20 flex items-center gap-4 hover:bg-[#708238] hover:shadow-[#708238]/30 transition-all w-full sm:w-auto justify-center"
+                  className="group relative bg-[#708238] text-white px-8 py-5 sm:px-16 sm:py-6 rounded-2xl sm:rounded-3xl font-black text-[11px] sm:text-sm uppercase tracking-[0.15em] sm:tracking-widest shadow-[0_20px_40px_-12px_rgba(112,130,56,0.3)] sm:shadow-2xl sm:shadow-black/20 flex items-center gap-3 sm:gap-4 transition-all w-full sm:w-auto justify-center active:scale-[0.98] overflow-hidden"
                 >
-                  <Send size={20} />
-                  Request Partnership Inquiry
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  <span className="relative z-10">Request Partnership Inquiry</span>
                 </Link>
               ) : (
                 <Link
