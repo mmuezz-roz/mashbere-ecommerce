@@ -921,7 +921,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/chcolate popsicle.webp"
+                  src="/photos/chocolate-popsicle.webp"
                   alt="Chocolate Popsicle"
                   width={550}
                   height={750}
@@ -982,7 +982,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/guava poposicle.webp"
+                  src="/photos/guava-popsicle.webp"
                   alt="Guava Popsicle"
                   width={550}
                   height={750}

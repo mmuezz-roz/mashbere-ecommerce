@@ -4,17 +4,22 @@ import { createClient } from '@/lib/supabase/server';
 export async function GET(req: NextRequest) {
   const { searchParams, origin } = new URL(req.url);
   const code = searchParams.get('code');
-  const next = searchParams.get('next') ?? '/';
+  // Allow a `next` query param to override the post-login destination
+  const next = searchParams.get('next') ?? '/equipment';
 
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
+
     if (!error) {
+      // Successful login — redirect to the intended destination
       return NextResponse.redirect(`${origin}${next}`);
     }
+
+    // Exchange failed — send back to login with an error flag
+    return NextResponse.redirect(`${origin}/auth/login?error=auth`);
   }
 
-  // If no code is present, it might be an implicit flow or a direct hit.
-  // We redirect to the home page (or the 'next' param) where useAuth will pick up the session.
-  return NextResponse.redirect(`${origin}${next}`);
+  // No code present — likely a direct hit, redirect to login
+  return NextResponse.redirect(`${origin}/auth/login`);
 }

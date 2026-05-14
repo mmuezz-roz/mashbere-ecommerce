@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Quote, Package, ChevronDown } from 'lucide-react';
 
 const slides = [
@@ -11,14 +11,14 @@ const slides = [
     label: 'B2B Solutions',
     title: (
       <>
-        <span>UAE</span>
+        <span>ICE CREAM</span>
         <div className="relative inline-block w-fit">
           <div className="absolute inset-0 bg-[#708238] -rotate-1 transform scale-y-110" />
-          <span className="relative z-10 text-white px-2 sm:px-5 py-0 block">Ice Cup Solutions</span>
+          <span className="relative z-10 text-white px-2 sm:px-5 py-0 block">KIOSK SOLUTIONS</span>
         </div>
       </>
     ),
-    description: 'The preferred Ready to Use Ice Glass for UAE venues. Reliable retail solutions and logistics for premium ice products.'
+    description: 'Launch your business with ready-to-use ice cream kiosk solutions in the UAE. Mashbere provides premium ice products, reliable retail setups, and seamless logistics for high-performing locations.'
   },
   {
     image: '/photos/ChatGPT Image May 12, 2026, 01_31_49 PM.png',
@@ -33,7 +33,7 @@ const slides = [
         </div>
       </>
     ),
-    description: 'Setting the Mashbere Ice Glass standard. Our Hygienic Ice Cup UAE technology ensures crystal clear, perfectly preserved ice for your business.'
+    description: 'Setting the Mashbere Ice Glass standard. Our Hygienic Ice Cup UAE technology ensures crystal clear, perfectly preserved ice for your business.   '
   }
 ];
 
@@ -53,7 +53,7 @@ export default function EquipmentHero() {
 
   const currentSlide = slides[currentIndex];
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
@@ -66,7 +66,7 @@ export default function EquipmentHero() {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
@@ -77,7 +77,7 @@ export default function EquipmentHero() {
 
   return (
     <section 
-      className="relative h-[90svh] sm:h-[100svh] flex flex-col justify-start sm:justify-center pt-[18svh] sm:pt-0 overflow-hidden"
+      className="relative h-[90svh] sm:min-h-[120vh] flex flex-col justify-start pt-[18svh] sm:pt-[22vh] overflow-hidden"
       onTouchStart={() => setIsInteracting(true)}
       onTouchEnd={() => setIsInteracting(false)}
       onTouchCancel={() => setIsInteracting(false)}
@@ -118,7 +118,7 @@ export default function EquipmentHero() {
       </AnimatePresence>
 
       {/* Content — pushed down from navbar on mobile, centred on desktop */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto h-[400px]">
+      <div className="relative z-10 w-full max-w-7xl mx-auto">
         <AnimatePresence>
           {slides.map((slide, index) => (
             index === currentIndex && (
@@ -128,7 +128,7 @@ export default function EquipmentHero() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="absolute top-0 left-5 sm:left-6 lg:left-8 right-5 sm:right-6 lg:right-8 max-w-4xl"
+                className="absolute top-0 left-5 sm:left-6 lg:left-8 right-5 sm:right-6 lg:left-8 max-w-4xl"
               >
                 {/* Label badge */}
                 <motion.div variants={itemVariants} className="inline-flex items-center gap-2 bg-[#708238]/10 border border-[#708238]/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-6">
@@ -144,25 +144,25 @@ export default function EquipmentHero() {
                 </motion.h1>
 
                 {/* Description Container with Independent Glass Box */}
-                <motion.div variants={itemVariants} className="relative mb-5 sm:mb-10 w-fit">
-                  {/* Brand-Tinted Premium Glass (Mobile Only) */}
+                <motion.div variants={itemVariants} className="relative mb-6 sm:mb-10 w-fit group">
+                  {/* Premium Glass Box - Only for Slide 2 */}
                   {index === 1 && (
                     <div 
-                      className="absolute inset-0 bg-[#EAF3DA]/80 border border-white shadow-md rounded-2xl sm:hidden z-0" 
+                      className="absolute inset-0 bg-white/40 sm:bg-white/10 backdrop-blur-md border border-white/40 shadow-xl rounded-2xl sm:rounded-3xl z-0" 
                       style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}
                     />
                   )}
 
-                  {/* Description — hidden on very small screens to save space */}
-                  <p className={`relative z-10 hidden min-[400px]:block text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed max-w-xs sm:max-w-2xl font-medium ${
-                    index === 1 ? 'text-[#141A0B] font-semibold p-4 sm:p-0 sm:font-medium' : 'text-[#141A0B]/80'
+                  {/* Description — visible on most screens */}
+                  <p className={`relative z-10 hidden min-[400px]:block text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed max-w-xs sm:max-w-2xl font-semibold ${
+                    index === 1 ? 'p-4 sm:p-6 lg:p-8 text-[#141A0B]' : 'text-[#141A0B]/80'
                   }`}>
                     {slide.description}
                   </p>
 
                   {/* Short version on tiny screens */}
-                  <p className={`relative z-10 block min-[400px]:hidden text-xs leading-snug max-w-[260px] font-medium line-clamp-2 ${
-                    index === 1 ? 'text-[#141A0B] font-semibold p-3.5 sm:p-0 sm:font-medium' : 'text-[#141A0B]/75'
+                  <p className={`relative z-10 block min-[400px]:hidden text-xs leading-snug max-w-[260px] font-bold ${
+                    index === 1 ? 'p-3.5 text-[#141A0B]' : 'text-[#141A0B]/75'
                   }`}>
                     {slide.description}
                   </p>
@@ -196,7 +196,7 @@ export default function EquipmentHero() {
       </div>
 
       {/* Progress Indicators */}
-      <div className="absolute bottom-12 sm:bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+      <div className="absolute bottom-[20%] sm:bottom-[15%] left-1/2 -translate-x-1/2 flex gap-3 z-20">
         {slides.map((_, idx) => (
           <button
             key={idx}

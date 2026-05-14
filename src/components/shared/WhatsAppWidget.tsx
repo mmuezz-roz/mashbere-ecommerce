@@ -4,44 +4,77 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 /**
  * WhatsAppWidget Component
- * A floating, interactive WhatsApp button that appears after scrolling past the first section.
- * Includes a friendly message box.
+ * A persistent floating WhatsApp button with context-aware interactions.
+ * - Shows a full message bubble only once on the home page.
+ * - Shows a friendly waving hand emoji on other pages or after first contact.
  */
 export default function WhatsAppWidget() {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+  
   const [isVisible, setIsVisible] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showWavingHand, setShowWavingHand] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
 
+  // Handle visibility based on scroll (appear after hero section)
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 500) {
-        if (!isVisible) setIsVisible(true);
+        setIsVisible(true);
       } else {
         setIsVisible(false);
         setShowTooltip(false);
+        setShowWavingHand(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isVisible]);
+  }, []);
 
+  // Logic for the looping waving hand
   useEffect(() => {
-    if (isVisible && !isDismissed) {
-      // Delay the message box by 3 seconds after the logo appears
-      const showTimer = setTimeout(() => {
-        setShowTooltip(true);
-        // Auto-hide after 5 more seconds
-        const hideTimer = setTimeout(() => setShowTooltip(false), 5000);
-        return () => clearTimeout(hideTimer);
-      }, 3000);
-      
-      return () => clearTimeout(showTimer);
+    if (!isVisible || showTooltip || isDismissed) {
+      setShowWavingHand(false);
+      return;
     }
-  }, [isVisible, isDismissed]);
+
+    const runWaveCycle = () => {
+      setShowWavingHand(true);
+      setTimeout(() => setShowWavingHand(false), 3000); // Wave for 3 seconds
+    };
+
+    // First wave after a short delay
+    const initialTimer = setTimeout(runWaveCycle, 2000);
+    
+    // Repeat every 13 seconds (3s wave + 10s pause)
+    const interval = setInterval(runWaveCycle, 13000);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
+  }, [isVisible, showTooltip, isDismissed]);
+
+  // Logic for showing the main tooltip once on Home Page
+  useEffect(() => {
+    if (!isVisible || isDismissed) return;
+    
+    const hasShownPopup = localStorage.getItem('mashbere_wa_popup_shown');
+    if (isHomePage && !hasShownPopup) {
+      const timer = setTimeout(() => {
+        setShowTooltip(true);
+        localStorage.setItem('mashbere_wa_popup_shown', 'true');
+        setTimeout(() => setShowTooltip(false), 5000);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isHomePage, isDismissed, isVisible]);
 
   const whatsappNumber = "971502994974";
   const message = "Hi Mashbere! I need some help with...";
@@ -49,9 +82,7 @@ export default function WhatsAppWidget() {
 
   return (
     <div 
-      className="fixed bottom-20 lg:bottom-6 right-6 z-[9999] flex flex-col items-end gap-4 pointer-events-none"
-      onMouseEnter={() => !isDismissed && setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
+      className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-4 pointer-events-none"
     >
       <AnimatePresence>
         {isVisible && (
@@ -61,9 +92,9 @@ export default function WhatsAppWidget() {
             exit={{ opacity: 0, scale: 0.5, y: 30 }}
             className="pointer-events-auto relative"
           >
-            {/* Message Box / Tooltip */}
+            {/* Main Message Box (Home Page Only, Once) */}
             <AnimatePresence>
-              {showTooltip && (
+              {showTooltip && !isDismissed && (
                 <motion.div
                   initial={{ opacity: 0, x: 20, scale: 0.8, y: 10 }}
                   animate={{ opacity: 1, x: 0, scale: 1, y: 0 }}
@@ -77,15 +108,17 @@ export default function WhatsAppWidget() {
                       e.stopPropagation();
                       setShowTooltip(false);
                       setIsDismissed(true);
+                      setShowWavingHand(true);
+                      // Auto-hide waving hand after 4 seconds
+                      setTimeout(() => setShowWavingHand(false), 4000);
                     }}
                     className="absolute top-3 right-3 text-gray-400 hover:text-rose-500 transition-colors p-1 z-20"
-                    aria-label="Close message"
                   >
                     <X size={16} strokeWidth={3} />
                   </button>
 
                   <div className="relative z-10 flex items-start gap-3">
-                    <div className="flex-1 space-y-2 pr-12"> {/* pr-12 to avoid overlapping with the overflow image text-wise */}
+                    <div className="flex-1 space-y-2 pr-12">
                       <div className="flex items-center gap-2">
                         <span className="text-[15px] font-black text-gray-900 uppercase tracking-wider">
                           Let's Chat
@@ -109,20 +142,42 @@ export default function WhatsAppWidget() {
                     </div>
                   </div>
 
-                  {/* Overflow Image - Bottom Right */}
-                  <div className="absolute -bottom-4 -right-4 w-40 h-40 sm:w-52 sm:h-52 pointer-events-none z-0">
+                  <div className="absolute -bottom-4 -right-4 w-40 h-40 sm:w-52 sm:h-52 pointer-events-none z-0 opacity-40">
                     <div className="relative w-full h-full transform rotate-[12deg]">
                       <Image 
                         src="/photos/joyfull popsicles.webp"
                         alt="Popsicles"
                         fill
-                        className="object-contain drop-shadow-2xl"
+                        className="object-contain"
                       />
                     </div>
                   </div>
                   
-                  {/* Triangle tail */}
                   <div className="absolute bottom-[-8px] right-6 w-4 h-4 bg-white rotate-45 border-r border-b border-gray-100" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Waving Hand Emoji (Subtle Hint) */}
+            <AnimatePresence>
+              {showWavingHand && !showTooltip && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, y: 10 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: 1, 
+                    y: 0,
+                  }}
+                  exit={{ opacity: 0, scale: 0 }}
+                  className="absolute -top-6 -left-2 z-20 pointer-events-none"
+                >
+                  <motion.div
+                    animate={{ rotate: [0, 20, -10, 20, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="text-3xl drop-shadow-lg"
+                  >
+                    👋
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -132,11 +187,16 @@ export default function WhatsAppWidget() {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ 
-                scale: 1.1,
-              }}
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-[#25D366] text-white rounded-full hover:bg-[#128C7E] transition-all duration-300 shadow-2xl"
+              onMouseEnter={() => {
+                setShowTooltip(true);
+                setShowWavingHand(false);
+              }}
+              onMouseLeave={() => {
+                setShowTooltip(false);
+              }}
+              className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-[#25D366] text-white rounded-full hover:bg-[#128C7E] transition-all duration-300 shadow-2xl relative z-10"
               aria-label="Chat on WhatsApp"
             >
               <svg 

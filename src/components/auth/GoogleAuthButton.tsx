@@ -15,10 +15,11 @@ export function GoogleAuthButton({ mode = 'login' }: GoogleAuthButtonProps) {
   const handleGoogleAuth = async () => {
     setLoading(true);
     try {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/api/auth/callback`,
+          redirectTo: `${siteUrl}/api/auth/callback`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
