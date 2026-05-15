@@ -21,6 +21,9 @@ export const metadata = {
   icons: {
     icon: '/photos/mashbere icon.png',
   },
+  verification: {
+    google: 'rMZnh5V9v9sYih5zJb5-gklsLpRSSKeZLfBY-g5L4TQ',
+  },
 };
 
 import { PageLoader } from '@/components/shared/PageLoader';

@@ -29,6 +29,7 @@ export default function HeroSection() {
 
         {/* Main Heading — line-by-line clip reveal on load */}
         <ScrollRevealHeading
+          as="h1"
           lines={[
             <span key="l1" className="text-[14vw] sm:text-6xl md:text-7xl lg:text-[8rem] font-display text-white uppercase tracking-tight drop-shadow-2xl">
               &quot;SCOOP UP SOME

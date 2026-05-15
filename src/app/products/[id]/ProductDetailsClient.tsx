@@ -128,7 +128,7 @@ export default function ProductDetailsClient({ product }: ProductDetailsClientPr
           {/* Action Footer */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Link 
-              href="/products"
+              href={product.category ? `/products?category=${product.category}` : "/products"}
               className="flex-1 py-4 sm:py-5 px-6 sm:px-8 rounded-2xl font-black text-sm sm:text-base lg:text-lg bg-gray-900 text-white hover:bg-primary transition-all flex items-center justify-center gap-2 sm:gap-3 uppercase tracking-widest hover:-translate-y-1 active:scale-95 shadow-2xl"
             >
               View More Flavors

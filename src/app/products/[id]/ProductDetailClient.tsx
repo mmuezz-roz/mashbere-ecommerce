@@ -78,6 +78,35 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
 
   return (
     <main className="min-h-screen font-sans" style={{ background: isB2B ? `linear-gradient(135deg, #F8F9FA 0%, #FDFCFB 100%)` : `linear-gradient(135deg, ${flavor.accentColor}, #FFFFFF)` }}>
+      {/* Schema.org Structured Data for Rich Results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": flavor.name,
+            "image": [
+              flavor.image?.startsWith('http') 
+                ? flavor.image 
+                : `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'}${flavor.image}`
+            ],
+            "description": flavor.desc || flavor.longDesc || flavor.description,
+            "brand": {
+              "@type": "Brand",
+              "name": "Mashbere"
+            },
+            "offers": {
+              "@type": "Offer",
+              "url": `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'}/products/${flavor.id}`,
+              "priceCurrency": "AED",
+              "price": flavor.price || 0,
+              "availability": "https://schema.org/InStock",
+              "itemCondition": "https://schema.org/NewCondition"
+            }
+          })
+        }}
+      />
       {/* Dynamic color glow */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -470,10 +499,10 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 </Link>
               ) : (
                 <Link
-                  href="/products"
+                  href={flavor.category ? `/products?category=${flavor.category}` : "/products"}
                   className="group flex items-center gap-3 px-12 py-6 rounded-3xl font-black text-sm text-gray-600 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 hover:shadow-lg"
                 >
-                  More Flavours
+                  View More Flavours
                   <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               )}

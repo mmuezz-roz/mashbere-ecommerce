@@ -16,6 +16,35 @@ export default function SipupDetailClient({ sipup }: Props) {
 
   return (
     <main className="min-h-screen bg-[#FDFCFD] relative overflow-hidden font-sans">
+      {/* Schema.org Structured Data for Rich Results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": sipup.name,
+            "image": [
+              sipup.image?.startsWith('http') 
+                ? sipup.image 
+                : `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'}${sipup.image}`
+            ],
+            "description": sipup.desc || sipup.longDesc || sipup.description,
+            "brand": {
+              "@type": "Brand",
+              "name": "Mashbere"
+            },
+            "offers": {
+              "@type": "Offer",
+              "url": `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'}/sipups/${sipup.id}`,
+              "priceCurrency": "AED",
+              "price": sipup.price || 0,
+              "availability": "https://schema.org/InStock",
+              "itemCondition": "https://schema.org/NewCondition"
+            }
+          })
+        }}
+      />
       {/* Background Decorative Gradient */}
       <div 
         className="absolute inset-0 pointer-events-none opacity-30 transition-colors duration-1000"
@@ -102,7 +131,7 @@ export default function SipupDetailClient({ sipup }: Props) {
               transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-6 w-full"
             >
-              <Link href="/#sipups" className="group flex items-center gap-3 px-10 py-5 rounded-3xl font-black text-base text-gray-900 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 w-full sm:w-auto justify-center">
+            <Link href="/products?category=sip-up" className="group flex items-center gap-3 px-10 py-5 rounded-3xl font-black text-base text-gray-900 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 w-full sm:w-auto justify-center">
                 <span>View More Flavors</span>
                 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>

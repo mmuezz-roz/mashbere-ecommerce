@@ -21,7 +21,11 @@ export default function SipUpSection({ sipups = [] }: Props) {
   const router = useRouter();
   
   // Use database sipups if available, otherwise fallback to local data
-  const displaySipups = sipups.length > 0 ? sipups : SIPUPS;
+  // Filter out any miscategorized items (like ice sticks) that shouldn't be in the bottle section
+  const displaySipups = (sipups.length > 0 ? sipups : SIPUPS)
+    .filter(s => s.name.toLowerCase().includes('sipup') || s.name.toLowerCase().includes('mango') || s.name.toLowerCase().includes('pomegranate') || s.name.toLowerCase().includes('lychee') || s.name.toLowerCase().includes('coconut') || s.name.toLowerCase().includes('sugarcane') || s.name.toLowerCase().includes('grape') || s.name.toLowerCase().includes('guava') || s.name.toLowerCase().includes('pineapple') || s.name.toLowerCase().includes('passion'))
+    .filter(s => !s.name.toLowerCase().includes('stick'));
+
   const images = displaySipups.map(s => s.image);
   const [isMobile, setIsMobile] = React.useState(false);
 
@@ -32,29 +36,30 @@ export default function SipUpSection({ sipups = [] }: Props) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const transformStyles = isMobile 
-    ? [
-        'rotate(15deg) translate(-44vw)',
-        'rotate(-10deg) translate(-33vw)',
-        'rotate(5deg) translate(-22vw)',
-        'rotate(-8deg) translate(-11vw)',
-        'rotate(0deg) translate(0vw)',
-        'rotate(12deg) translate(11vw)',
-        'rotate(-5deg) translate(22vw)',
-        'rotate(10deg) translate(33vw)',
-        'rotate(-15deg) translate(44vw)',
-      ]
-    : [
-        'rotate(15deg) translate(-280px)',
-        'rotate(-10deg) translate(-210px)',
-        'rotate(5deg) translate(-140px)',
-        'rotate(-8deg) translate(-70px)',
-        'rotate(0deg) translate(0px)',
-        'rotate(12deg) translate(70px)',
-        'rotate(-5deg) translate(140px)',
-        'rotate(10deg) translate(210px)',
-        'rotate(-15deg) translate(280px)',
-      ];
+  // Generate dynamic transform styles based on the number of sipups
+  const transformStyles = React.useMemo(() => {
+    const count = displaySipups.length;
+    if (count === 0) return [];
+
+    return displaySipups.map((_, i) => {
+      // Calculate horizontal spread
+      // For desktop: spread from -280 to 280
+      // For mobile: spread from -44vw to 44vw
+      const stepDesktop = 560 / (count > 1 ? count - 1 : 1);
+      const stepMobile = 88 / (count > 1 ? count - 1 : 1);
+      
+      const translateX = -280 + i * stepDesktop;
+      const translateVW = -44 + i * stepMobile;
+      
+      // Alternating rotations for a natural "fan" look
+      const rotations = [15, -10, 5, -8, 0, 12, -5, 10, -15];
+      const rotate = rotations[i % rotations.length];
+
+      return isMobile 
+        ? `rotate(${rotate}deg) translate(${translateVW}vw)` 
+        : `rotate(${rotate}deg) translate(${translateX}px)`;
+    });
+  }, [displaySipups.length, isMobile]);
 
   const handleCardClick = (idx: number) => {
     const sipup = displaySipups[idx];

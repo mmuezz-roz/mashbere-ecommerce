@@ -67,7 +67,7 @@ export default function EquipmentHero() {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: { 
       opacity: 1, 
       y: 0, 
@@ -77,7 +77,7 @@ export default function EquipmentHero() {
 
   return (
     <section 
-      className="relative h-[90svh] sm:min-h-[120vh] flex flex-col justify-start pt-[18svh] sm:pt-[22vh] overflow-hidden"
+      className="relative h-[90svh] sm:min-h-[120vh] flex flex-col justify-start pt-[18svh] sm:pt-[22vh] overflow-hidden bg-[#141A0B]"
       onTouchStart={() => setIsInteracting(true)}
       onTouchEnd={() => setIsInteracting(false)}
       onTouchCancel={() => setIsInteracting(false)}
@@ -94,6 +94,9 @@ export default function EquipmentHero() {
               transition={{ duration: 0.6 }}
               className="absolute inset-0 z-0"
             >
+              {/* Subtle dark overlay to normalize brightness and improve legibility */}
+              <div className="absolute inset-0 bg-black/[0.08] z-10" />
+
               {/* Desktop Image */}
               <Image
                 src={slide.image}
@@ -119,52 +122,54 @@ export default function EquipmentHero() {
 
       {/* Content — pushed down from navbar on mobile, centred on desktop */}
       <div className="relative z-10 w-full max-w-7xl mx-auto">
-        <AnimatePresence>
-          {slides.map((slide, index) => (
-            index === currentIndex && (
-              <motion.div
-                key={index}
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="absolute top-0 left-5 sm:left-6 lg:left-8 right-5 sm:right-6 lg:left-8 max-w-4xl"
-              >
-                {/* Label badge */}
-                <motion.div variants={itemVariants} className="inline-flex items-center gap-2 bg-[#708238]/10 border border-[#708238]/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-6">
-                  <Package className="w-3.5 h-3.5 text-[#708238]" />
-                  <span className="text-[#708238] text-[9px] sm:text-xs font-black uppercase tracking-widest">
-                    {slide.label}
-                  </span>
-                </motion.div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="absolute top-0 left-5 sm:left-6 lg:left-8 right-5 sm:right-6 lg:left-8 max-w-4xl"
+          >
+            {/* Label badge */}
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 bg-[#708238]/10 border border-[#708238]/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-6">
+              <Package className="w-3.5 h-3.5 text-[#708238]" />
+              <span className="text-[#708238] text-[9px] sm:text-xs font-black uppercase tracking-widest">
+                {currentSlide.label}
+              </span>
+            </motion.div>
 
-                {/* Heading */}
-                <motion.h1 variants={itemVariants} className="text-[10.5vw] min-[400px]:text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display uppercase tracking-tighter leading-[0.88] mb-3 sm:mb-6 flex flex-col items-start gap-1 sm:gap-2">
-                  {slide.title}
-                </motion.h1>
+            {/* Heading */}
+            <motion.h1 variants={itemVariants} className="text-[10.5vw] min-[400px]:text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display uppercase tracking-tighter leading-[0.88] mb-3 sm:mb-6 flex flex-col items-start gap-1 sm:gap-2">
+              {currentSlide.title}
+            </motion.h1>
 
-                {/* Description Container with Independent Glass Box */}
-                <motion.div variants={itemVariants} className="relative mb-6 sm:mb-10 w-fit group">
-                  {/* Premium Glass Box - Only for Slide 2 */}
-                  {index === 1 && (
-                    <div 
-                      className="absolute inset-0 bg-white/40 sm:bg-white/10 backdrop-blur-md border border-white/40 shadow-xl rounded-2xl sm:rounded-3xl z-0" 
-                      style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}
-                    />
-                  )}
+            {/* Description Container with Independent Glass Box */}
+            <motion.div variants={itemVariants} className="relative mb-6 sm:mb-10 w-fit group">
+              {/* Premium Glass Box - Only for Slide 2 */}
+              {currentIndex === 1 && (
+                <motion.div 
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: { opacity: 1 }
+                  }}
+                  className="absolute inset-0 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl sm:rounded-3xl z-0" 
+                  style={{ backfaceVisibility: 'hidden' }}
+                />
+              )}
 
                   {/* Description — visible on most screens */}
                   <p className={`relative z-10 hidden min-[400px]:block text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed max-w-xs sm:max-w-2xl font-semibold ${
-                    index === 1 ? 'p-4 sm:p-6 lg:p-8 text-[#141A0B]' : 'text-[#141A0B]/80'
+                    currentIndex === 1 ? 'p-4 sm:p-6 lg:p-8 text-[#141A0B]' : 'text-[#141A0B]/80'
                   }`}>
-                    {slide.description}
+                    {currentSlide.description}
                   </p>
 
                   {/* Short version on tiny screens */}
                   <p className={`relative z-10 block min-[400px]:hidden text-xs leading-snug max-w-[260px] font-bold ${
-                    index === 1 ? 'p-3.5 text-[#141A0B]' : 'text-[#141A0B]/75'
+                    currentIndex === 1 ? 'p-3.5 text-[#141A0B]' : 'text-[#141A0B]/75'
                   }`}>
-                    {slide.description}
+                    {currentSlide.description}
                   </p>
                 </motion.div>
 
@@ -180,7 +185,7 @@ export default function EquipmentHero() {
                   <a
                     href="#products"
                     className={`flex items-center justify-center gap-2 px-5 py-3 sm:px-8 sm:py-4 rounded-full font-black text-[10px] sm:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all border ${
-                      index === 1
+                      currentIndex === 1
                         ? 'bg-[#EAF3DA] border-[#EAF3DA] text-[#141A0B] shadow-lg shadow-[#EAF3DA]/20'
                         : 'bg-[#141A0B]/5 border-[#141A0B]/10 text-[#141A0B] hover:border-[#141A0B]/20'
                     }`}
@@ -190,10 +195,8 @@ export default function EquipmentHero() {
                   </a>
                 </motion.div>
               </motion.div>
-            )
-          ))}
-        </AnimatePresence>
-      </div>
+            </AnimatePresence>
+          </div>
 
       {/* Progress Indicators */}
       <div className="absolute bottom-[20%] sm:bottom-[15%] left-1/2 -translate-x-1/2 flex gap-3 z-20">
