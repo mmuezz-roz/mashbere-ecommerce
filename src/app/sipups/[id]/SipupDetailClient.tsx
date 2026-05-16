@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Star, ChevronRight } from 'lucide-react';
+import { buildProductSchema } from '@/lib/schema';
 
 interface Props {
   sipup: any;
@@ -20,29 +21,15 @@ export default function SipupDetailClient({ sipup }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org/",
-            "@type": "Product",
-            "name": sipup.name,
-            "image": [
-              sipup.image?.startsWith('http') 
-                ? sipup.image 
-                : `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'}${sipup.image}`
-            ],
-            "description": sipup.desc || sipup.longDesc || sipup.description,
-            "brand": {
-              "@type": "Brand",
-              "name": "Mashbere"
-            },
-            "offers": {
-              "@type": "Offer",
-              "url": `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'}/sipups/${sipup.id}`,
-              "priceCurrency": "AED",
-              "price": sipup.price || 0,
-              "availability": "https://schema.org/InStock",
-              "itemCondition": "https://schema.org/NewCondition"
-            }
-          })
+          __html: JSON.stringify(
+            buildProductSchema({
+              name: sipup.name,
+              image: sipup.image,
+              description: sipup.desc || sipup.longDesc || sipup.description,
+              url: `/sipups/${sipup.id}`,
+              price: sipup.price || 0,
+            })
+          ),
         }}
       />
       {/* Background Decorative Gradient */}

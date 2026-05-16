@@ -9,6 +9,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '',
     '/products',
     '/equipment',
+    '/about',
+    '/privacy',
+    '/terms',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
@@ -24,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ProductService.getAllPookies(),
   ]);
 
-  // All products are accessible via /products/[id]
+  // Combined product routes with correct URL logic
   const productRoutes = [
     ...popsicles.map((p) => ({
       url: `${baseUrl}/products/${p.id}`,
@@ -33,10 +36,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     })),
     ...sipups.map((s) => ({
-      url: `${baseUrl}/products/${s.id}`,
+      url: `${baseUrl}/sipups/${s.id}`, // Fixed: Sipups are served from /sipups/
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.6,
+      priority: 0.7, // Higher priority for Sipups
     })),
     ...equipment.map((e) => ({
       url: `${baseUrl}/products/${e.id}`,
@@ -48,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/products/${p.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.6,
+      priority: 0.5,
     })),
   ];
 

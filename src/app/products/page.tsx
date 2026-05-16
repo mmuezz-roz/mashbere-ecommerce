@@ -6,6 +6,9 @@ import FlavorsGrid from './FlavorsGrid';
 import { Suspense } from 'react';
  
 export const metadata = {
+  title: 'Artisanal Ice Cream, Popsicles & SipUps Collection | Mashbere',
+  description: 'Explore the complete Mashbere collection of premium artisanal frozen treats. From handcrafted popsicles to our signature SipUp ice cups, discover the best flavors in the UAE.',
+  keywords: ['artisanal ice cream flavors', 'premium popsicles UAE', 'SipUp collection', 'mini popsicles Dubai', 'handcrafted frozen desserts'],
   alternates: {
     canonical: '/products',
   },

@@ -15,10 +15,10 @@ const FOOTER_LINKS = {
     { name: 'Commercial Equipment', href: '/equipment' },
   ],
   Support: [
-    { name: 'Shipping & Returns', href: '#' },
-    { name: 'Track Order', href: '#' },
-    { name: 'Privacy Policy', href: '#' },
-    { name: 'Terms of Service', href: '#' },
+    // { name: 'Shipping & Returns', href: '/shipping' },
+    // { name: 'Track Order', href: '/track' },
+    { name: 'Privacy Policy', href: '/privacy' },
+    { name: 'Terms of Service', href: '/terms' },
   ],
   Contact: [
     { icon: MapPin, text: 'Jamees Food and Beverage Trading LLC - Dubai, UAE' },
@@ -96,18 +96,20 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div>
-              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-white/50 mb-8">Support</h3>
-              <ul className="space-y-4">
-                {FOOTER_LINKS.Support.map((link) => (
-                  <li key={link.name}>
-                    <Link href={link.href} className="text-gray-400 hover:text-[#C4EB54] font-medium transition-colors">
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {FOOTER_LINKS.Support.length > 0 && (
+              <div>
+                <h3 className="text-sm font-black uppercase tracking-[0.2em] text-white/50 mb-8">Support</h3>
+                <ul className="space-y-4">
+                  {FOOTER_LINKS.Support.map((link) => (
+                    <li key={link.name}>
+                      <Link href={link.href} className="text-gray-400 hover:text-[#C4EB54] font-medium transition-colors">
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="col-span-2 sm:col-span-1">
               <h3 className="text-sm font-black uppercase tracking-[0.2em] text-white/50 mb-8">Contact</h3>

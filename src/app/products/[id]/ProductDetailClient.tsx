@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Star, ShoppingBag, ChevronRight, Leaf, Send, X, Info, ShieldCheck, Plane, Zap, Truck, Sparkles, Activity } from 'lucide-react';
 import { ShareButton } from '@/components/shared/ShareButton';
+import { buildProductSchema } from '@/lib/schema';
 
 interface Props {
   flavor: any;
@@ -82,29 +83,15 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org/",
-            "@type": "Product",
-            "name": flavor.name,
-            "image": [
-              flavor.image?.startsWith('http') 
-                ? flavor.image 
-                : `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'}${flavor.image}`
-            ],
-            "description": flavor.desc || flavor.longDesc || flavor.description,
-            "brand": {
-              "@type": "Brand",
-              "name": "Mashbere"
-            },
-            "offers": {
-              "@type": "Offer",
-              "url": `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'}/products/${flavor.id}`,
-              "priceCurrency": "AED",
-              "price": flavor.price || 0,
-              "availability": "https://schema.org/InStock",
-              "itemCondition": "https://schema.org/NewCondition"
-            }
-          })
+          __html: JSON.stringify(
+            buildProductSchema({
+              name: flavor.name,
+              image: flavor.image,
+              description: flavor.desc || flavor.longDesc || flavor.description,
+              url: `/products/${flavor.id}`,
+              price: flavor.price || 0,
+            })
+          ),
         }}
       />
       {/* Dynamic color glow */}

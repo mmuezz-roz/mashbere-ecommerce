@@ -6,6 +6,9 @@ import { Package } from 'lucide-react';
 import { Suspense } from 'react';
 
 export const metadata = {
+  title: 'Commercial Ice Cream Equipment & Kiosk Solutions UAE | Mashbere',
+  description: 'Elevate your business with Mashbere professional B2B solutions. We provide high-end retail kiosks, hygienic ice glass systems, and premium equipment for the UAE hospitality industry.',
+  keywords: ['commercial ice cream equipment UAE', 'retail kiosk solutions Dubai', 'ice cup filling machine', 'B2B frozen desserts UAE', 'ice glass manufacturing'],
   alternates: {
     canonical: '/equipment',
   },

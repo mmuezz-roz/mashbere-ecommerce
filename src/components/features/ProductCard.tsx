@@ -45,7 +45,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] sm:rounded-[32px] bg-[#FDFCFD]">
           <ImageWithFallback
             src={product.image}
-            alt={product.name}
+            alt={`${product.name} - Mashbere Premium Frozen Treats UAE`}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.2s] ease-out"
           />
 
