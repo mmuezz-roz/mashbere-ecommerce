@@ -22,6 +22,12 @@ const ZeroRiskPartnership = dynamic(() => import('@/components/features/ZeroRisk
  * Homepage (Server Component)
  * Fetches featured products directly from the Service layer for optimal performance.
  */
+export const metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
+
 export default async function Home() {
   // Fetch data on the server
   const [featuredProducts, allSipups] = await Promise.all([

@@ -22,6 +22,7 @@ interface BounceCardsProps {
   enableHover?: boolean;
   isMobile?: boolean;
   onCardClick?: (index: number) => void;
+  altTexts?: string[];
 }
 
 export default function BounceCards({
@@ -41,7 +42,8 @@ export default function BounceCards({
   ],
   enableHover = true,
   isMobile = false,
-  onCardClick
+  onCardClick,
+  altTexts = []
 }: BounceCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -189,7 +191,7 @@ export default function BounceCards({
             <Image
               className="image"
               src={src}
-              alt={`card-${idx}`}
+              alt={altTexts[idx] || `Mashbere Premium Product ${idx + 1}`}
               fill
               sizes="(max-width: 640px) 140px, 180px"
             />

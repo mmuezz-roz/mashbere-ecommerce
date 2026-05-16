@@ -16,6 +16,7 @@ const bebas = Bebas_Neue({
 });
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'),
   title: 'Mashbere | Premium Ice Cream & Equipment',
   description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
   icons: {
@@ -23,6 +24,28 @@ export const metadata = {
   },
   verification: {
     google: 'rMZnh5V9v9sYih5zJb5-gklsLpRSSKeZLfBY-g5L4TQ',
+  },
+  openGraph: {
+    title: 'Mashbere | Premium Ice Cream & Equipment',
+    description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
+    url: 'https://mashbere.com',
+    siteName: 'Mashbere',
+    images: [
+      {
+        url: '/photos/green_hero_splash.png',
+        width: 1200,
+        height: 630,
+        alt: 'Mashbere Premium Ice Cream & Equipment',
+      },
+    ],
+    locale: 'en_AE',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mashbere | Premium Ice Cream & Equipment',
+    description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
+    images: ['/photos/green_hero_splash.png'],
   },
 };
 

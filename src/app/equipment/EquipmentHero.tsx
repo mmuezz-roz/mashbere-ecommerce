@@ -177,6 +177,7 @@ export default function EquipmentHero() {
                 <motion.div variants={itemVariants} className="flex flex-wrap gap-2.5 sm:gap-4">
                   <a
                     href="#contact"
+                    aria-label="Request a business quote"
                     className="flex items-center justify-center gap-2 bg-[#708238] text-white px-5 py-3 sm:px-8 sm:py-4 rounded-full font-black text-[10px] sm:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-[#708238]/20"
                   >
                     <Quote className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -184,6 +185,7 @@ export default function EquipmentHero() {
                   </a>
                   <a
                     href="#products"
+                    aria-label="View our full equipment catalog"
                     className={`flex items-center justify-center gap-2 px-5 py-3 sm:px-8 sm:py-4 rounded-full font-black text-[10px] sm:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all border ${
                       currentIndex === 1
                         ? 'bg-[#EAF3DA] border-[#EAF3DA] text-[#141A0B] shadow-lg shadow-[#EAF3DA]/20'

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2 } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -116,7 +116,7 @@ export default function Header() {
             : 'top-3 sm:top-6 translate-y-0 opacity-100 pointer-events-auto'
         }`}
       >
-        <div className={`backdrop-blur-xl rounded-[32px] sm:rounded-[40px] px-2 sm:px-8 py-1 sm:py-3 flex items-center justify-between border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.3)] transition-all duration-500 ${
+        <div className={`backdrop-blur-xl rounded-[32px] sm:rounded-[40px] px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.3)] transition-all duration-500 ${
           isScrolled ? 'bg-[#1E2710]/95' : 'bg-[#708238]/80'
         }`}>
           
@@ -129,10 +129,46 @@ export default function Header() {
                 exit={{ opacity: 0, x: -10 }}
                 className="w-full flex items-center justify-between relative"
               >
-                {/* DESKTOP: Navigation Links (Left) */}
-                <nav className="hidden lg:flex items-center gap-2">
+                {/* LOGO & BACK: Left */}
+                <div className="flex items-center gap-2 sm:gap-4">
+                  {/* MOBILE BACK BUTTON (Visible only on mobile, and not on home page) */}
+                  {pathname !== '/' && (
+                    <button 
+                      onClick={() => router.back()}
+                      className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                      aria-label="Go back"
+                    >
+                      <ArrowLeft size={16} />
+                    </button>
+                  )}
+
+                  <Link href="/" className="group flex items-center ml-2 sm:ml-3 lg:ml-4" aria-label="Mashbere Home">
+                    <div className="relative w-32 sm:w-40 lg:w-48 h-8 sm:h-10 lg:h-10 scale-[2.0] sm:scale-[2.1] lg:scale-[2.2] origin-left flex items-center transition-all group-hover:scale-[2.05] sm:group-hover:scale-[2.15] lg:group-hover:scale-[2.25]">
+                      {/* English Logo (Default) */}
+                      <Image
+                        src="/photos/mashbere_logo_no_bg.png"
+                        alt="Mashbere Logo"
+                        fill
+                        className="object-contain object-left brightness-0 invert transition-opacity duration-300 ease-in-out group-hover:opacity-0"
+                        priority
+                      />
+                      {/* Arabic Logo (Hover) */}
+                      <Image
+                        src="/photos/1777758274783-6846d2ef-8359-49ac-9256-60655e81b0d0_4.png"
+                        alt="Mashbere Arabic Logo"
+                        fill
+                        className="object-contain object-left brightness-0 invert opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+                        priority
+                      />
+                    </div>
+                  </Link>
+                </div>
+
+                {/* DESKTOP: Navigation Links (Center) */}
+                <nav className="hidden lg:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
                   {[
                     { label: 'Home', href: '/' },
+                    { label: 'About', href: '/about' },
                     { label: 'Products', href: '/products' },
                     { label: 'For Business', href: '/equipment' },
                   ].map((item) => {
@@ -165,41 +201,6 @@ export default function Header() {
                   })}
                 </nav>
 
-                {/* LOGO & BACK: Left on Mobile, Center on Desktop */}
-                <div className="flex items-center lg:absolute lg:left-1/2 lg:-translate-x-1/2 gap-2 sm:gap-4">
-                  {/* MOBILE BACK BUTTON (Visible only on mobile, and not on home page) */}
-                  {pathname !== '/' && (
-                    <button 
-                      onClick={() => router.back()}
-                      className="lg:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                      aria-label="Go back"
-                    >
-                      <ArrowLeft size={16} />
-                    </button>
-                  )}
-
-                  <Link href="/" className="group flex items-center">
-                    <div className="relative w-32 sm:w-44 lg:w-80 h-16 sm:h-20 lg:h-32 transition-all group-hover:scale-105">
-                      {/* English Logo (Default) */}
-                      <Image
-                        src="/photos/mashbere_logo_no_bg.png"
-                        alt="Mashbere Logo"
-                        fill
-                        className="object-contain brightness-0 invert transition-opacity duration-300 ease-in-out group-hover:opacity-0"
-                        priority
-                      />
-                      {/* Arabic Logo (Hover) */}
-                      <Image
-                        src="/photos/1777758274783-6846d2ef-8359-49ac-9256-60655e81b0d0_4.png"
-                        alt="Mashbere Arabic Logo"
-                        fill
-                        className="object-contain brightness-0 invert opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
-                        priority
-                      />
-                    </div>
-                  </Link>
-                </div>
-
                 {/* ACTIONS (Right) */}
                 <div className="flex items-center gap-2">
                   {/* Mobile Menu Trigger */}
@@ -214,6 +215,7 @@ export default function Header() {
                   <div className="hidden lg:flex items-center gap-3">
                     <button 
                       onClick={() => setIsSearchOpen(true)}
+                      aria-label="Open search overlay"
                       className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white transition-colors hover:bg-[#C4EB54] hover:text-[#1E2710]"
                     >
                       <Search className="w-5 h-5" />
@@ -342,6 +344,7 @@ export default function Header() {
               <div className="space-y-1">
                 {[
                   { label: 'Home', href: '/', icon: Home },
+                  { label: 'About', href: '/about', icon: Sparkles },
                   { label: 'Products', href: '/products', icon: LayoutGrid },
                   { label: 'For Business', href: '/equipment', icon: Building2 },
                   { label: 'Account', href: user ? '/profile' : '/auth/login', icon: User },

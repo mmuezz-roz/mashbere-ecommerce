@@ -16,7 +16,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0">
         <Image
           src="/photos/green_hero_splash.png"
-          alt="Background"
+          alt="Premium Ice Cream and Dessert Background - Mashbere UAE"
           fill
           className="object-cover opacity-60"
           priority
@@ -58,6 +58,7 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full">
             <Link
               href="/products"
+              aria-label="Explore our collection of premium flavors"
               className="inline-block bg-[#C4EB54] text-[#141A0B] px-10 sm:px-14 py-4 rounded-full font-black text-sm sm:text-base uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all"
             >
               Explore Flavours

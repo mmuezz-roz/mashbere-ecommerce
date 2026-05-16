@@ -8,6 +8,34 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const sipup = await ProductService.getSipupDetail(id);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com';
+
+  if (!sipup) {
+    return { title: 'SipUp Not Found | Mashbere' };
+  }
+
+  const fullImageUrl = sipup.image && sipup.image.startsWith('http') 
+    ? sipup.image 
+    : `${baseUrl}${sipup.image}`;
+
+  return {
+    title: `${sipup.name} | Mashbere`,
+    description: sipup.description || sipup.longDesc,
+    alternates: {
+      canonical: `/sipups/${id}`,
+    },
+    openGraph: {
+      title: sipup.name,
+      description: sipup.description || sipup.longDesc,
+      url: `${baseUrl}/sipups/${id}`,
+      images: [{ url: fullImageUrl }],
+    },
+  };
+}
+
 export default async function SipUpDetailPage({ params }: Props) {
   const { id } = await params;
 

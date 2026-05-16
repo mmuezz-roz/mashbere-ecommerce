@@ -8,6 +8,7 @@ import Image from 'next/image';
 
 const FOOTER_LINKS = {
   Explore: [
+    { name: 'About Us', href: '/about' },
     { name: 'All Products', href: '/products' },
     { name: 'Ice Cream', href: '/products?category=ice-cream' },
     { name: 'Popsicles', href: '/products?category=popsicle' },
@@ -69,7 +70,10 @@ export default function Footer() {
                   placeholder="Enter your email"
                   className="bg-transparent flex-1 px-4 sm:px-5 py-2.5 sm:py-3 outline-none text-sm font-medium text-white placeholder:text-gray-500 rounded-[14px] sm:rounded-none"
                 />
-                <button className="bg-[#C4EB54] text-[#141A0B] px-6 sm:px-8 py-2.5 sm:py-3 rounded-[14px] sm:rounded-[16px] font-black text-sm hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+                <button 
+                  aria-label="Subscribe to newsletter"
+                  className="bg-[#C4EB54] text-[#141A0B] px-6 sm:px-8 py-2.5 sm:py-3 rounded-[14px] sm:rounded-[16px] font-black text-sm hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
                   <Send className="w-4 h-4" />
                   Join
                 </button>
@@ -139,6 +143,7 @@ export default function Footer() {
               href="https://www.instagram.com/mashbere.ae?igsh=cTZtdmh5YXQ1dWc2"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Follow Mashbere on Instagram"
               className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-[#C4EB54]/10 hover:text-[#C4EB54] transition-all"
             >
               <Instagram className="w-5 h-5" />
@@ -147,6 +152,7 @@ export default function Footer() {
               href="https://www.facebook.com/share/1JTDeNX7H1/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Follow Mashbere on Facebook"
               className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-[#C4EB54]/10 hover:text-[#C4EB54] transition-all"
             >
               <Facebook className="w-5 h-5" />

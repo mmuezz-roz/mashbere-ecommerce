@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: `${product.name} | Mashbere`,
     description: product.description,
+    alternates: {
+      canonical: `/products/${product.slug || id}`,
+    },
     openGraph: {
       title: product.name,
       description: product.description,

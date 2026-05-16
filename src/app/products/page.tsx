@@ -4,6 +4,12 @@ import { Star } from 'lucide-react';
 import { ProductService } from '@/services/server/productService';
 import FlavorsGrid from './FlavorsGrid';
 import { Suspense } from 'react';
+ 
+export const metadata = {
+  alternates: {
+    canonical: '/products',
+  },
+};
 
 export default async function ProductsPage() {
   // Fetch from Supabase

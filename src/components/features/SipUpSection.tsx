@@ -141,7 +141,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
             >
               <Image
                 src="/photos/sipUp writings.png"
-                alt="SipUps"
+                alt="Signature SipUp Cold Pressed Juice Flavors"
                 width={600}
                 height={200}
                 className="h-[14vw] sm:h-[70px] md:h-[90px] lg:h-[130px] w-auto object-contain"
@@ -170,6 +170,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
             <div className="w-full max-w-5xl flex justify-center transform scale-100 z-20">
               <BounceCards
                 images={images}
+                altTexts={displaySipups.map(s => `${s.name} - Premium Fresh Cold Pressed Juice`)}
                 containerWidth="100%"
                 containerHeight={500}
                 animationDelay={0.3}

@@ -5,6 +5,12 @@ import EquipmentHero from './EquipmentHero';
 import { Package } from 'lucide-react';
 import { Suspense } from 'react';
 
+export const metadata = {
+  alternates: {
+    canonical: '/equipment',
+  },
+};
+
 /**
  * Equipment Page (Server Component)
  * Fetches B2B equipment products on the server for optimal performance.

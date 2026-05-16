@@ -73,6 +73,8 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Wishlist Button */}
           <button
             onClick={(e) => { e.preventDefault(); setIsWishlisted(!isWishlisted); }}
+            aria-label={isWishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+            aria-pressed={isWishlisted}
             className="absolute top-3 sm:top-5 right-3 sm:right-5 p-2.5 sm:p-3 bg-white/90 rounded-xl sm:rounded-2xl transition-transform duration-200 border border-white/30 z-10 hover:scale-110"
           >
             <Heart className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-primary'}`} />

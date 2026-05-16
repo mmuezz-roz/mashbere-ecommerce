@@ -430,6 +430,7 @@ export default function ProductShowcase() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 onClick={() => scroll('left')}
+                aria-label="Scroll product showcase left"
                 className="group pointer-events-auto w-20 h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-[#7E8D5F] hover:border-[#7E8D5F] transition-all duration-500 shadow-2xl"
               >
                 <ChevronLeft className="w-8 h-8 text-[#7E8D5F] group-hover:text-white transition-colors" />
@@ -444,6 +445,7 @@ export default function ProductShowcase() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 onClick={() => scroll('right')}
+                aria-label="Scroll product showcase right"
                 className="group pointer-events-auto w-20 h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-[#7E8D5F] hover:border-[#7E8D5F] transition-all duration-500 shadow-2xl ml-auto"
               >
                 <ChevronRight className="w-8 h-8 text-[#7E8D5F] group-hover:text-white transition-colors" />
@@ -493,6 +495,7 @@ export default function ProductShowcase() {
               >
                 <Link
                   href="/products"
+                  aria-label="View all flavors in our catalog"
                   className="w-72 h-72 rounded-full bg-transparent border-4 border-[#7E8D5F] text-[#7E8D5F] flex flex-col items-center justify-center gap-4 transition-all duration-500 hover:scale-110 hover:bg-[#7E8D5F] hover:text-white shadow-xl hover:shadow-2xl group/cta pointer-events-auto"
                 >
                   <span className="font-display uppercase text-3xl text-center leading-[1.1] tracking-wide">
@@ -577,7 +580,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
                 src="/photos/ChatGPT Image May 1, 2026, 03_10_13 PM.png"
-                alt="Card Background"
+                alt="Handcrafted Chikku Popsicle - Mashbere Natural Fruit Series"
                 fill
                 className="object-cover"
               />
@@ -599,7 +602,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             >
               <Image 
                 src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.png"
-                alt="Chickku Detail"
+                alt="Fresh Sapota Fruit Pieces for Chikku Flavor"
                 fill
                 className="object-contain"
               />
@@ -616,7 +619,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
               >
                 <Image 
                   src="/photos/ChatGPT_Image_Apr_30__2026__05_31_32_PM-removebg-preview.png"
-                  alt="Premium Popsicle"
+                  alt="Premium Chikku (Sapota) Fruit Popsicle"
                   width={450}
                   height={650}
                   className="object-contain scale-65 lg:scale-100"
@@ -633,7 +636,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
                 src="/photos/mango cardbg.png"
-                alt="Mango Card Background"
+                alt="Tropical Mango Orchard Background - Mashbere Freshness"
                 fill
                 className="object-cover scale-[1.15]"
               />
@@ -660,7 +663,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             >
               <Image 
                 src="/photos/mango pieces-Photoroom.png"
-                alt="Mango Pieces"
+                alt="Fresh Alphonso Mango Slices"
                 fill
                 className="object-contain"
               />
@@ -677,7 +680,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
               >
                 <Image 
                   src="/photos/mango popsicle.webp"
-                  alt="Mango Popsicle"
+                  alt="Real Mango Pulp Fruit Popsicle"
                   width={550}
                   height={750}
                   className="object-contain scale-85 lg:scale-115"
@@ -695,7 +698,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
                 src="/photos/ChatGPT Image May 2, 2026, 05_20_20 PM.png"
-                alt="Tender Coconut Card Background"
+                alt="Tender Coconut Palm Background"
                 fill
                 className="object-fill scale-[2.2]"
               />
@@ -722,7 +725,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             >
               <Image 
                 src="/photos/tender og pieces.png"
-                alt="Tender Coconut Pieces"
+                alt="Authentic Tender Coconut Slices"
                 fill
                 className="object-contain scale-[0.85]"
               />
@@ -739,7 +742,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
               >
                 <Image 
                   src="/photos/tender og popsicle.png"
-                  alt="Tender Coconut Popsicle"
+                  alt="Creamy Tender Coconut Fruit Popsicle"
                   width={550}
                   height={750}
                   className="object-contain scale-50 lg:scale-70"
@@ -756,7 +759,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
                 src="/photos/strawberry bg card.png"
-                alt="Strawberry Card Background"
+                alt="Fresh Strawberry Field - Mashbere Natural Ingredients"
                 fill
                 className="object-cover scale-110"
               />
@@ -783,7 +786,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             >
               <Image 
                 src="/photos/strawberry-pieces.webp"
-                alt="Strawberry Pieces"
+                alt="Organic Strawberry Chunks"
                 fill
                 className="object-contain"
               />
