@@ -63,6 +63,14 @@ const organizationSchema = {
     "addressLocality": "Dubai",
     "addressCountry": "UAE"
   },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+971-50-299-4974",
+    "contactType": "customer service",
+    "email": "info@Jameesfood.com",
+    "areaServed": "AE",
+    "availableLanguage": ["English", "Arabic"]
+  },
   "sameAs": [
     "https://www.instagram.com/mashbere.ae",
     "https://www.facebook.com/share/1JTDeNX7H1/"
