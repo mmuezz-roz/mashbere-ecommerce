@@ -50,7 +50,7 @@ export default function Footer() {
             
             <p className="text-gray-400 text-lg font-medium leading-relaxed max-w-md">
               Crafting premium artisanal frozen delights with the finest natural ingredients. 
-              Delivering moments of pure joy across the UAE.
+              Delivering moments of pure joy across the UAE as a leading wholesale ice cream UAE partner and premium ice cream supplier UAE.
             </p>
 
             <div className="pt-2 pb-4">

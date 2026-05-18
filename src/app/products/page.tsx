@@ -8,7 +8,7 @@ import { Suspense } from 'react';
 export const metadata = {
   title: 'Ice Cream Products UAE | Popsicles, Ice Cups & Flavours | Mashbere',
   description: 'Indulge in the best artisanal ice cream, handcrafted popsicles, & premium ice cups in the UAE. Made with 100% natural ingredients. Explore our flavors today!',
-  keywords: ['artisanal ice cream UAE', 'premium popsicles Dubai', 'SipUp ice cups', 'handcrafted frozen desserts', 'Mashbere ice cream'],
+  keywords: ['artisanal ice cream UAE', 'premium popsicles Dubai', 'SipUp ice cups', 'handcrafted frozen desserts', 'Mashbere ice cream', 'ice cream supplier UAE', 'wholesale ice cream UAE'],
   alternates: {
     canonical: '/products',
   },
