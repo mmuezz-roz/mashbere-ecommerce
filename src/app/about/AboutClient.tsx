@@ -79,7 +79,7 @@ export default function AboutClient() {
         {/* Parallax background */}
         <motion.div style={{ scale: heroScale }} className="absolute inset-0 z-0 origin-center">
           <Image
-            src="/photos/ChatGPT Image May 16, 2026, 05_05_46 PM.png"
+            src="/photos/ChatGPT Image May 16, 2026, 05_05_46 PM.webp"
             alt="Mashbere – Premium Frozen Desserts UAE"
             fill priority
             className="object-cover object-center opacity-55"
@@ -161,7 +161,7 @@ export default function AboutClient() {
             <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl lg:rounded-[40px]
                             aspect-[4/3] sm:aspect-[16/8] lg:aspect-[21/8]">
               <Image
-                src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.png"
+                src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.webp"
                 alt="Mashbere premium frozen desserts crafted from natural fruit pulp"
                 fill
                 className="object-cover"
@@ -291,7 +291,7 @@ export default function AboutClient() {
               <div className="block sm:hidden">
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                   <Image
-                    src="/photos/ice-glass-main.jpeg"
+                    src="/photos/ice-glass-main.webp"
                     alt="Mashbere hygienic ice cup – ice glass UAE"
                     fill className="object-cover"
                     sizes="100vw"
@@ -301,21 +301,21 @@ export default function AboutClient() {
               <div className="hidden sm:grid grid-cols-2 gap-3">
                 <div className="space-y-3">
                   <div className="aspect-[3/4] rounded-[20px] overflow-hidden">
-                    <Image src="/photos/ice-glass-main.jpeg" alt="Mashbere hygienic ice cup – ice glass UAE"
+                    <Image src="/photos/ice-glass-main.webp" alt="Mashbere hygienic ice cup – ice glass UAE"
                       width={400} height={530} className="object-cover w-full h-full" />
                   </div>
                   <div className="aspect-square rounded-[20px] overflow-hidden">
-                    <Image src="/photos/kiosk-main.jpeg" alt="Mashbere ice cream kiosk solution UAE"
+                    <Image src="/photos/kiosk-main.webp" alt="Mashbere ice cream kiosk solution UAE"
                       width={400} height={400} className="object-cover w-full h-full" />
                   </div>
                 </div>
                 <div className="space-y-3 pt-8">
                   <div className="aspect-square rounded-[20px] overflow-hidden">
-                    <Image src="/photos/ice-glass-lifestyle.jpeg" alt="Ice glass for cafes and beverage businesses UAE"
+                    <Image src="/photos/ice-glass-lifestyle.webp" alt="Ice glass for cafes and beverage businesses UAE"
                       width={400} height={400} className="object-cover w-full h-full" />
                   </div>
                   <div className="aspect-[3/4] rounded-[20px] overflow-hidden">
-                    <Image src="/photos/kiosk-size-signature.jpeg" alt="Mashbere signature kiosk solution UAE"
+                    <Image src="/photos/kiosk-size-signature.webp" alt="Mashbere signature kiosk solution UAE"
                       width={400} height={530} className="object-cover w-full h-full" />
                   </div>
                 </div>
@@ -385,7 +385,7 @@ export default function AboutClient() {
               {/* Taller on mobile so text isn't squished */}
               <div className="relative aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
                 <Image
-                  src="/photos/ChatGPT Image May 12, 2026, 01_31_49 PM.png"
+                  src="/photos/ChatGPT Image May 12, 2026, 01_31_49 PM.webp"
                   alt="Mashbere – Premium frozen desserts designed for the UAE market"
                   fill className="object-cover"
                   sizes="(max-width: 640px) 100vw, 90vw"

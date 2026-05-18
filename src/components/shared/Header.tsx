@@ -146,7 +146,7 @@ export default function Header() {
                     <div className="relative w-32 sm:w-40 lg:w-48 h-8 sm:h-10 lg:h-10 scale-[2.0] sm:scale-[2.1] lg:scale-[2.2] origin-left flex items-center transition-all group-hover:scale-[2.05] sm:group-hover:scale-[2.15] lg:group-hover:scale-[2.25]">
                       {/* English Logo (Default) */}
                       <Image
-                        src="/photos/mashbere_logo_no_bg.png"
+                        src="/photos/mashbere_logo_no_bg.webp"
                         alt="Mashbere Logo"
                         fill
                         className="object-contain object-left brightness-0 invert transition-opacity duration-300 ease-in-out group-hover:opacity-0"
@@ -154,7 +154,7 @@ export default function Header() {
                       />
                       {/* Arabic Logo (Hover) */}
                       <Image
-                        src="/photos/1777758274783-6846d2ef-8359-49ac-9256-60655e81b0d0_4.png"
+                        src="/photos/1777758274783-6846d2ef-8359-49ac-9256-60655e81b0d0_4.webp"
                         alt="Mashbere Arabic Logo"
                         fill
                         className="object-contain object-left brightness-0 invert opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
@@ -323,7 +323,7 @@ export default function Header() {
               <Link href="/" onClick={() => setIsMenuOpen(false)} className="group flex items-center">
                 <div className="relative w-32 h-16">
                   <Image
-                    src="/photos/mashbere_logo_no_bg.png"
+                    src="/photos/mashbere_logo_no_bg.webp"
                     alt="Mashbere Logo"
                     fill
                     className="object-contain brightness-0 invert"

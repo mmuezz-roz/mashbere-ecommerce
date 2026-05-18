@@ -7,7 +7,7 @@ import { Quote, Package, ChevronDown } from 'lucide-react';
 
 const slides = [
   {
-    image: '/photos/ChatGPT Image May 12, 2026, 07_22_45 PM.png',
+    image: '/photos/ChatGPT Image May 12, 2026, 07_22_45 PM.webp',
     label: 'B2B Solutions',
     title: (
       <>
@@ -21,7 +21,7 @@ const slides = [
     description: 'Launch your business with ready-to-use ice cream kiosk solutions in the UAE. Mashbere provides premium ice products, reliable retail setups, and seamless logistics for high-performing locations.'
   },
   {
-    image: '/photos/ChatGPT Image May 12, 2026, 01_31_49 PM.png',
+    image: '/photos/ChatGPT Image May 12, 2026, 01_31_49 PM.webp',
     mobileImage: '/photos/mobile view ice cup bg.webp',
     label: 'Professional Grade',
     title: (

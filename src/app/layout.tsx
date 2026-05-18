@@ -21,7 +21,7 @@ export const metadata = {
   title: 'Mashbere | Premium Ice Cream & Equipment',
   description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
   icons: {
-    icon: '/photos/mashbere icon.png',
+    icon: '/photos/mashbere icon.webp',
   },
   verification: {
     google: 'rMZnh5V9v9sYih5zJb5-gklsLpRSSKeZLfBY-g5L4TQ',
@@ -33,7 +33,7 @@ export const metadata = {
     siteName: 'Mashbere',
     images: [
       {
-        url: '/photos/green_hero_splash.png',
+        url: '/photos/green_hero_splash.webp',
         width: 1200,
         height: 630,
         alt: 'Mashbere Premium Ice Cream & Equipment',
@@ -46,7 +46,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Mashbere | Premium Ice Cream & Equipment',
     description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
-    images: ['/photos/green_hero_splash.png'],
+    images: ['/photos/green_hero_splash.webp'],
   },
 };
 
@@ -56,7 +56,7 @@ const organizationSchema = {
   "@type": "Organization",
   "name": "Mashbere",
   "url": "https://mashbere.com",
-  "logo": "https://mashbere.com/photos/mashbere_logo_no_bg.png",
+  "logo": "https://mashbere.com/photos/mashbere_logo_no_bg.webp",
   "description": "Premium artisanal frozen delights and professional B2B ice cream equipment in the UAE.",
   "address": {
     "@type": "PostalAddress",

@@ -40,7 +40,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3">
               <div className="relative h-20 w-64">
                 <Image
-                  src="/photos/mashbere_logo_no_bg.png"
+                  src="/photos/mashbere_logo_no_bg.webp"
                   alt="Mashbere Logo"
                   fill
                   className="object-contain brightness-0 invert"

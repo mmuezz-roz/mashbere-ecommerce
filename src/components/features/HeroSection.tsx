@@ -15,7 +15,7 @@ export default function HeroSection() {
       {/* Background Image (Cover) */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/photos/green_hero_splash.png"
+          src="/photos/green_hero_splash.webp"
           alt="Premium Ice Cream and Dessert Background - Mashbere UAE"
           fill
           className="object-cover opacity-60"

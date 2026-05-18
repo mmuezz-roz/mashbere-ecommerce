@@ -15,8 +15,8 @@ const SHOWCASE_ITEMS = [
     desc: "The unique, malty sweetness of farm-fresh Sapota (Chikku) in every creamy bite.",
     bgColor: "#F3F0DA", 
     textColor: "#4D461F", 
-    image: "/photos/05.jpg",
-    accentImage: "/photos/05.jpg"
+    image: "/photos/05.webp",
+    accentImage: "/photos/05.webp"
   },
   { 
     id: 2, 
@@ -25,8 +25,8 @@ const SHOWCASE_ITEMS = [
     desc: "Sun-ripened Alphonso mangoes blended into a smooth, golden tropical delight.",
     bgColor: "#FEF3C7", 
     textColor: "#92400E", 
-    image: "/photos/02.jpg",
-    accentImage: "/photos/02.jpg"
+    image: "/photos/02.webp",
+    accentImage: "/photos/02.webp"
   },
   { 
     id: 3, 
@@ -35,8 +35,8 @@ const SHOWCASE_ITEMS = [
     desc: "Crafted with 100% real coconut water and tender pulp for a refreshing island escape.",
     bgColor: "#E7F3F3", 
     textColor: "#1E3D3D", 
-    image: "/photos/01.jpg",
-    accentImage: "/photos/01.jpg"
+    image: "/photos/01.webp",
+    accentImage: "/photos/01.webp"
   },
   { 
     id: 4, 
@@ -579,7 +579,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             {/* 1. Background Image - Stays clipped */}
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
-                src="/photos/ChatGPT Image May 1, 2026, 03_10_13 PM.png"
+                src="/photos/ChatGPT Image May 1, 2026, 03_10_13 PM.webp"
                 alt="Handcrafted Chikku Popsicle - Mashbere Natural Fruit Series"
                 fill
                 className="object-cover"
@@ -601,7 +601,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
-                src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.png"
+                src="/photos/ChatGPT Image May 1, 2026, 03_19_32 PM.webp"
                 alt="Fresh Sapota Fruit Pieces for Chikku Flavor"
                 fill
                 className="object-contain"
@@ -618,7 +618,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/ChatGPT_Image_Apr_30__2026__05_31_32_PM-removebg-preview.png"
+                  src="/photos/ChatGPT_Image_Apr_30__2026__05_31_32_PM-removebg-preview.webp"
                   alt="Premium Chikku (Sapota) Fruit Popsicle"
                   width={450}
                   height={650}
@@ -635,7 +635,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             {/* 1. Background Image - scaled up to hide white edges */}
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
-                src="/photos/mango cardbg.png"
+                src="/photos/mango cardbg.webp"
                 alt="Tropical Mango Orchard Background - Mashbere Freshness"
                 fill
                 className="object-cover scale-[1.15]"
@@ -662,7 +662,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
-                src="/photos/mango pieces-Photoroom.png"
+                src="/photos/mango pieces-Photoroom.webp"
                 alt="Fresh Alphonso Mango Slices"
                 fill
                 className="object-contain"
@@ -697,7 +697,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             {/* 1. Background Image - Stays clipped */}
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
-                src="/photos/ChatGPT Image May 2, 2026, 05_20_20 PM.png"
+                src="/photos/ChatGPT Image May 2, 2026, 05_20_20 PM.webp"
                 alt="Tender Coconut Palm Background"
                 fill
                 className="object-fill scale-[2.2]"
@@ -724,7 +724,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
               className="absolute -top-12 lg:-top-24 -left-6 lg:-left-12 -right-6 lg:-right-12 -bottom-6 lg:-bottom-12 z-10 pointer-events-none"
             >
               <Image 
-                src="/photos/tender og pieces.png"
+                src="/photos/tender og pieces.webp"
                 alt="Authentic Tender Coconut Slices"
                 fill
                 className="object-contain scale-[0.85]"
@@ -741,7 +741,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/tender og popsicle.png"
+                  src="/photos/tender og popsicle.webp"
                   alt="Creamy Tender Coconut Fruit Popsicle"
                   width={550}
                   height={750}
@@ -758,7 +758,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
             {/* 1. Background Image - Stays clipped */}
             <div className="absolute inset-0 rounded-[48px] overflow-hidden">
               <Image 
-                src="/photos/strawberry bg card.png"
+                src="/photos/strawberry bg card.webp"
                 alt="Fresh Strawberry Field - Mashbere Natural Ingredients"
                 fill
                 className="object-cover scale-110"
@@ -863,7 +863,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, { item: any, index: number,
                 style={{ rotate: index % 2 === 0 ? '12deg' : '-12deg' } as React.CSSProperties}
               >
                 <Image 
-                  src="/photos/pistachio-og-popsicle.png"
+                  src="/photos/pistachio-og-popsicle.webp"
                   alt="Pistachio Popsicle"
                   width={550}
                   height={750}

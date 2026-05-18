@@ -226,7 +226,7 @@ export default function FlavorsGrid({ flavors }: Props) {
             <motion.div
               key="grid"
               layout
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-6"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-8"
             >
               {filtered.map((flavor, i) => {
                 const isB2B = flavor.category === 'equipment';

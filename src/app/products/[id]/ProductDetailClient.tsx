@@ -21,7 +21,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
   const isKiosk = flavor.id === 'mashbere-retail-kiosk';
   const isIceGlass = flavor.id === 'uae-ice-cup-ready-to-use-ice-glass' || flavor.id === 'mashbere-ice-glass';
   const isB2B = isKiosk || isIceGlass;
-  const displayImage = isKiosk ? '/photos/kiosk-main.jpeg' : flavor.image;
+  const displayImage = isKiosk ? '/photos/kiosk-main.webp' : flavor.image;
   const projectGreen = '#708238';
   const mainAccent = isB2B ? (isIceGlass ? '#BAE6FD' : projectGreen) : flavor.accentColor;
   const [selectedCard, setSelectedCard] = useState<any>(null);
@@ -62,18 +62,18 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
       id: 'box',
       title: "Sealed Bulk Solutions",
       desc: "Engineered for efficiency, our insulated transport boxes contain 12 premium ice glasses, ensuring maximum freshness and easy inventory management for high-traffic venues.",
-      image: "/photos/ice-glass-box.jpeg",
-      hoverImage: "/photos/ice-glass-lifestyle.jpeg",
-      modalImage: "/photos/ice-glass-lifestyle.jpeg",
+      image: "/photos/ice-glass-box.webp",
+      hoverImage: "/photos/ice-glass-lifestyle.webp",
+      modalImage: "/photos/ice-glass-lifestyle.webp",
       badge: "12 Cups Per Box"
     },
     {
       id: 'usage',
       title: "Modern Refreshment",
       desc: "The perfect companion for travel, events, and offices. Our ready-to-use sealed cups eliminate the need for loose ice, providing a sophisticated and hygienic experience.",
-      image: "/photos/ice-glass-usage.jpeg",
+      image: "/photos/ice-glass-usage.webp",
       hoverImage: "/photos/mobile view ice cup bg.webp",
-      modalImage: "/photos/ice-glass-usage.jpeg"
+      modalImage: "/photos/ice-glass-usage.webp"
     }
   ];
 
@@ -122,14 +122,14 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
 
         {/* Main Content */}
         <div className="container-responsive pb-12 lg:pb-20">
-          <div className="block lg:flow-root">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
             
             {/* Image Section */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className={`relative mb-6 lg:mb-6 ${isB2B ? 'lg:float-left lg:w-1/2 lg:pr-12' : 'lg:w-1/2 lg:mx-auto'}`}
+              initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="relative aspect-square max-w-xl mx-auto lg:mx-0 w-full"
             >
               <div
                 className="absolute inset-[10%] rounded-full blur-[60px] opacity-30 animate-pulse"
@@ -147,7 +147,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 
                 <div className="absolute top-8 left-8 flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
-                    <Image src="/photos/mashbere_logo_no_bg.png" alt="Mashbere" width={24} height={24} />
+                    <Image src="/photos/mashbere_logo_no_bg.webp" alt="Mashbere" width={24} height={24} />
                   </div>
                   <div className="px-4 py-2 bg-black/80 backdrop-blur-md rounded-xl border border-white/20">
                     <p className="text-white font-black text-[10px] uppercase tracking-widest">Premium Selection</p>
@@ -157,15 +157,15 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
             </motion.div>
 
             {/* Typography & Description */}
-            <div className="relative z-10">
+            <div className="flex flex-col items-start space-y-6 lg:space-y-8">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="mb-6"
+                className="space-y-4 w-full"
               >
                 <p className="text-gray-400 font-black uppercase tracking-[0.2em] text-xs lg:text-sm mb-2">{flavor.subtitle}</p>
-                <h1 className="text-4xl sm:text-5xl lg:text-8xl font-display text-gray-900 uppercase leading-[0.9] lg:leading-[0.85] tracking-tighter mb-5 lg:mb-6">
+                <h1 className="text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-display text-gray-900 uppercase leading-[0.9] lg:leading-[0.85] tracking-tighter mb-5 lg:mb-6">
                   {flavor.name}
                 </h1>
 
@@ -176,42 +176,11 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 </div>
 
                 {/* Main Description Text */}
-                <div className="space-y-8 lg:space-y-12">
+                <div className="space-y-6 lg:space-y-8">
                   <p className="text-gray-500 text-lg sm:text-xl lg:text-2xl font-light leading-relaxed">
                     {intro}
                   </p>
 
-                  {isKiosk && howItWorksSteps.length > 0 && (
-                    <section className="mt-16">
-                      <h2 className="text-sm font-black uppercase tracking-[0.4em] text-[#708238] mb-10">How It Works</h2>
-                      <div className="grid grid-cols-1 gap-6">
-                        {howItWorksSteps.map((step, idx) => (
-                          <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: idx * 0.1 }}
-                            className="group relative bg-white/40 backdrop-blur-md border border-white/60 p-8 rounded-[32px] hover:bg-white hover:shadow-xl hover:shadow-[#708238]/5 transition-all duration-500"
-                          >
-                            <div className="flex flex-col sm:flex-row sm:items-start gap-6">
-                              <div className="w-12 h-12 rounded-2xl bg-[#708238]/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-500">
-                                <span className="text-[#708238] font-display text-xl">{idx + 1}</span>
-                              </div>
-                              <div>
-                                <h3 className="text-2xl font-display text-gray-900 uppercase mb-2 tracking-tight">
-                                  {step.title}
-                                </h3>
-                                <p className="text-gray-500 font-light text-lg leading-relaxed">
-                                  {step.desc}
-                                </p>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </section>
-                  )}
 
                   {!isKiosk && !isIceGlass && remainingContent && (
                     <div className="text-gray-700 text-base leading-relaxed font-medium whitespace-pre-line">
@@ -219,18 +188,37 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                     </div>
                   )}
 
-                  {isKiosk && conclusion && (
-                    <div className="bg-[#708238]/5 p-6 lg:p-10 rounded-3xl lg:rounded-[40px] border border-[#708238]/10">
-                      <p className="text-[#708238] text-base lg:text-xl font-light leading-relaxed italic">
-                        {conclusion}
-                      </p>
-                    </div>
-                  )}
+
                 </div>
               </motion.div>
-            </div>
 
-            <div className="clear-both" />
+              {/* Relocated CTA directly below the writings */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="pt-4 w-full sm:w-auto"
+              >
+                {(flavor.category === 'equipment' || flavor.id === 'mashbere-retail-kiosk' || flavor.id === 'mashbere-ice-glass') ? (
+                  <Link
+                    href={`/equipment?interest=${encodeURIComponent(flavor.name)}#contact`}
+                    className="group relative bg-[#708238] text-white px-8 py-5 sm:px-16 sm:py-6 rounded-2xl sm:rounded-3xl font-black text-[11px] sm:text-sm uppercase tracking-[0.15em] sm:tracking-widest shadow-[0_20px_40px_-12px_rgba(112,130,56,0.3)] sm:shadow-2xl sm:shadow-black/20 flex items-center gap-3 sm:gap-4 transition-all w-full sm:w-auto justify-center active:scale-[0.98] overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    <span className="relative z-10">Request Partnership Inquiry</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href={flavor.category ? `/products?category=${flavor.category}` : "/products"}
+                    className="group flex items-center gap-3 px-10 py-5 rounded-3xl font-black text-sm text-gray-600 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 hover:shadow-lg w-full sm:w-auto justify-center"
+                  >
+                    View More Flavours
+                    <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                )}
+              </motion.div>
+            </div>
           </div>
 
             {flavor.id === 'mashbere-retail-kiosk' && (
@@ -241,70 +229,116 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 transition={{ duration: 0.6 }}
                 className="mt-10 lg:mt-20 border-t border-gray-100 pt-10 lg:pt-16"
               >
-                <div className="flex flex-col gap-1 mb-7 lg:mb-12">
-                  <p className="text-[#708238] font-black uppercase tracking-[0.3em] text-[10px]">Specifications</p>
-                  <h3 className="font-display text-gray-900 text-2xl sm:text-3xl lg:text-4xl uppercase tracking-tighter">Available Sizes</h3>
-                </div>
+                {howItWorksSteps.length > 0 && (
+                  <section className="mb-10 lg:mb-20">
+                    <h2 className="text-xs lg:text-sm font-black uppercase tracking-[0.4em] text-[#708238] mb-6 lg:mb-10">How It Works</h2>
+                    <div className="grid grid-cols-1 gap-6">
+                      {howItWorksSteps.map((step, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: 20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: idx * 0.1 }}
+                          className="group relative bg-white/40 backdrop-blur-md border border-white/60 p-5 lg:p-8 rounded-2xl lg:rounded-[32px] hover:bg-white hover:shadow-lg lg:hover:shadow-xl hover:shadow-[#708238]/5 transition-all duration-500"
+                        >
+                          <div className="flex items-start gap-4 lg:gap-6">
+                            <div className="w-9 h-9 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl bg-[#708238]/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-500">
+                              <span className="text-[#708238] font-display text-base lg:text-xl">{idx + 1}</span>
+                            </div>
+                            <div>
+                              <h3 className="text-base lg:text-2xl font-display text-gray-900 uppercase mb-1 lg:mb-2 tracking-tight">
+                                {step.title}
+                              </h3>
+                              <p className="text-gray-500 font-light text-sm lg:text-lg leading-relaxed">
+                                {step.desc}
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {conclusion && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-10 lg:mb-20 bg-[#708238]/5 p-6 lg:p-10 rounded-3xl lg:rounded-[40px] border border-[#708238]/10"
+                  >
+                    <p className="text-[#708238] text-base lg:text-xl font-light leading-relaxed italic">
+                      {conclusion}
+                    </p>
+                  </motion.div>
+                )}
+
+                <div className="mt-8 lg:mt-20">
+                  <div className="flex flex-col gap-1 mb-7 lg:mb-12">
+                    <p className="text-[#708238] font-black uppercase tracking-[0.3em] text-[10px]">Specifications</p>
+                    <h3 className="font-display text-gray-900 text-2xl sm:text-3xl lg:text-4xl uppercase tracking-tighter">Available Sizes</h3>
+                  </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   {/* Compact Size */}
-                  <div className="flex flex-col gap-4 lg:gap-6 group">
-                    <div className="relative w-full aspect-[4/3] rounded-2xl lg:rounded-[32px] overflow-hidden bg-white/40 border border-white group-hover:border-[#708238]/20 transition-colors duration-500">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.55 }}
+                    className="flex flex-col gap-5 group cursor-pointer"
+                  >
+                    <div className="relative w-full aspect-square lg:aspect-[4/5] rounded-[32px] overflow-hidden border border-white/60 group-hover:border-[#708238]/30 transition-all duration-500 shadow-md hover:shadow-2xl">
                       <Image 
-                        src="/photos/kiosk-size-compact.jpeg" 
+                        src="/photos/kiosk-size-compact.webp" 
                         alt="Compact Retail Kiosk" 
                         fill 
-                        className="object-contain p-4 lg:p-8" 
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" 
                       />
                     </div>
-                    <div className="space-y-3 lg:space-y-4 px-2">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-lg lg:text-2xl font-display text-gray-900 uppercase">Compact Edition</h4>
-                        <span className="text-[#708238] font-black text-xs uppercase tracking-widest">114cm Width</span>
-                      </div>
-                      <div className="flex items-center gap-6 text-gray-400">
-                        <div className="flex flex-col">
-                          <span className="text-[9px] font-black uppercase tracking-widest mb-1">Depth</span>
-                          <span className="text-sm font-bold text-gray-600">70cm</span>
-                        </div>
-                        <div className="w-px h-6 bg-gray-100" />
-                        <div className="flex flex-col">
-                          <span className="text-[9px] font-black uppercase tracking-widest mb-1">Height</span>
-                          <span className="text-sm font-bold text-gray-600">200cm</span>
-                        </div>
-                      </div>
+                    <div className="space-y-1 px-1">
+                      <h4 className="text-2xl font-display text-gray-900 uppercase group-hover:text-[#708238] transition-colors duration-300">Compact Edition</h4>
+                      <p className="text-[#708238]/70 text-[10px] font-black uppercase tracking-widest flex items-center gap-3">
+                        <span>W 114cm</span>
+                        <span className="opacity-40">•</span>
+                        <span>D 70cm</span>
+                        <span className="opacity-40">•</span>
+                        <span>H 200cm</span>
+                      </p>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Signature Size */}
-                  <div className="flex flex-col gap-4 lg:gap-6 group">
-                    <div className="relative w-full aspect-[4/3] rounded-2xl lg:rounded-[32px] overflow-hidden bg-white/40 border border-white group-hover:border-[#708238]/20 transition-colors duration-500">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.55 }}
+                    className="flex flex-col gap-5 group cursor-pointer"
+                  >
+                    <div className="relative w-full aspect-square lg:aspect-[4/5] rounded-[32px] overflow-hidden border border-white/60 group-hover:border-[#708238]/30 transition-all duration-500 shadow-md hover:shadow-2xl">
                       <Image 
-                        src="/photos/kiosk-size-signature.jpeg" 
+                        src="/photos/kiosk-size-signature.webp" 
                         alt="Signature Retail Kiosk" 
                         fill 
-                        className="object-contain p-4 lg:p-8" 
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" 
                       />
                     </div>
-                    <div className="space-y-3 lg:space-y-4 px-2">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-lg lg:text-2xl font-display text-gray-900 uppercase">Signature Edition</h4>
-                        <span className="text-[#708238] font-black text-xs uppercase tracking-widest">147cm Width</span>
-                      </div>
-                      <div className="flex items-center gap-6 text-gray-400">
-                        <div className="flex flex-col">
-                          <span className="text-[9px] font-black uppercase tracking-widest mb-1">Depth</span>
-                          <span className="text-sm font-bold text-gray-600">70cm</span>
-                        </div>
-                        <div className="w-px h-6 bg-gray-100" />
-                        <div className="flex flex-col">
-                          <span className="text-[9px] font-black uppercase tracking-widest mb-1">Height</span>
-                          <span className="text-sm font-bold text-gray-600">200cm</span>
-                        </div>
-                      </div>
+                    <div className="space-y-1 px-1">
+                      <h4 className="text-2xl font-display text-gray-900 uppercase group-hover:text-[#708238] transition-colors duration-300">Signature Edition</h4>
+                      <p className="text-[#708238]/70 text-[10px] font-black uppercase tracking-widest flex items-center gap-3">
+                        <span>W 147cm</span>
+                        <span className="opacity-40">•</span>
+                        <span>D 70cm</span>
+                        <span className="opacity-40">•</span>
+                        <span>H 200cm</span>
+                      </p>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
+              </div>
               </motion.div>
             )}
 
@@ -436,64 +470,6 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
               </motion.div>
             )}
 
-            {flavor.ingredients && flavor.ingredients.length > 0 && (
-            <div className="mt-10 lg:mt-20">
-              {/* Ingredients (Key Features) */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-8 h-8 rounded-full bg-[#708238]/10 flex items-center justify-center">
-                    <Sparkles size={16} className="text-[#708238]" />
-                  </div>
-                  <p className="text-xs font-black text-[#708238] uppercase tracking-widest">Key Features</p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {flavor.ingredients.map((ing: string, idx: number) => (
-                    <div key={ing} className="group flex items-center gap-4 p-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-white hover:bg-white hover:shadow-lg transition-all duration-300">
-                      <div className="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                        <span className="text-gray-400 font-bold text-sm">0{idx + 1}</span>
-                      </div>
-                      <span className="text-sm font-bold text-gray-700 group-hover:text-gray-900 transition-colors">
-                        {ing}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-            )}
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex justify-center pt-6"
-            >
-              {(flavor.category === 'equipment' || flavor.id === 'mashbere-retail-kiosk' || flavor.id === 'mashbere-ice-glass') ? (
-                <Link
-                  href={`/equipment?interest=${encodeURIComponent(flavor.name)}#contact`}
-                  className="group relative bg-[#708238] text-white px-8 py-5 sm:px-16 sm:py-6 rounded-2xl sm:rounded-3xl font-black text-[11px] sm:text-sm uppercase tracking-[0.15em] sm:tracking-widest shadow-[0_20px_40px_-12px_rgba(112,130,56,0.3)] sm:shadow-2xl sm:shadow-black/20 flex items-center gap-3 sm:gap-4 transition-all w-full sm:w-auto justify-center active:scale-[0.98] overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  <span className="relative z-10">Request Partnership Inquiry</span>
-                </Link>
-              ) : (
-                <Link
-                  href={flavor.category ? `/products?category=${flavor.category}` : "/products"}
-                  className="group flex items-center gap-3 px-12 py-6 rounded-3xl font-black text-sm text-gray-600 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 hover:shadow-lg"
-                >
-                  View More Flavours
-                  <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-              )}
-            </motion.div>
 
           {/* Prev / Next Navigation */}
           {(prevFlavor || nextFlavor) && (

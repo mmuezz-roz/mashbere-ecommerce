@@ -6,9 +6,9 @@ import FlavorsGrid from './FlavorsGrid';
 import { Suspense } from 'react';
  
 export const metadata = {
-  title: 'Artisanal Ice Cream, Popsicles & SipUps Collection | Mashbere',
-  description: 'Explore the complete Mashbere collection of premium artisanal frozen treats. From handcrafted popsicles to our signature SipUp ice cups, discover the best flavors in the UAE.',
-  keywords: ['artisanal ice cream flavors', 'premium popsicles UAE', 'SipUp collection', 'mini popsicles Dubai', 'handcrafted frozen desserts'],
+  title: 'Ice Cream Products UAE | Popsicles, Ice Cups & Flavours | Mashbere',
+  description: 'Indulge in the best artisanal ice cream, handcrafted popsicles, & premium ice cups in the UAE. Made with 100% natural ingredients. Explore our flavors today!',
+  keywords: ['artisanal ice cream UAE', 'premium popsicles Dubai', 'SipUp ice cups', 'handcrafted frozen desserts', 'Mashbere ice cream'],
   alternates: {
     canonical: '/products',
   },
@@ -39,19 +39,23 @@ export default async function ProductsPage() {
           style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}
         />
         
-        <div className="container-responsive py-16 lg:py-24 relative z-10">
+        <div className="container-responsive pt-28 pb-28 sm:pt-36 sm:pb-36 lg:pt-44 lg:pb-48 relative z-10">
 
 
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
             <div>
-              <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-[#C4EB54] font-black text-xs uppercase tracking-widest mb-6 animate-fade-in-up">
-                <Star className="w-3 h-3 fill-current" />
-                <span>Premium Collection</span>
-              </div>
+              {/* Badge removed for cleaner mobile layout and better UX */}
 
-              <h1 className="text-6xl sm:text-8xl lg:text-[9rem] font-display uppercase leading-[0.85] tracking-tighter animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                ALL<br />
-                <span className="text-[#C4EB54]">FLAVOURS</span>
+              <h1 className="font-display uppercase tracking-tighter animate-fade-in-up flex flex-col gap-2 sm:gap-3" style={{ animationDelay: '100ms' }}>
+                <span className="text-3xl sm:text-6xl lg:text-[5rem] leading-[1.1] sm:leading-[0.95] max-w-full">
+                  Ice Cream Products UAE <span className="hidden sm:inline-block px-2 opacity-50">|</span>
+                </span>
+                <span className="text-[#C4EB54] text-lg sm:text-4xl lg:text-[3.5rem] leading-[1.2] sm:leading-[1.1] max-w-full">
+                  Popsicles <span className="mx-1 sm:mx-2 text-white/30">&bull;</span> Ice Cups <span className="mx-1 sm:mx-2 text-white/30">&bull;</span> Flavours
+                </span>
+                <span className="text-sm sm:text-xl lg:text-2xl font-sans normal-case tracking-normal text-white/70 mt-1 sm:mt-4">
+                  Crafted by Mashbere
+                </span>
               </h1>
             </div>
 

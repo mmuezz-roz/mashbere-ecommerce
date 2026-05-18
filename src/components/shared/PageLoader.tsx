@@ -37,7 +37,7 @@ export const PageLoader = () => {
               className="relative w-80 h-40 sm:w-[500px] sm:h-[250px] mb-2"
             >
               <Image
-                src="/photos/mashbere_logo_no_bg.png"
+                src="/photos/mashbere_logo_no_bg.webp"
                 alt="Mashbere Logo"
                 fill
                 className="object-contain brightness-0 invert"

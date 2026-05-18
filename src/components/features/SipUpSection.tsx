@@ -75,7 +75,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
         <div 
           className="absolute inset-0 sm:hidden"
           style={{ 
-            backgroundImage: 'url("/photos/ChatGPT Image Apr 29, 2026, 01_24_11 PM.png")',
+            backgroundImage: 'url("/photos/ChatGPT Image Apr 29, 2026, 01_24_11 PM.webp")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
@@ -87,7 +87,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
         <div 
           className="absolute inset-0 hidden sm:block"
           style={{ 
-            backgroundImage: 'url("/photos/ChatGPT Image Apr 28, 2026, 07_48_22 PM.png")',
+            backgroundImage: 'url("/photos/ChatGPT Image Apr 28, 2026, 07_48_22 PM.webp")',
             backgroundSize: '100% 100%',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
@@ -140,7 +140,7 @@ export default function SipUpSection({ sipups = [] }: Props) {
               className="relative inline-block w-fit will-change-transform"
             >
               <Image
-                src="/photos/sipUp writings.png"
+                src="/photos/sipUp writings.webp"
                 alt="Signature SipUp Cold Pressed Juice Flavors"
                 width={600}
                 height={200}

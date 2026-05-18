@@ -232,7 +232,7 @@ export default function PookiesSection() {
             width: min(220px, 55vw) !important;
           }
           .pookies-bg {
-            background-image: url('/photos/ChatGPT Image May 3, 2026, 04_41_21 PM.png') !important;
+            background-image: url('/photos/ChatGPT Image May 3, 2026, 04_41_21 PM.webp') !important;
             background-size: cover !important;
             background-position: center center !important;
           }
@@ -260,7 +260,7 @@ export default function PookiesSection() {
         <div
           className="absolute inset-0 w-full h-full pookies-bg"
           style={{
-            backgroundImage: `url('/photos/ChatGPT Image May 2, 2026, 11_13_00 PM.png')`,
+            backgroundImage: `url('/photos/ChatGPT Image May 2, 2026, 11_13_00 PM.webp')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
@@ -301,14 +301,14 @@ export default function PookiesSection() {
             >
               {/* English logo (default) */}
               <img
-                src="/photos/1777754998295-8d335e3c-14f9-4866-a8af-da578df1ec7b_1.png"
+                src="/photos/1777754998295-8d335e3c-14f9-4866-a8af-da578df1ec7b_1.webp"
                 alt="Pookies ICE Logo"
                 className="pookies-logo-en"
                 style={{ width: 'min(260px, 60vw)', height: 'auto', display: 'block' }}
               />
               {/* Arabic logo (shown on hover) */}
               <img
-                src="/photos/1777755025290-b62df529-b435-4d41-9f8e-5fe5c87d201d_1.png"
+                src="/photos/1777755025290-b62df529-b435-4d41-9f8e-5fe5c87d201d_1.webp"
                 alt="بوكيز آيس Logo"
                 className="pookies-logo-ar"
                 style={{

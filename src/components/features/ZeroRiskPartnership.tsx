@@ -134,7 +134,7 @@ export default function ZeroRiskPartnership() {
         <div 
           className="absolute inset-0 z-0 pointer-events-none bg-no-repeat opacity-60 sm:opacity-100"
           style={{ 
-            backgroundImage: "url('/photos/ChatGPT Image Apr 30, 2026, 03_21_47 PM.png')",
+            backgroundImage: "url('/photos/ChatGPT Image Apr 30, 2026, 03_21_47 PM.webp')",
             backgroundSize: 'cover',
             backgroundPosition: 'center right',
             willChange: 'auto',
