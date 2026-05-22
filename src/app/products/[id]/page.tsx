@@ -90,12 +90,68 @@ export default async function ProductDetailPage({ params }: Props) {
   const prevFlavor = currentIndex > 0 ? allItems[currentIndex - 1] : null;
   const nextFlavor = currentIndex < allItems.length - 1 ? allItems[currentIndex + 1] : null;
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com';
+  const fullImageUrl = flavor.image && flavor.image.startsWith('http') 
+    ? flavor.image 
+    : `${baseUrl}${flavor.image}`;
+
+  // JSON-LD Product Schema for Rich Snippets
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": flavor.name,
+    "image": [fullImageUrl],
+    "description": flavor.description || flavor.name,
+    "sku": flavor.id,
+    "brand": {
+      "@type": "Brand",
+      "name": "Mashbere"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `${baseUrl}/products/${flavor.slug || flavor.id}`,
+      "priceCurrency": "AED",
+      "price": "15.00", // Standard baseline for popsicles, would be dynamic in real DB
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition",
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "20.00",
+          "currency": "AED"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 0,
+            "maxValue": 1,
+            "unitCode": "d"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 0,
+            "maxValue": 2,
+            "unitCode": "d"
+          }
+        }
+      }
+    }
+  };
+
   return (
-    <ProductDetailClient
-      flavor={flavor}
-      prevFlavor={prevFlavor}
-      nextFlavor={nextFlavor}
-      currentIndex={currentIndex}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <ProductDetailClient
+        flavor={flavor}
+        prevFlavor={prevFlavor}
+        nextFlavor={nextFlavor}
+        currentIndex={currentIndex}
+      />
+    </>
   );
 }

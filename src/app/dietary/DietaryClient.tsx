@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -321,7 +321,7 @@ export default function DietaryClient() {
             {filteredProducts.length > 0 ? (
               <motion.div 
                 layout
-                className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               >
                 {filteredProducts.map((product) => {
                   const isExpanded = expandedCardId === product.id;
@@ -330,138 +330,132 @@ export default function DietaryClient() {
                     <motion.div
                       layout
                       key={product.id}
-                      className="bg-white border border-gray-100 rounded-[32px] overflow-hidden shadow-xl shadow-gray-100/30 hover:shadow-2xl hover:border-gray-200/50 transition-all duration-500 flex flex-col justify-between"
+                      className="bg-white border border-gray-100 rounded-[28px] overflow-hidden shadow-lg shadow-gray-100/40 hover:shadow-xl hover:border-gray-200/60 transition-all duration-500 flex flex-col"
                     >
-                      {/* Top main area */}
-                      <div className="p-6 sm:p-8">
-                        <div className="flex flex-col sm:flex-row gap-6 items-start">
-                          {/* Image container */}
-                          <div 
-                            className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-2xl flex-shrink-0 flex items-center justify-center p-3 overflow-hidden shadow-inner"
-                            style={{ backgroundColor: product.bgColor }}
-                          >
-                            <Image 
-                              src={product.image}
-                              alt={product.name}
-                              width={120}
-                              height={120}
-                              className="object-contain hover:scale-110 transition-transform duration-300"
-                            />
-                          </div>
+                      {/* Image area — full-width top */}
+                      <div 
+                        className="relative w-full aspect-square flex items-center justify-center p-8"
+                        style={{ backgroundColor: product.bgColor }}
+                      >
+                        <Image 
+                          src={product.image}
+                          alt={product.name}
+                          width={180}
+                          height={180}
+                          className="object-contain hover:scale-105 transition-transform duration-500 drop-shadow-md"
+                        />
+                        {/* Allergen badge */}
+                        {product.allergens.length === 0 && (
+                          <span className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-[#7E8D5F] text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-green-100 shadow-sm">
+                            Allergen-Free
+                          </span>
+                        )}
+                      </div>
 
-                          {/* Text info */}
-                          <div className="space-y-3 flex-1">
-                            <div className="flex flex-wrap gap-1.5">
-                              {product.tags.map((tag) => (
-                                <span 
-                                  key={tag} 
-                                  className="px-2.5 py-0.5 rounded-full bg-gray-50 border border-gray-100 text-gray-400 font-bold text-[9px] uppercase tracking-wide"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
+                      {/* Card body */}
+                      <div className="p-5 flex flex-col flex-1">
+                        {/* Name */}
+                        <h3 className="font-display uppercase tracking-tight text-xl text-gray-900 leading-none mb-2">
+                          {product.name}
+                        </h3>
 
-                            <h3 className="font-display uppercase tracking-tight text-xl sm:text-2xl text-gray-900 leading-snug">
-                              {product.name}
-                            </h3>
-                            
-                            <p className="text-gray-500 font-medium text-xs sm:text-sm leading-relaxed">
-                              {product.shortDesc}
-                            </p>
-                          </div>
+                        {/* Diet tags — compact pill row */}
+                        <div className="flex flex-wrap gap-1.5 mb-4">
+                          {product.tags.map((tag) => (
+                            <span 
+                              key={tag}
+                              className="text-[9px] font-black uppercase tracking-widest text-[#708238] bg-[#C4EB54]/15 px-2.5 py-1 rounded-full"
+                            >
+                              {tag}
+                            </span>
+                          ))}
                         </div>
 
-                        {/* Collapsed/Expanded ingredients section */}
-                        <div className="mt-6 border-t border-gray-50 pt-5">
-                          <button
-                            onClick={() => toggleExpandCard(product.id)}
-                            className="w-full flex items-center justify-between font-black text-xs uppercase tracking-widest text-[#7E8D5F] hover:text-[#141A0B] transition-colors"
-                          >
-                            <span>Ingredients & Nutrition Facts</span>
-                            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-                          </button>
+                        {/* Expand toggle */}
+                        <button
+                          onClick={() => toggleExpandCard(product.id)}
+                          className={`w-full flex items-center justify-between text-[10px] font-black uppercase tracking-widest px-4 py-3 rounded-xl transition-all duration-300 mt-auto ${
+                            isExpanded 
+                              ? 'bg-[#141A0B] text-white' 
+                              : 'bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-800'
+                          }`}
+                        >
+                          <span>{isExpanded ? 'Hide Details' : 'View Ingredients & Nutrition'}</span>
+                          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
 
-                          <AnimatePresence>
-                            {isExpanded && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.35, ease: 'easeInOut' }}
-                                className="overflow-hidden space-y-5 pt-4"
-                              >
+                        {/* Expandable details panel */}
+                        <AnimatePresence>
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.35, ease: 'easeInOut' }}
+                              className="overflow-hidden"
+                            >
+                              <div className="space-y-4 pt-4">
+                                {/* Short desc */}
+                                <p className="text-gray-500 font-medium text-xs leading-relaxed">
+                                  {product.shortDesc}
+                                </p>
+
                                 {/* Ingredients */}
-                                <div className="space-y-1.5 bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                                  <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-400">Full Ingredients List</h4>
-                                  <p className="text-gray-500 font-medium text-xs sm:text-sm leading-relaxed">
+                                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 space-y-1.5">
+                                  <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-400">Ingredients</h4>
+                                  <p className="text-gray-500 font-medium text-[11px] leading-relaxed">
                                     {product.ingredients}
                                   </p>
                                 </div>
 
-                                {/* Allergens */}
-                                <div className="flex flex-wrap items-center gap-2">
-                                  <span className="text-[10px] font-black uppercase tracking-wider text-gray-400">Declared Allergens:</span>
-                                  {product.allergens.length > 0 ? (
-                                    product.allergens.map((allergen) => (
-                                      <span key={allergen} className="bg-red-50 text-red-700 px-3 py-1 rounded-full font-bold text-xs border border-red-100">
+                                {/* Allergens — only shown if declared */}
+                                {product.allergens.length > 0 && (
+                                  <div className="flex flex-wrap items-center gap-2">
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-gray-400">Allergens:</span>
+                                    {product.allergens.map((allergen) => (
+                                      <span key={allergen} className="bg-red-50 text-red-700 px-3 py-1 rounded-full font-bold text-[10px] border border-red-100">
                                         Contains {allergen}
                                       </span>
-                                    ))
-                                  ) : (
-                                    <span className="bg-green-50 text-[#7E8D5F] px-3 py-1 rounded-full font-bold text-xs border border-green-100">
-                                      Allergen-Free
-                                    </span>
-                                  )}
-                                </div>
+                                    ))}
+                                  </div>
+                                )}
 
-                                {/* Nutritional Value Grid Table */}
+                                {/* Nutrition table */}
                                 <div className="border border-gray-100 rounded-2xl overflow-hidden">
                                   <div className="bg-gray-50 border-b border-gray-100 px-4 py-2 flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-400">
-                                    <span>Nutrition Profile</span>
+                                    <span>Nutrition</span>
                                     <span>Per Bar (80ml)</span>
                                   </div>
-                                  <div className="divide-y divide-gray-50 bg-white font-medium text-xs text-gray-600">
-                                    <div className="px-4 py-2.5 flex justify-between">
-                                      <span>Calories</span>
-                                      <span className="font-bold text-gray-900">{product.nutritionalValue.calories} kcal</span>
-                                    </div>
-                                    <div className="px-4 py-2.5 flex justify-between">
-                                      <span>Protein</span>
-                                      <span className="font-bold text-gray-900">{product.nutritionalValue.protein}</span>
-                                    </div>
-                                    <div className="px-4 py-2.5 flex justify-between">
-                                      <span>Carbohydrates</span>
-                                      <span className="font-bold text-gray-900">{product.nutritionalValue.carbs}</span>
-                                    </div>
-                                    <div className="px-4 py-2.5 flex justify-between">
-                                      <span>Fat</span>
-                                      <span className="font-bold text-gray-900">{product.nutritionalValue.fat}</span>
-                                    </div>
-                                    {product.nutritionalValue.fiber && (
-                                      <div className="px-4 py-2.5 flex justify-between">
-                                        <span>Dietary Fiber</span>
-                                        <span className="font-bold text-gray-900">{product.nutritionalValue.fiber}</span>
+                                  <div className="divide-y divide-gray-50 bg-white text-xs text-gray-600">
+                                    {[
+                                      ['Calories', `${product.nutritionalValue.calories} kcal`],
+                                      ['Protein', product.nutritionalValue.protein],
+                                      ['Carbs', product.nutritionalValue.carbs],
+                                      ['Fat', product.nutritionalValue.fat],
+                                      ...(product.nutritionalValue.fiber ? [['Fiber', product.nutritionalValue.fiber]] : []),
+                                    ].map(([label, value]) => (
+                                      <div key={label} className="px-4 py-2 flex justify-between font-medium">
+                                        <span>{label}</span>
+                                        <span className="font-bold text-gray-900">{value}</span>
                                       </div>
-                                    )}
+                                    ))}
                                   </div>
                                 </div>
-
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
 
                       {/* Footer CTA */}
-                      <div className="bg-gray-50 border-t border-gray-100 px-6 py-4 flex items-center justify-between">
-                        <span className="font-black text-xs uppercase tracking-widest text-gray-400">Handcrafted Popsicle</span>
+                      <div className="border-t border-gray-50 px-5 py-4 flex items-center justify-between">
+                        <span className="font-black text-[10px] uppercase tracking-widest text-gray-300">{product.category}</span>
                         <Link 
                           href={`/products/${product.slug}`}
-                          className="group inline-flex items-center gap-2 font-black text-xs uppercase tracking-widest text-[#141A0B] hover:text-[#7E8D5F] transition-colors"
+                          className="group inline-flex items-center gap-1.5 font-black text-[10px] uppercase tracking-widest text-[#141A0B] hover:text-[#7E8D5F] transition-colors"
                         >
-                          <span>Explore Flavor</span>
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          <span>Explore</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                         </Link>
                       </div>
 
@@ -478,7 +472,7 @@ export default function DietaryClient() {
                 <Info className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                 <h3 className="font-black text-lg uppercase tracking-tight text-gray-900 mb-1">No Flavors Found</h3>
                 <p className="text-gray-400 text-sm max-w-sm mx-auto">
-                  Try adjusting your search terms or filters to find standard treats matching your preference.
+                  Try adjusting your search terms or filters to find treats matching your preference.
                 </p>
               </motion.div>
             )}
