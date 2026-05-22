@@ -169,10 +169,22 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                   {flavor.name}
                 </h1>
 
-                {/* Highlight badge */}
-                <div className="inline-flex items-center gap-3 bg-[#708238]/10 px-5 py-2.5 rounded-2xl mb-8">
-                  <Leaf className="w-4 h-4 text-[#708238]" />
-                  <span className="text-[#708238] font-bold text-sm">{flavor.highlight}</span>
+                {/* Highlight badges & links */}
+                <div className="flex flex-wrap items-center gap-3 mb-8">
+                  <div className="inline-flex items-center gap-3 bg-[#708238]/10 px-5 py-2.5 rounded-2xl">
+                    <Leaf className="w-4 h-4 text-[#708238]" />
+                    <span className="text-[#708238] font-bold text-sm">{flavor.highlight}</span>
+                  </div>
+                  
+                  {!isB2B && flavor.category !== 'equipment' && (
+                    <Link 
+                      href="/dietary" 
+                      className="inline-flex items-center gap-2 bg-[#708238]/5 border border-[#708238]/20 px-5 py-2.5 rounded-2xl text-xs font-bold text-[#708238] hover:bg-[#708238]/10 hover:border-[#708238]/30 transition-all duration-300 active:scale-[0.98]"
+                    >
+                      <Activity className="w-3.5 h-3.5" />
+                      <span>Dietary & Allergen Guide</span>
+                    </Link>
+                  )}
                 </div>
 
                 {/* Main Description Text */}
@@ -209,13 +221,33 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                     <span className="relative z-10">Request Partnership Inquiry</span>
                   </Link>
                 ) : (
-                  <Link
-                    href={flavor.category ? `/products?category=${flavor.category}` : "/products"}
-                    className="group flex items-center gap-3 px-10 py-5 rounded-3xl font-black text-sm text-gray-600 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 hover:shadow-lg w-full sm:w-auto justify-center"
-                  >
-                    View More Flavours
-                    <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
+                  <div className="space-y-6">
+                    <Link
+                      href={flavor.category ? `/products?category=${flavor.category}` : "/products"}
+                      className="group flex items-center gap-3 px-10 py-5 rounded-3xl font-black text-sm text-gray-600 uppercase tracking-widest hover:text-[#708238] transition-all bg-white shadow-sm border border-gray-100 hover:shadow-lg w-full sm:w-auto justify-center"
+                    >
+                      View More Flavours
+                      <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
+
+                    {/* Delivery Guarantee inline backlink */}
+                    {!isB2B && flavor.category !== 'equipment' && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="p-4.5 bg-white/60 backdrop-blur-md border border-white/80 rounded-2xl max-w-md flex items-start gap-3 shadow-[0_4px_20px_-4px_rgba(112,130,56,0.05)]"
+                      >
+                        <span className="text-xl leading-none mt-0.5 shrink-0 select-none">❄️</span>
+                        <div className="text-xs text-gray-500 leading-relaxed font-medium">
+                          UAE Same-Day Cold-Chain Delivery. See our{' '}
+                          <Link href="/delivery" className="text-[#708238] font-bold underline decoration-[#708238]/30 hover:decoration-[#708238] transition-all">
+                            Zero-Melt Guarantee
+                          </Link>.
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
                 )}
               </motion.div>
             </div>
@@ -339,6 +371,57 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                   </motion.div>
                 </div>
               </div>
+
+              {/* B2B Partnership Reassurance — Kiosk-specific backlinks */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="mt-12 lg:mt-20 border-t border-[#708238]/10 pt-10 lg:pt-14"
+              >
+                <p className="text-[#708238] font-black uppercase tracking-[0.3em] text-[10px] mb-6">
+                  Partner With Confidence
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* FAQ Link — B2B flavour */}
+                  <Link
+                    href="/faq#catering"
+                    className="group flex items-start gap-4 bg-white/60 backdrop-blur-md border border-[#708238]/10 p-5 lg:p-6 rounded-2xl hover:border-[#708238]/25 hover:bg-white hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-[#708238]/10 flex items-center justify-center shrink-0 group-hover:bg-[#708238] transition-colors duration-300">
+                      <Sparkles className="w-4 h-4 text-[#708238] group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <div>
+                      <p className="font-black text-xs uppercase tracking-widest text-gray-900 mb-0.5">
+                        Catering & B2B FAQ
+                      </p>
+                      <p className="text-gray-400 text-xs font-medium leading-relaxed">
+                        Bulk orders, custom branding, revenue splits — answered.
+                      </p>
+                    </div>
+                  </Link>
+
+                  {/* Inquiry CTA reminder */}
+                  <Link
+                    href={`/equipment?interest=${encodeURIComponent('Mashbere Retail Kiosk')}#contact`}
+                    className="group flex items-start gap-4 bg-[#708238]/5 border border-[#708238]/10 p-5 lg:p-6 rounded-2xl hover:bg-[#708238]/10 hover:border-[#708238]/25 hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-[#708238]/10 flex items-center justify-center shrink-0 group-hover:bg-[#708238] transition-colors duration-300">
+                      <Send className="w-4 h-4 text-[#708238] group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <div>
+                      <p className="font-black text-xs uppercase tracking-widest text-gray-900 mb-0.5">
+                        Start a Partnership
+                      </p>
+                      <p className="text-gray-400 text-xs font-medium leading-relaxed">
+                        Request a tasting session, site survey, or full proposal.
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              </motion.div>
+
               </motion.div>
             )}
 

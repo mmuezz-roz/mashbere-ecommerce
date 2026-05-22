@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2, Sparkles } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2, Sparkles, Truck, Heart, HelpCircle } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -347,6 +347,9 @@ export default function Header() {
                   { label: 'About', href: '/about', icon: Sparkles },
                   { label: 'Products', href: '/products', icon: LayoutGrid },
                   { label: 'For Business', href: '/equipment', icon: Building2 },
+                  { label: 'Delivery Guarantee', href: '/delivery', icon: Truck },
+                  { label: 'Dietary & Allergens', href: '/dietary', icon: Heart },
+                  { label: 'FAQs & Support', href: '/faq', icon: HelpCircle },
                   { label: 'Account', href: user ? '/profile' : '/auth/login', icon: User },
                 ].map((item) => (
                   <Link

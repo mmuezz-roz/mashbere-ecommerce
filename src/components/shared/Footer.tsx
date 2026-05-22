@@ -15,8 +15,9 @@ const FOOTER_LINKS = {
     { name: 'Commercial Equipment', href: '/equipment' },
   ],
   Support: [
-    // { name: 'Shipping & Returns', href: '/shipping' },
-    // { name: 'Track Order', href: '/track' },
+    { name: 'Delivery & Shipping', href: '/delivery' },
+    { name: 'Dietary & Allergens', href: '/dietary' },
+    { name: 'FAQs & Support', href: '/faq' },
     { name: 'Privacy Policy', href: '/privacy' },
     { name: 'Terms of Service', href: '/terms' },
   ],

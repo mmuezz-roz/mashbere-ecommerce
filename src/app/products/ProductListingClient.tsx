@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { Filter, X, SlidersHorizontal } from 'lucide-react';
 import { ProductCard } from '@/components/features/ProductCard';
 import { Product } from '@/types';
@@ -147,6 +148,27 @@ export default function ProductListingClient({ initialProducts }: ProductListing
               {range.label}
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Internal Backlinks for SEO & Customer Trust */}
+      <div className="border-t border-gray-100 pt-5 mt-6 space-y-3">
+        <h4 className="font-black text-[10px] uppercase tracking-[0.3em] text-gray-400">Treat Guides</h4>
+        <div className="space-y-2.5">
+          <Link
+            href="/dietary"
+            className="flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-primary transition-colors"
+          >
+            <span className="text-sm select-none">🌱</span>
+            Dietary & Allergen Guide
+          </Link>
+          <Link
+            href="/delivery"
+            className="flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-primary transition-colors"
+          >
+            <span className="text-sm select-none">❄️</span>
+            Cold-Chain Delivery Details
+          </Link>
         </div>
       </div>
     </div>

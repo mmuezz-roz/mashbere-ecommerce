@@ -168,6 +168,29 @@ export default function Cart() {
                   🎉 Premium Express Shipping Applied
                 </p>
               </div>
+
+              {/* Shopping Reassurance */}
+              <div className="mt-6 border-t border-gray-100 pt-6 space-y-3.5">
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+                  Shopping Reassurance
+                </p>
+                <div className="space-y-2.5">
+                  <Link
+                    href="/delivery"
+                    className="flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-primary transition-colors"
+                  >
+                    <span className="text-sm select-none">❄️</span>
+                    <span>UAE Cold-Chain Delivery Details</span>
+                  </Link>
+                  <Link
+                    href="/faq"
+                    className="flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-primary transition-colors"
+                  >
+                    <span className="text-sm select-none">❓</span>
+                    <span>Frequently Asked Questions</span>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
