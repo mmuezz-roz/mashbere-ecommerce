@@ -351,17 +351,35 @@ export default function Header() {
                   { label: 'Dietary & Allergens', href: '/dietary', icon: Heart },
                   { label: 'FAQs & Support', href: '/faq', icon: HelpCircle },
                   { label: 'Account', href: user ? '/profile' : '/auth/login', icon: User },
-                ].map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-4 py-4 px-2 text-2xl font-display uppercase tracking-wider text-white hover:text-[#C4EB54] transition-colors border-b border-white/5"
-                  >
-                    <item.icon className="w-6 h-6 text-[#C4EB54]" />
-                    {item.label}
-                  </Link>
-                ))}
+                ].map((item) => {
+                  const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`group flex items-center gap-3 py-3 px-3 rounded-xl transition-all duration-200 border border-transparent ${
+                        isActive
+                          ? 'bg-[#C4EB54]/10 border-[#C4EB54]/20'
+                          : 'hover:bg-white/5 hover:border-white/10'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
+                        isActive ? 'bg-[#C4EB54]/20' : 'bg-white/5 group-hover:bg-white/10'
+                      }`}>
+                        <item.icon className={`w-4 h-4 ${isActive ? 'text-[#C4EB54]' : 'text-white/50 group-hover:text-white/80'}`} />
+                      </div>
+                      <span className={`text-sm font-medium tracking-wide transition-all duration-200 group-hover:translate-x-0.5 ${
+                        isActive ? 'text-[#C4EB54]' : 'text-white/70 group-hover:text-white'
+                      }`}>
+                        {item.label}
+                      </span>
+                      {isActive && (
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#C4EB54]" />
+                      )}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
