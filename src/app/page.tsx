@@ -13,7 +13,7 @@ import SipUpSection from '@/components/features/SipUpSection';
 const ProductShowcase = dynamic(() => import('@/components/features/ProductShowcase'), {
   loading: () => <div className="h-screen bg-[#FDFBF3]" />
 });
-const PookiesSection = dynamic(() => import('@/components/features/PookiesSection'), {
+const PookeesSection = dynamic(() => import('@/components/features/PookeesSection'), {
   loading: () => <div className="h-screen bg-white" />
 });
 const ZeroRiskPartnership = dynamic(() => import('@/components/features/ZeroRiskPartnership'));
@@ -48,8 +48,8 @@ export default async function Home() {
       {/* Product Showcase Section */}
       <ProductShowcase />
 
-      {/* Pookies Section – Mini Popsicles Highlight */}
-      <PookiesSection />
+      {/* Pookees Section – Mini Popsicles Highlight */}
+      <PookeesSection />
 
 
 

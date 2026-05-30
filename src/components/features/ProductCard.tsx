@@ -46,7 +46,11 @@ export function ProductCard({ product }: ProductCardProps) {
           <ImageWithFallback
             src={product.image}
             alt={`${product.name} - Mashbere Premium Frozen Treats UAE`}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.2s] ease-out"
+            className={`w-full h-full group-hover:scale-105 transition-transform duration-[1.2s] ease-out ${
+              product.category === 'sip-up'
+                ? 'object-contain p-6 drop-shadow-xl'
+                : 'object-cover'
+            }`}
           />
 
           {/* Badges */}

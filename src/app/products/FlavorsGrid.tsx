@@ -111,7 +111,7 @@ export default function FlavorsGrid({ flavors }: Props) {
                 { id: 'All', label: 'All Flavours' },
                 { id: 'popsicle', label: 'Signature Popsicles' },
                 { id: 'sip-up', label: 'Premium SipUps' },
-                { id: 'pookies', label: 'Mini Pookies' },
+                { id: 'pookees', label: 'Mini Pookees' },
                 { id: 'equipment', label: 'B2B Solutions' }
               ].map(cat => (
                 <motion.button
@@ -304,12 +304,16 @@ export default function FlavorsGrid({ flavors }: Props) {
                         </div>
 
                         {/* Image */}
-                        <div className="aspect-square relative overflow-hidden">
+                        <div className="aspect-square relative overflow-hidden flex items-center justify-center">
                           <Image
                             src={flavor.image}
                             alt={flavor.name}
                             fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            className={`transition-transform duration-700 group-hover:scale-110 ${
+                              flavor.category === 'sip-up'
+                                ? 'object-contain p-6 drop-shadow-xl'
+                                : 'object-cover'
+                            }`}
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                           />
                           <div className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${hoveredId === flavor.id ? 'opacity-100' : 'opacity-0'} flex items-center justify-center`}>

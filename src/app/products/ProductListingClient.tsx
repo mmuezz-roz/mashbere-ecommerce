@@ -16,13 +16,13 @@ const CATEGORIES = [
   { value: 'all', label: 'All Products' },
   { value: 'sip-up', label: 'Sip Up' },
   { value: 'popsicle', label: 'Popsicles' },
-  { value: 'pookies', label: 'Pookies' },
+  { value: 'pookees', label: 'Pookees' },
   { value: 'equipment', label: 'Equipment' },
 ];
 
 const PRICE_RANGES = [
   { value: 'all', label: 'All Prices' },
-  { value: '2', label: 'SipUp & Pookies' },
+  { value: '2', label: 'SipUp & Pookees' },
   { value: '5', label: 'Popsicles' },
   { value: 'other', label: 'Other' },
 ];

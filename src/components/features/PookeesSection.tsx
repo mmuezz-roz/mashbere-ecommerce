@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { TextReveal, BodyReveal } from '@/components/shared/TextReveal';
 import { ScrollRevealHeading } from '@/components/shared/ScrollRevealHeading';
 
-export default function PookiesSection() {
+export default function PookeesSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -13,9 +13,9 @@ export default function PookiesSection() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.pookies-reveal').forEach((el, i) => {
+            entry.target.querySelectorAll('.pookees-reveal').forEach((el, i) => {
               (el as HTMLElement).style.transitionDelay = `${i * 0.12}s`;
-              el.classList.add('pookies-visible');
+              el.classList.add('pookees-visible');
             });
           }
         });
@@ -30,16 +30,16 @@ export default function PookiesSection() {
   return (
     <>
       <style>{`
-        .pookies-reveal {
+        .pookees-reveal {
           opacity: 0;
           transform: translateY(28px);
           transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .pookies-visible {
+        .pookees-visible {
           opacity: 1 !important;
           transform: translateY(0) !important;
         }
-        .pookies-badge {
+        .pookees-badge {
           display: inline-flex;
           align-items: center;
           gap: 6px;
@@ -50,7 +50,7 @@ export default function PookiesSection() {
           text-transform: uppercase;
           margin-bottom: 14px;
         }
-        .pookies-badge::before {
+        .pookees-badge::before {
           content: '';
           display: block;
           width: 32px;
@@ -58,7 +58,7 @@ export default function PookiesSection() {
           background: #3a5c2a;
           opacity: 0.6;
         }
-        .pookies-badge-icon {
+        .pookees-badge-icon {
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -67,7 +67,7 @@ export default function PookiesSection() {
           border: 1.5px solid #3a5c2a;
           border-radius: 50%;
         }
-        .pookies-title {
+        .pookees-title {
           font-size: clamp(52px, 8vw, 96px);
           font-weight: 900;
           color: #1a3210;
@@ -76,14 +76,14 @@ export default function PookiesSection() {
           font-family: 'Georgia', serif;
           margin-bottom: 10px;
         }
-        .pookies-subtitle {
+        .pookees-subtitle {
           font-size: clamp(18px, 2.5vw, 28px);
           font-weight: 700;
           color: #1a3210;
           margin-bottom: 18px;
           font-family: 'Georgia', serif;
         }
-        .pookies-desc {
+        .pookees-desc {
           font-family: var(--font-sans);
           font-size: 16px;
           font-weight: 500;
@@ -92,19 +92,19 @@ export default function PookiesSection() {
           max-width: 320px;
           margin-bottom: 32px;
         }
-        .pookies-features {
+        .pookees-features {
           display: flex;
           gap: 32px;
           margin-bottom: 36px;
         }
-        .pookies-feature {
+        .pookees-feature {
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 8px;
           text-align: center;
         }
-        .pookies-feature-icon {
+        .pookees-feature-icon {
           width: 56px;
           height: 56px;
           background: #e6e9e1;
@@ -116,7 +116,7 @@ export default function PookiesSection() {
           color: #2d3e24;
           margin-bottom: 12px;
         }
-        .pookies-feature-label {
+        .pookees-feature-label {
           font-family: var(--font-sans);
           font-size: 15px;
           color: #1a1a1a;
@@ -125,7 +125,7 @@ export default function PookiesSection() {
           line-height: 1.2;
           margin-bottom: 6px;
         }
-        .pookies-feature-desc {
+        .pookees-feature-desc {
           font-family: var(--font-sans);
           font-size: 12px;
           color: #666;
@@ -134,7 +134,7 @@ export default function PookiesSection() {
           line-height: 1.4;
           max-width: 140px;
         }
-        .pookies-cta {
+        .pookees-cta {
           display: inline-flex;
           align-items: center;
           gap: 12px;
@@ -151,52 +151,52 @@ export default function PookiesSection() {
           border: none;
           cursor: pointer;
         }
-        .pookies-cta:hover {
+        .pookees-cta:hover {
           background: #2d5c1a;
           transform: translateX(3px);
         }
-        .pookies-cta-arrow {
+        .pookees-cta-arrow {
           font-size: 16px;
           transition: transform 0.2s;
         }
-        .pookies-cta:hover .pookies-cta-arrow {
+        .pookees-cta:hover .pookees-cta-arrow {
           transform: translateX(4px);
         }
-        .pookies-logo-swap {
+        .pookees-logo-swap {
           cursor: pointer;
         }
-        .pookies-logo-swap:hover .pookies-logo-ar {
+        .pookees-logo-swap:hover .pookees-logo-ar {
           opacity: 1 !important;
         }
-        .pookies-logo-swap .pookies-logo-en {
+        .pookees-logo-swap .pookees-logo-en {
           transition: opacity 0.35s ease;
         }
-        .pookies-logo-swap:hover .pookies-logo-en {
+        .pookees-logo-swap:hover .pookees-logo-en {
           opacity: 0;
         }
-        .pookies-main-section {
+        .pookees-main-section {
           margin-top: 64px;
         }
         @media (max-width: 1200px) {
-          .pookies-main-section {
+          .pookees-main-section {
             margin-top: 32px;
           }
-          .pookies-content-wrap {
+          .pookees-content-wrap {
             padding: 160px 0 80px 5vw !important;
             max-width: 480px !important;
           }
-          .pookies-bg {
+          .pookees-bg {
             background-size: cover !important;
             background-position: center right !important;
           }
         }
         @media (max-width: 768px) {
-          .pookies-main-section {
+          .pookees-main-section {
             margin-top: 0 !important;
             border-top-left-radius: 40px;
             border-top-right-radius: 40px;
           }
-          .pookies-content-wrap {
+          .pookees-content-wrap {
             padding: 140px 24px 64px 24px !important;
             max-width: 100% !important;
             display: flex !important;
@@ -204,47 +204,47 @@ export default function PookiesSection() {
             align-items: flex-start !important;
             text-align: left !important;
           }
-          .pookies-section-inner {
+          .pookees-section-inner {
             min-height: auto !important;
           }
-          .pookies-title {
+          .pookees-title {
             font-size: clamp(40px, 14vw, 72px) !important;
           }
-          .pookies-subtitle {
+          .pookees-subtitle {
             font-size: clamp(16px, 5vw, 24px) !important;
           }
-          .pookies-desc {
+          .pookees-desc {
             max-width: 280px !important;
             font-size: 14px !important;
             margin-left: 0 !important;
             text-align: left !important;
           }
-          .pookies-features {
+          .pookees-features {
             flex-wrap: wrap;
             gap: 20px !important;
             justify-content: center;
           }
-          .pookies-feature {
+          .pookees-feature {
             flex: 0 0 calc(33% - 14px);
             min-width: 80px;
           }
-          .pookies-logo-en, .pookies-logo-ar {
+          .pookees-logo-en, .pookees-logo-ar {
             width: min(220px, 55vw) !important;
           }
-          .pookies-bg {
+          .pookees-bg {
             background-image: url('/photos/ChatGPT Image May 3, 2026, 04_41_21 PM.webp') !important;
             background-size: cover !important;
             background-position: center center !important;
           }
-          .pookies-cta {
+          .pookees-cta {
             padding: 14px 24px !important;
           }
         }
         @media (max-width: 400px) {
-          .pookies-title {
+          .pookees-title {
             font-size: 36px !important;
           }
-          .pookies-feature-icon {
+          .pookees-feature-icon {
             width: 44px !important;
             height: 44px !important;
           }
@@ -253,12 +253,12 @@ export default function PookiesSection() {
 
       <section
         ref={sectionRef}
-        className="pookies-main-section relative w-full overflow-hidden"
+        className="pookees-main-section relative w-full overflow-hidden"
         style={{ background: '#f5f0e8' }}
       >
         {/* Full background image */}
         <div
-          className="absolute inset-0 w-full h-full pookies-bg"
+          className="absolute inset-0 w-full h-full pookees-bg"
           style={{
             backgroundImage: `url('/photos/ChatGPT Image May 2, 2026, 11_13_00 PM.webp')`,
             backgroundSize: 'cover',
@@ -287,30 +287,30 @@ export default function PookiesSection() {
 
         {/* Content */}
         <div
-          className="pookies-section-inner relative z-10 flex items-center"
+          className="pookees-section-inner relative z-10 flex items-center"
           style={{ minHeight: '720px' }}
         >
           <div
-            className="pookies-content-wrap"
+            className="pookees-content-wrap"
             style={{ maxWidth: '520px', padding: '180px 0 100px 7vw' }}
           >
-            {/* Pookies ICE Logo — hover to toggle Arabic version */}
+            {/* Pookees ICE Logo — hover to toggle Arabic version */}
             <div
-              className="pookies-reveal pookies-logo-swap"
+              className="pookees-reveal pookees-logo-swap"
               style={{ marginBottom: '-30px', width: 'min(260px, 60vw)', position: 'relative', height: 'auto' }}
             >
               {/* English logo (default) */}
               <img
                 src="/photos/1777754998295-8d335e3c-14f9-4866-a8af-da578df1ec7b_1.webp"
-                alt="Pookies ICE Logo"
-                className="pookies-logo-en"
+                alt="Pookees ICE Logo"
+                className="pookees-logo-en"
                 style={{ width: 'min(260px, 60vw)', height: 'auto', display: 'block' }}
               />
               {/* Arabic logo (shown on hover) */}
               <img
                 src="/photos/1777755025290-b62df529-b435-4d41-9f8e-5fe5c87d201d_1.webp"
                 alt="بوكيز آيس Logo"
-                className="pookies-logo-ar"
+                className="pookees-logo-ar"
                 style={{
                   width: 'min(260px, 60vw)',
                   height: 'auto',
@@ -325,8 +325,8 @@ export default function PookiesSection() {
             </div>
 
             {/* Introducing badge with lines */}
-            <div className="pookies-badge pookies-reveal flex items-center gap-4 w-full">
-              <div className="pookies-badge-line" />
+            <div className="pookees-badge pookees-reveal flex items-center gap-4 w-full">
+              <div className="pookees-badge-line" />
               <div className="flex items-center gap-2">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3a5c2a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 11a7 7 0 0 1-7 7c-1.1 0-1.35-.16-2-.5Z"/>
@@ -334,7 +334,7 @@ export default function PookiesSection() {
                 </svg>
                 <span className="text-[#3a5c2a] font-bold tracking-[0.2em] uppercase text-[11px]">Introducing</span>
               </div>
-              <div className="pookies-badge-line" />
+              <div className="pookees-badge-line" />
             </div>
 
             {/* Heading — editorial clip-mask reveal matching ProductShowcase */}
@@ -359,27 +359,27 @@ export default function PookiesSection() {
 
             {/* Description */}
             <BodyReveal delay={0.4}>
-              <p className="pookies-desc">
+              <p className="pookees-desc">
                 Bite-sized indulgence crafted with real ingredients. Perfect for quick cravings and everyday treats.
               </p>
             </BodyReveal>
             {/* Feature icons */}
-            <div className="pookies-features pookies-reveal">
+            <div className="pookees-features pookees-reveal">
               {/* Real Ingredients */}
-              <div className="pookies-feature">
-                <div className="pookies-feature-icon">
+              <div className="pookees-feature">
+                <div className="pookees-feature-icon">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 11a7 7 0 0 1-7 7c-1.1 0-1.35-.16-2-.5Z"/>
                     <path d="M11 20c-1-3 .5-6 1.5-8.5"/>
                   </svg>
                 </div>
-                <span className="pookies-feature-label">Real Ingredients</span>
-                <p className="pookies-feature-desc">Made with quality ingredients you can trust.</p>
+                <span className="pookees-feature-label">Real Ingredients</span>
+                <p className="pookees-feature-desc">Made with quality ingredients you can trust.</p>
               </div>
  
               {/* Perfect Snack */}
-              <div className="pookies-feature">
-                <div className="pookies-feature-icon">
+              <div className="pookees-feature">
+                <div className="pookees-feature-icon">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M18 11V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v5"/>
                     <path d="M12 18V4"/>
@@ -387,27 +387,27 @@ export default function PookiesSection() {
                     <rect x="6" y="11" width="12" height="7" rx="2"/>
                   </svg>
                 </div>
-                <span className="pookies-feature-label">Perfect Snack</span>
-                <p className="pookies-feature-desc">The perfect bite-sized treat for anytime, anywhere.</p>
+                <span className="pookees-feature-label">Perfect Snack</span>
+                <p className="pookees-feature-desc">The perfect bite-sized treat for anytime, anywhere.</p>
               </div>
  
               {/* Loved by Everyone */}
-              <div className="pookies-feature">
-                <div className="pookies-feature-icon">
+              <div className="pookees-feature">
+                <div className="pookees-feature-icon">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
                   </svg>
                 </div>
-                <span className="pookies-feature-label">Loved by Everyone</span>
-                <p className="pookies-feature-desc">Crafted for all ages to enjoy and savor together.</p>
+                <span className="pookees-feature-label">Loved by Everyone</span>
+                <p className="pookees-feature-desc">Crafted for all ages to enjoy and savor together.</p>
               </div>
             </div>
 
             {/* CTA Button */}
-            <div className="pookies-reveal w-full flex flex-col items-center gap-4">
-              <Link href="/products?category=pookies" className="pookies-cta !rounded-full !px-12 !py-5 !bg-[#2d3e24] !font-black !text-[13px]">
+            <div className="pookees-reveal w-full flex flex-col items-center gap-4">
+              <Link href="/products?category=pookees" className="pookees-cta !rounded-full !px-12 !py-5 !bg-[#2d3e24] !font-black !text-[13px]">
                 Explore Flavors
-                <span className="pookies-cta-arrow">→</span>
+                <span className="pookees-cta-arrow">→</span>
               </Link>
               
               <div className="flex items-center gap-2 text-[#666] text-[11px] font-medium">

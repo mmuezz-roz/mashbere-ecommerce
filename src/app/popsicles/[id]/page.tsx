@@ -40,7 +40,13 @@ export default function PopsicleDetailPage() {
       <div className="container-responsive pt-28 sm:pt-36 lg:pt-44 pb-10 lg:pb-20 relative z-10">
         {/* Header Navigation */}
         <div className="flex items-center justify-between mb-12 lg:mb-20">
-          <div className="lg:hidden" />
+          <Link 
+            href="/products?category=popsicle"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-gray-800 hover:bg-white hover:scale-110 transition-all duration-300"
+            aria-label="Back to Popsicles"
+          >
+            <ArrowLeft size={18} />
+          </Link>
 
           <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-black text-xs uppercase tracking-widest">
             <Star className="w-4 h-4 fill-current" />

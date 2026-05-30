@@ -1,6 +1,60 @@
 import { createClient } from '@/lib/supabase/server';
 import { Product } from '@/types';
 
+const fixPookeeText = (str: string | undefined | null) => {
+  if (!str) return str;
+  return str.replace(/Pookies/g, 'Pookees')
+            .replace(/pookies/g, 'pookees')
+            .replace(/POOKIES/g, 'POOKEES')
+            .replace(/Pookie/g, 'Pookee')
+            .replace(/pookie/g, 'pookee')
+            .replace(/POOKIE/g, 'POOKEE');
+};
+
+
+const getPastelColor = (flavorName: string) => {
+  if (!flavorName) return '#F5F5F5';
+  const name = flavorName.toLowerCase();
+  if (name.includes('mango')) return '#FFF8E1';
+  if (name.includes('tender coconut')) return '#E7F3F3';
+  if (name.includes('strawberry')) return '#F3E7F0';
+  if (name.includes('pistachio')) return '#EAF3DA';
+  if (name.includes('chocolate')) return '#F5E6DA';
+  if (name.includes('papaya')) return '#FDF0E6';
+  if (name.includes('avocado')) return '#F3F6E8';
+  if (name.includes('custard apple')) return '#F6F8E8';
+  if (name.includes('almond')) return '#F8EFE6';
+  if (name.includes('pineapple')) return '#FFFDE7';
+  if (name.includes('watermelon')) return '#FCE4EC';
+  if (name.includes('guava')) return '#FCE4EC';
+  if (name.includes('chikku')) return '#F3F0DA';
+  return '#F5F5F5';
+};
+
+
+const getDarkColor = (flavorName: string) => {
+  if (!flavorName) return '#708238';
+  const name = flavorName.toLowerCase();
+  if (name.includes('mango')) return '#F59E0B'; // Amber-500
+  if (name.includes('tender coconut')) return '#475569'; // Slate-600
+  if (name.includes('strawberry') || name.includes('ruby')) return '#E11D48'; // Rose-600
+  if (name.includes('pistachio')) return '#65A30D'; // Lime-600
+  if (name.includes('chocolate')) return '#451A03'; // Orange-950
+  if (name.includes('papaya')) return '#EA580C'; // Orange-600
+  if (name.includes('avocado')) return '#4D7C0F'; // Lime-700
+  if (name.includes('custard apple')) return '#65A30D'; // Lime-600
+  if (name.includes('almond')) return '#9A3412'; // Orange-800
+  if (name.includes('pineapple') || name.includes('sugarcane')) return '#CA8A04'; // Yellow-600
+  if (name.includes('watermelon')) return '#BE123C'; // Rose-700
+  if (name.includes('guava')) return '#BE185D'; // Pink-700
+  if (name.includes('grape')) return '#6B21A8'; // Purple-800
+  if (name.includes('chikku')) return '#78350F'; // Amber-900
+  if (name.includes('lychee')) return '#BE185D'; // Pink-700
+  if (name.includes('passion')) return '#9333EA'; // Purple-600
+  return '#708238';
+};
+
+
 /**
  * ProductService
  * Handles all server-side product data fetching from Supabase.
@@ -138,15 +192,15 @@ export const ProductService = {
       const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
       return {
         id: p.slug,
-        name: p.name,
-        subtitle: d?.subtitle ?? '',
-        label: d?.label ?? '',
+        name: fixPookeeText(p.name) ?? '',
+        subtitle: fixPookeeText(d?.subtitle) ?? '',
+        label: fixPookeeText(d?.label) ?? '',
         image: d?.image_path ?? p.image,
         accentColor: d?.accent_color ?? '#F5F5F5',
         bgGradient: d?.bg_gradient ?? '',
-        textColor: d?.text_color ?? '#111',
-        desc: p.description,
-        longDesc: d?.long_desc ?? p.description,
+        textColor: getDarkColor(p.name),
+        desc: fixPookeeText(p.description) ?? '',
+        longDesc: fixPookeeText(d?.long_desc ?? p.description),
         highlight: d?.highlight ?? '',
         ingredients: d?.ingredients ?? [],
         stats: d?.stats ?? [],
@@ -188,15 +242,15 @@ export const ProductService = {
 
     return {
       id: data.slug,
-      name: data.name,
-      subtitle: d?.subtitle ?? '',
-      label: d?.label ?? '',
+      name: fixPookeeText(data.name),
+      subtitle: fixPookeeText(d?.subtitle) ?? '',
+      label: fixPookeeText(d?.label) ?? '',
       image: d?.image_path ?? data.image,
       accentColor: d?.accent_color ?? '#F5F5F5',
       bgGradient: d?.bg_gradient ?? '',
       textColor: d?.text_color ?? '#111',
-      desc: data.description,
-      longDesc: d?.long_desc ?? data.description,
+      desc: fixPookeeText(data.description),
+      longDesc: fixPookeeText(d?.long_desc ?? data.description),
       highlight: d?.highlight ?? '',
       ingredients: d?.ingredients ?? [],
       stats: d?.stats ?? [],
@@ -233,13 +287,13 @@ export const ProductService = {
       const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
       return {
         id: p.slug,
-        name: p.name,
-        subtitle: d?.subtitle ?? '',
-        label: d?.label ?? '',
+        name: fixPookeeText(p.name),
+        subtitle: fixPookeeText(d?.subtitle) ?? '',
+        label: fixPookeeText(d?.label) ?? '',
         image: d?.image_path ?? p.image,
         accentColor: d?.accent_color ?? '#F5F5F5',
-        desc: p.description,
-        longDesc: d?.long_desc ?? p.description,
+        desc: fixPookeeText(p.description),
+        longDesc: fixPookeeText(d?.long_desc ?? p.description),
         stats: d?.stats ?? [],
         price: Number(p.price),
         featured: p.featured,
@@ -278,13 +332,13 @@ export const ProductService = {
 
     return {
       id: data.slug,
-      name: data.name,
-      subtitle: d?.subtitle ?? '',
-      label: d?.label ?? '',
+      name: fixPookeeText(data.name),
+      subtitle: fixPookeeText(d?.subtitle) ?? '',
+      label: fixPookeeText(d?.label) ?? '',
       image: d?.image_path ?? data.image,
       accentColor: d?.accent_color ?? '#F5F5F5',
-      desc: data.description,
-      longDesc: d?.long_desc ?? data.description,
+      desc: fixPookeeText(data.description),
+      longDesc: fixPookeeText(d?.long_desc ?? data.description),
       stats: d?.stats ?? [],
       price: Number(data.price),
       featured: data.featured,
@@ -293,9 +347,9 @@ export const ProductService = {
   },
 
   /**
-   * Fetches all pookies joined with their detail data
+   * Fetches all pookees joined with their detail data
    */
-  async getAllPookies(): Promise<any[]> {
+  async getAllPookees(): Promise<any[]> {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from('products')
@@ -310,7 +364,7 @@ export const ProductService = {
       .order('name', { ascending: true });
 
     if (error) {
-      console.error('[Server] Error fetching pookies:', error.message || error);
+      console.error('[Server] Error fetching pookees:', error.message || error);
       return [];
     }
 
@@ -318,17 +372,17 @@ export const ProductService = {
       const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
       return {
         id: p.slug,
-        name: p.name,
-        subtitle: d?.subtitle ?? '',
-        label: d?.label ?? '',
+        name: fixPookeeText(p.name),
+        subtitle: fixPookeeText(d?.subtitle) ?? '',
+        label: fixPookeeText(d?.label) ?? '',
         image: d?.image_path ?? p.image,
-        accentColor: d?.accent_color ?? '#F5F5F5',
-        desc: p.description,
-        longDesc: d?.long_desc ?? p.description,
+        accentColor: getPastelColor(p.name),
+        desc: fixPookeeText(p.description),
+        longDesc: fixPookeeText(d?.long_desc ?? p.description),
         stats: d?.stats ?? [],
         price: Number(p.price),
         featured: p.featured,
-        category: p.category,
+        category: 'pookees',
       };
     });
   },
@@ -359,13 +413,13 @@ export const ProductService = {
       const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
       return {
         id: p.slug,
-        name: p.name,
-        subtitle: d?.subtitle ?? '',
-        label: d?.label ?? '',
+        name: fixPookeeText(p.name),
+        subtitle: fixPookeeText(d?.subtitle) ?? '',
+        label: fixPookeeText(d?.label) ?? '',
         image: d?.image_path ?? p.image,
         accentColor: d?.accent_color ?? '#F5F5F5',
-        desc: p.description,
-        longDesc: d?.long_desc ?? p.description,
+        desc: fixPookeeText(p.description),
+        longDesc: fixPookeeText(d?.long_desc ?? p.description),
         stats: d?.stats ?? [],
         price: Number(p.price),
         featured: p.featured,
@@ -380,8 +434,8 @@ export const ProductService = {
   mapToProduct(dbProduct: any): Product {
     return {
       id: dbProduct.id,
-      name: dbProduct.name,
-      description: dbProduct.description,
+      name: fixPookeeText(dbProduct.name) ?? '',
+      description: fixPookeeText(dbProduct.description) ?? '',
       price: Number(dbProduct.price),
       category: dbProduct.category,
       image: dbProduct.image,

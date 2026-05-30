@@ -104,13 +104,19 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
         {/* Top Nav - Optimized for cinematic feel and Header spacing */}
         <div className={`container-responsive ${isKiosk ? 'pt-24 sm:pt-26 lg:pt-32' : 'pt-24 sm:pt-28 lg:pt-36'} pb-4 sm:pb-6 lg:pb-8`}>
           <div className="flex items-center justify-between">
-            <button 
-              onClick={() => router.back()}
+            <Link 
+              href={(function() {
+                if (flavor.category === 'equipment') return '/equipment';
+                if (flavor.category === 'pookees') return '/products?category=pookees';
+                if (flavor.category === 'sip-up') return '/products?category=sip-up';
+                if (flavor.category === 'popsicle') return '/products?category=popsicle';
+                return '/products';
+              })()}
               className="flex items-center justify-center w-10 h-10 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-gray-800 hover:bg-white hover:scale-110 transition-all duration-300"
-              aria-label="Go back"
+              aria-label="Back to category"
             >
               <ArrowLeft size={18} />
-            </button>
+            </Link>
             
             <ShareButton 
               name={flavor.name} 
@@ -554,47 +560,6 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
             )}
 
 
-          {/* Prev / Next Navigation */}
-          {(prevFlavor || nextFlavor) && (
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.9 }}
-              className="mt-10 pt-8 lg:mt-20 lg:pt-12 border-t border-gray-200"
-            >
-              <p className="text-center text-xs font-black uppercase tracking-widest text-gray-400 mb-8">Explore More</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                {prevFlavor && (
-                  <Link href={`/products/${prevFlavor.id}`}>
-                    <div className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-white transition-all shadow-sm border border-transparent hover:border-gray-100 hover:shadow-md">
-                      <ArrowLeft size={18} className="text-gray-400 group-hover:text-[#708238] transition-colors shrink-0" />
-                      <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0">
-                        <Image src={prevFlavor.image} alt={prevFlavor.name} fill className="object-cover" sizes="64px" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Previous</p>
-                        <p className="font-display text-gray-900 uppercase text-lg leading-none">{prevFlavor.name}</p>
-                      </div>
-                    </div>
-                  </Link>
-                )}
-                {nextFlavor && (
-                  <Link href={`/products/${nextFlavor.id}`}>
-                    <div className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-white transition-all shadow-sm border border-transparent hover:border-gray-100 hover:shadow-md justify-end text-right">
-                      <div>
-                        <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Next</p>
-                        <p className="font-display text-gray-900 uppercase text-lg leading-none">{nextFlavor.name}</p>
-                      </div>
-                      <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0">
-                        <Image src={nextFlavor.image} alt={nextFlavor.name} fill className="object-cover" sizes="64px" />
-                      </div>
-                      <ChevronRight size={18} className="text-gray-400 group-hover:text-[#708238] transition-colors shrink-0" />
-                    </div>
-                  </Link>
-                )}
-              </div>
-            </motion.div>
-          )}
       </div>
 
       {/* Product Detail Modal */}

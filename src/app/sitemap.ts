@@ -20,35 +20,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Fetch all categories for dynamic product routes
-  const [popsicles, sipups, equipment, pookies] = await Promise.all([
+  const [popsicles, sipups, equipment, pookees] = await Promise.all([
     ProductService.getAllPopsicles(),
     ProductService.getAllSipups(),
     ProductService.getAllEquipment(),
-    ProductService.getAllPookies(),
+    ProductService.getAllPookees(),
   ]);
 
   // Combined product routes with correct URL logic
   const productRoutes = [
     ...popsicles.map((p) => ({
-      url: `${baseUrl}/products/${p.id}`,
+      url: `${baseUrl}/products/${p.slug || p.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     })),
     ...sipups.map((s) => ({
-      url: `${baseUrl}/sipups/${s.id}`, // Fixed: Sipups are served from /sipups/
+      url: `${baseUrl}/sipups/${s.slug || s.id}`, // Fixed: Sipups are served from /sipups/
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7, // Higher priority for Sipups
     })),
     ...equipment.map((e) => ({
-      url: `${baseUrl}/products/${e.id}`,
+      url: `${baseUrl}/products/${e.slug || e.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     })),
-    ...pookies.map((p) => ({
-      url: `${baseUrl}/products/${p.id}`,
+    ...pookees.map((p) => ({
+      url: `${baseUrl}/products/${p.slug || p.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.5,

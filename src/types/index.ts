@@ -1,4 +1,4 @@
-export type Category = 'ice-cream' | 'popsicle' | 'equipment' | 'sip-up' | 'pookies';
+export type Category = 'ice-cream' | 'popsicle' | 'equipment' | 'sip-up' | 'pookees';
 export type BusinessType = 'b2c' | 'b2b';
 export type OrderStatus = 'pending' | 'processing' | 'completed' | 'cancelled' | 'shipped';
 export type UserRole = 'customer' | 'admin' | 'b2b';
