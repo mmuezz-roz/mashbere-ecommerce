@@ -311,7 +311,7 @@ export default function FlavorsGrid({ flavors }: Props) {
                             fill
                             className={`transition-transform duration-700 group-hover:scale-110 ${
                               flavor.category === 'sip-up'
-                                ? 'object-contain p-6 drop-shadow-xl'
+                                ? 'object-contain p-0 sm:p-2 drop-shadow-xl'
                                 : 'object-cover'
                             }`}
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"

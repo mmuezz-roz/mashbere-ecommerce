@@ -112,7 +112,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 if (flavor.category === 'popsicle') return '/products?category=popsicle';
                 return '/products';
               })()}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-gray-800 hover:bg-white hover:scale-110 transition-all duration-300"
+              className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-gray-800 hover:bg-white hover:scale-110 transition-all duration-300"
               aria-label="Back to category"
             >
               <ArrowLeft size={18} />
