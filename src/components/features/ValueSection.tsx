@@ -34,9 +34,9 @@ const VALUES = [
     description:
       'Crafted with precision and the finest ingredients to deliver a rich, smooth, and consistently refined experience.',
     points: [
-      'Premium, responsibly sourced ingredients',
-      'Clean recipes, no unnecessary additives',
-      'Consistent taste in every scoop',
+      'No artificial color, no artificial flavor',
+      'ISO 22000:2018 Food Safety certified',
+      'HACCP-compliant production facility',
     ],
   },
   {

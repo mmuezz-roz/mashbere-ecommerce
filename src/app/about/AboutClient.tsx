@@ -27,11 +27,11 @@ const OFFERINGS = [
 ];
 
 const VALUE_POINTS = [
-  { label: 'Quality-first production', detail: 'Every product begins with premium, carefully selected natural ingredients.' },
-  { label: 'Hygienic by design', detail: 'Our facilities and packaging meet the highest food safety standards in the UAE.' },
-  { label: 'Presentation matters', detail: 'From the ice cup to the kiosk, every touchpoint is crafted to impress.' },
-  { label: 'Built for business', detail: 'Reliable supply chains, scalable kiosk solutions, and dedicated B2B partnerships.' },
-  { label: 'Made for the UAE market', detail: 'Flavors, formats, and operations tuned specifically for the UAE climate and culture.' },
+  { label: 'Quality First', detail: 'Relentless commitment to source the finest ingredients and maintain rigorous production standards.' },
+  { label: 'Integrity', detail: 'Ensuring transparency — no harmful additives, just honest, delicious treats.' },
+  { label: 'Innovation', detail: 'Experimenting with unique flavors to blend nostalgic favorites with modern trends.' },
+  { label: 'Customer Delight', detail: 'Prioritizing the smiles of our consumers by delivering excellence in every bite.' },
+  { label: 'Hygienic by Design', detail: 'ISO 22000:2018 certified and HACCP-compliant — our facilities meet the highest food safety standards.' },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -145,13 +145,28 @@ export default function AboutClient() {
               </FadeUp>
               <FadeUp delay={0.1}>
                 <p className="text-gray-500 text-sm sm:text-base lg:text-lg leading-relaxed font-medium max-w-2xl">
-                  Mashbere is a UAE-based premium frozen dessert brand built around one conviction: food made from real ingredients — handled with care and presented with intention — creates experiences people remember.
+                  Founded in 2023, Jamees Food and Beverage LLC has established itself as a dynamic force in the manufacturing and trading sector of the UAE. Headquartered in Dubai, our operations have expanded significantly with a state-of-the-art manufacturing facility located in the Industrial Area of Ajman.
                 </p>
               </FadeUp>
               <FadeUp delay={0.17}>
                 <p className="text-gray-400 text-sm leading-relaxed max-w-2xl">
-                  We serve both consumers and businesses, offering premium ice cream, popsicles, hygienic ice cups, ice glass, and ready-to-launch kiosk solutions across the UAE.
+                  The story of Mashbere began as a vision to revive the classic joy of popsicles in a modern, premium way. By combining traditional recipes with advanced freezing technology, Mashbere has grown into a brand synonymous with purity and exceptional taste.
                 </p>
+              </FadeUp>
+              {/* Stat badges */}
+              <FadeUp delay={0.24}>
+                <div className="flex flex-wrap gap-3 pt-1">
+                  {[
+                    { label: 'Founded', value: '2023' },
+                    { label: 'Sector', value: 'Manufacturing & Trading' },
+                    { label: 'Hub', value: 'Dubai & Ajman, UAE' },
+                  ].map((stat) => (
+                    <div key={stat.label} className="flex items-center gap-2 bg-[#F7F7F5] border border-gray-100 rounded-full px-4 py-2">
+                      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-400">{stat.label}</span>
+                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#141A0B]">{stat.value}</span>
+                    </div>
+                  ))}
+                </div>
               </FadeUp>
             </div>
           </div>
@@ -177,6 +192,69 @@ export default function AboutClient() {
               </div>
             </div>
           </FadeUp>
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          2b. OUR MISSION & VISION
+      ══════════════════════════════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#141A0B]">
+        <div className="container-responsive">
+          {/* Top label */}
+          <FadeUp className="mb-8 sm:mb-12">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#C4EB54]/60 block mb-2">Our Purpose</span>
+            <h2 className="font-display uppercase tracking-tighter leading-none text-white
+                           text-3xl sm:text-5xl lg:text-6xl">
+              Mission &amp; <span className="text-[#C4EB54]">Vision.</span>
+            </h2>
+          </FadeUp>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+            {/* Mission */}
+            <FadeUp delay={0.06}>
+              <div className="bg-white/5 border border-white/10 rounded-[32px] p-8 sm:p-10 h-full flex flex-col">
+                <div className="w-10 h-10 rounded-xl bg-[#C4EB54]/10 border border-[#C4EB54]/20 flex items-center justify-center mb-6">
+                  <IceCream className="w-5 h-5 text-[#C4EB54]" />
+                </div>
+                <h3 className="font-display uppercase tracking-tighter text-white text-2xl sm:text-3xl mb-4">
+                  Our Mission
+                </h3>
+                <p className="text-white/60 text-sm sm:text-base leading-relaxed font-medium flex-1">
+                  Under the umbrella of Jamees Food, our mission is to craft high-quality, refreshing products through our brand Mashbere. We are dedicated to using premium ingredients that bring a burst of joy and natural flavor to every customer — making gourmet frozen treats accessible while maintaining the highest standards of hygiene.
+                </p>
+                {/* No artificial badge */}
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {['No Artificial Color', 'No Artificial Flavor'].map((badge) => (
+                    <span key={badge} className="text-[9px] font-black uppercase tracking-[0.3em] bg-[#C4EB54]/10 text-[#C4EB54] border border-[#C4EB54]/20 px-3 py-1.5 rounded-full">
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </FadeUp>
+
+            {/* Vision */}
+            <FadeUp delay={0.12}>
+              <div className="bg-[#C4EB54] rounded-[32px] p-8 sm:p-10 h-full flex flex-col">
+                <div className="w-10 h-10 rounded-xl bg-[#141A0B]/10 border border-[#141A0B]/10 flex items-center justify-center mb-6">
+                  <Store className="w-5 h-5 text-[#141A0B]" />
+                </div>
+                <h3 className="font-display uppercase tracking-tighter text-[#141A0B] text-2xl sm:text-3xl mb-4">
+                  Our Vision
+                </h3>
+                <p className="text-[#141A0B]/70 text-sm sm:text-base leading-relaxed font-medium flex-1">
+                  To become a leading name in the frozen dessert industry, recognized globally for redefining the popsicle experience. We envision Mashbere as the gold standard for natural, innovative, and high-quality treats.
+                </p>
+                <div className="mt-6">
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] bg-[#141A0B]/10 text-[#141A0B] px-3 py-1.5 rounded-full">
+                    Global Ambition · Natural Innovation
+                  </span>
+                </div>
+              </div>
+            </FadeUp>
+          </div>
         </div>
       </section>
 
@@ -364,6 +442,80 @@ export default function AboutClient() {
                     <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-gray-100
                                             group-hover:text-[#C4EB54] transition-colors duration-300
                                             flex-shrink-0 mt-0.5" />
+                  </div>
+                </FadeUp>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          5b. QUALITY ASSURANCE
+      ══════════════════════════════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 lg:py-20">
+        <div className="container-responsive">
+          <div className="flex flex-col lg:flex-row lg:gap-16 xl:gap-24 items-start">
+
+            {/* Left — text */}
+            <div className="lg:w-1/2 space-y-5 mb-10 lg:mb-0">
+              <FadeUp>
+                <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 block mb-2">Uncompromising Standards</span>
+                <h2 className="font-display uppercase tracking-tighter leading-none text-[#141A0B]
+                               text-3xl sm:text-5xl lg:text-6xl">
+                  Quality <span className="text-primary">Assured.</span>
+                </h2>
+              </FadeUp>
+              <FadeUp delay={0.1}>
+                <p className="text-gray-500 text-sm sm:text-base leading-relaxed font-medium max-w-lg">
+                  In the food and beverage industry, trust is the most important ingredient. Jamees Food and Beverage LLC ensures that every Mashbere product is manufactured under the most stringent safety protocols.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.16}>
+                <p className="text-gray-400 text-sm leading-relaxed max-w-lg">
+                  Our Ajman-based facility utilises advanced freezing technology to preserve the natural textures and flavors of our ingredients without the need for chemical preservatives — delivering a product that is as healthy as it is delicious.
+                </p>
+              </FadeUp>
+            </div>
+
+            {/* Right — certification badges */}
+            <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                {
+                  code: 'ISO 22000:2018',
+                  title: 'Food Safety Management System',
+                  detail: 'Internationally recognised standard covering all aspects of food safety across the supply chain.',
+                },
+                {
+                  code: 'HACCP',
+                  title: 'Hazard Analysis Critical Control Point',
+                  detail: 'Systematic preventive approach to biological, chemical, and physical hazards in production.',
+                },
+              ].map((cert, i) => (
+                <FadeUp key={cert.code} delay={i * 0.1}>
+                  <div className="group bg-[#F7F7F5] border border-gray-100 hover:border-primary/30
+                                  rounded-[28px] p-6 sm:p-8 h-full flex flex-col
+                                  hover:bg-[#141A0B] transition-all duration-500">
+                    <div className="w-10 h-10 rounded-xl bg-white border border-gray-100
+                                    flex items-center justify-center mb-5
+                                    group-hover:bg-[#C4EB54]/10 group-hover:border-transparent transition-all duration-500">
+                      <CheckCircle2 className="w-5 h-5 text-primary group-hover:text-[#C4EB54] transition-colors duration-500" />
+                    </div>
+                    <span className="font-display uppercase tracking-tight text-primary
+                                     group-hover:text-[#C4EB54] text-xl sm:text-2xl mb-1.5 transition-colors duration-500">
+                      {cert.code}
+                    </span>
+                    <h3 className="font-black text-xs sm:text-sm uppercase tracking-tight
+                                   text-[#141A0B] group-hover:text-white mb-3 transition-colors duration-500">
+                      {cert.title}
+                    </h3>
+                    <p className="text-gray-400 group-hover:text-white/50 font-medium
+                                  leading-relaxed text-xs transition-colors duration-500 flex-1">
+                      {cert.detail}
+                    </p>
                   </div>
                 </FadeUp>
               ))}
