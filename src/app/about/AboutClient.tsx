@@ -4,7 +4,8 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IceCream, Coffee, Store, CheckCircle2, ArrowRight } from 'lucide-react';
+import { IceCream, Coffee, Store, CheckCircle2, ArrowRight, FileText } from 'lucide-react';
+import DownloadProfileButton from './DownloadProfileButton';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -559,6 +560,62 @@ export default function AboutClient() {
                               max-w-xs sm:max-w-sm lg:max-w-md leading-relaxed">
                   From Dubai's summers to the pace of its malls — every Mashbere product is built around the UAE. Our flavors reflect the diversity here. Our standards match what's expected here.
                 </p>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          6b. COMPANY PROFILE DOWNLOAD
+      ══════════════════════════════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#F7F7F5]">
+        <div className="container-responsive">
+          <FadeUp>
+            <div className="relative overflow-hidden rounded-[40px] bg-[#141A0B] p-8 sm:p-12 lg:p-16"
+            >
+              {/* Subtle glow accent */}
+              <div className="pointer-events-none absolute -top-32 -right-32 w-[420px] h-[420px]
+                              rounded-full bg-[#C4EB54]/10 blur-[80px]" />
+              <div className="pointer-events-none absolute -bottom-24 -left-24 w-[300px] h-[300px]
+                              rounded-full bg-[#C4EB54]/5 blur-[60px]" />
+
+              <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12">
+                {/* Left — text */}
+                <div className="space-y-4 max-w-xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#C4EB54]/10 border border-[#C4EB54]/20
+                                    flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 text-[#C4EB54]" />
+                    </div>
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#C4EB54]/60">
+                      Company Profile
+                    </span>
+                  </div>
+                  <h2 className="font-display uppercase tracking-tighter leading-none text-white
+                                 text-3xl sm:text-4xl lg:text-5xl">
+                    Get to Know 
+                    <span className="text-[#C4EB54]">Mashbere.</span>
+                  </h2>
+                  <p className="text-white/55 text-sm sm:text-base leading-relaxed font-medium">
+                    Download our full company profile to learn about our story, product range, certifications, and partnership opportunities — all in one document.
+                  </p>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {['ISO 22000:2018 Certified', 'HACCP Compliant', 'Dubai & Ajman, UAE'].map((tag) => (
+                      <span key={tag}
+                        className="text-[9px] font-black uppercase tracking-[0.25em]
+                                   bg-white/5 border border-white/10 text-white/50
+                                   px-3 py-1.5 rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right — interactive doc-icon download button */}
+                <div className="flex-shrink-0 flex justify-center lg:justify-end">
+                  <DownloadProfileButton />
+                </div>
               </div>
             </div>
           </FadeUp>
