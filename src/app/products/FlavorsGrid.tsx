@@ -16,6 +16,7 @@ interface Flavor {
   subtitle: string;
   label: string;
   image: string;
+  cardImage?: string;
   accentColor: string;
   desc: string;
   tags: string[];
