@@ -309,11 +309,7 @@ export default function FlavorsGrid({ flavors }: Props) {
                             src={flavor.image}
                             alt={flavor.name}
                             fill
-                            className={`transition-transform duration-700 group-hover:scale-110 ${
-                              flavor.category === 'sip-up'
-                                ? 'object-contain p-0 sm:p-2 drop-shadow-xl'
-                                : 'object-cover'
-                            }`}
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                           />
                           <div className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${hoveredId === flavor.id ? 'opacity-100' : 'opacity-0'} flex items-center justify-center`}>
