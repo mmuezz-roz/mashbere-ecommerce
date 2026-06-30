@@ -306,7 +306,7 @@ export default function FlavorsGrid({ flavors }: Props) {
                         {/* Image */}
                         <div className="aspect-square relative overflow-hidden flex items-center justify-center">
                           <Image
-                            src={flavor.image}
+                            src={flavor.category === 'sip-up' ? (flavor.cardImage || flavor.image) : flavor.image}
                             alt={flavor.name}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-110"

@@ -290,7 +290,10 @@ export const ProductService = {
         name: fixPookeeText(p.name),
         subtitle: fixPookeeText(d?.subtitle) ?? '',
         label: fixPookeeText(d?.label) ?? '',
-        image: d?.image_path ?? p.image,
+        // `image` keeps the original Cloudinary/PNG — used by homepage BounceCards fan display
+        image: p.image,
+        // `cardImage` holds the new product photo — used by FlavorsGrid cards
+        cardImage: d?.image_path ?? p.image,
         accentColor: d?.accent_color ?? '#F5F5F5',
         desc: fixPookeeText(p.description),
         longDesc: fixPookeeText(d?.long_desc ?? p.description),
