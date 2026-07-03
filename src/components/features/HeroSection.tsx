@@ -27,9 +27,12 @@ export default function HeroSection() {
       {/* Content Container */}
       <div className="relative z-20 container-responsive flex flex-col items-center text-center pt-10 sm:pt-36 lg:pt-[30vh] pb-10 sm:pb-32 lg:pb-40">
 
+        {/* SEO Hidden H1 */}
+        <h1 className="sr-only">Wholesale Ice Cream, Popsicles, Pookees & Kiosks in the UAE</h1>
+
         {/* Main Heading — line-by-line clip reveal on load */}
         <ScrollRevealHeading
-          as="h1"
+          as="h2"
           lines={[
             <span key="l1" className="text-[14vw] sm:text-6xl md:text-7xl lg:text-[8rem] font-display text-white uppercase tracking-tight drop-shadow-2xl">
               &quot;SCOOP UP SOME

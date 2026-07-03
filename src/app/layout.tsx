@@ -18,8 +18,8 @@ const bebas = Bebas_Neue({
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'),
-  title: 'Mashbere | Premium Ice Cream & Equipment',
-  description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
+  title: 'Mashbere | Wholesale Ice Cream, Pookees, Popsicles & Kiosks in UAE',
+  description: 'Mashbere is the top wholesale supplier for premium artisanal ice cream, pookees, popsicles, and ice cream kiosks in the UAE. Partner with us for high-margin frozen treats.',
   icons: {
     icon: '/photos/mashbere icon.webp',
   },
@@ -27,8 +27,8 @@ export const metadata = {
     google: 'rMZnh5V9v9sYih5zJb5-gklsLpRSSKeZLfBY-g5L4TQ',
   },
   openGraph: {
-    title: 'Mashbere | Premium Ice Cream & Equipment',
-    description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
+    title: 'Mashbere | Wholesale Ice Cream, Pookees, Popsicles & Kiosks in UAE',
+    description: 'Mashbere is the top wholesale supplier for premium artisanal ice cream, pookees, popsicles, and ice cream kiosks in the UAE. Partner with us for high-margin frozen treats.',
     url: 'https://mashbere.com',
     siteName: 'Mashbere',
     images: [
@@ -44,8 +44,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mashbere | Premium Ice Cream & Equipment',
-    description: 'Shop premium ice cream, popsicles and professional equipment at Mashbere.',
+    title: 'Mashbere | Wholesale Ice Cream, Pookees, Popsicles & Kiosks in UAE',
+    description: 'Mashbere is the top wholesale supplier for premium artisanal ice cream, pookees, popsicles, and ice cream kiosks in the UAE.',
     images: ['/photos/green_hero_splash.webp'],
   },
 };
@@ -57,7 +57,7 @@ const organizationSchema = {
   "name": "Mashbere",
   "url": "https://mashbere.com",
   "logo": "https://mashbere.com/photos/mashbere_logo_no_bg.webp",
-  "description": "Premium artisanal frozen delights and professional B2B ice cream equipment in the UAE.",
+  "description": "Premium artisanal frozen delights, pookees, popsicles, and wholesale B2B ice cream kiosks in the UAE.",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Dubai",
@@ -71,6 +71,27 @@ const organizationSchema = {
     "areaServed": "AE",
     "availableLanguage": ["English", "Arabic"]
   },
+  "sameAs": [
+    "https://www.instagram.com/mashbere.ae",
+    "https://www.facebook.com/share/1JTDeNX7H1/"
+  ]
+};
+
+// JSON-LD LocalBusiness Schema for Local SEO
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Mashbere",
+  "image": "https://mashbere.com/photos/mashbere_logo_no_bg.webp",
+  "url": "https://mashbere.com",
+  "telephone": "+971-50-299-4974",
+  "email": "info@Jameesfood.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Dubai",
+    "addressCountry": "UAE"
+  },
+  "description": "Wholesale supplier of premium artisanal ice cream, pookees, popsicles, and ice cream kiosks in the UAE.",
   "sameAs": [
     "https://www.instagram.com/mashbere.ae",
     "https://www.facebook.com/share/1JTDeNX7H1/"
@@ -105,6 +126,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
         <PageLoader />
         <CartProvider>

@@ -24,7 +24,7 @@ const STEPS = [
     id: '01',
     icon: Package,
     title: "No Investment",
-    desc: "We install the Mashbere freezer in your store — completely free.",
+    desc: "We install the Mashbere ice cream kiosk in your store — completely free.",
   },
   {
     id: '02',
@@ -84,7 +84,7 @@ export default function ZeroRiskPartnership() {
             Start Earning in 3 Simple Steps
           </h2>
           <BodyReveal className="text-gray-500 font-medium text-sm sm:text-lg lg:text-xl" delay={0.2}>
-            We handle the hard work, you enjoy the profit.
+            Partner with our wholesale program to stock premium popsicles, pookees, and ice cream. We handle the hard work, you enjoy the profit.
           </BodyReveal>
         </div>
 
@@ -198,7 +198,7 @@ export default function ZeroRiskPartnership() {
             <Quote className="absolute bottom-4 right-4 text-[#C4EB54]/10 w-8 h-8" />
             
             <p className="text-sm sm:text-xl text-white font-bold leading-relaxed max-w-lg">
-              Our products combine premium quality with fast turnover, ensuring consistent sales and customer satisfaction.
+              Our wholesale ice cream, popsicles, and pookees combine premium quality with fast turnover, ensuring consistent sales for your kiosk or store.
             </p>
           </motion.div>
         </div>

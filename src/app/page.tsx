@@ -23,8 +23,8 @@ const ZeroRiskPartnership = dynamic(() => import('@/components/features/ZeroRisk
  * Fetches featured products directly from the Service layer for optimal performance.
  */
 export const metadata = {
-  title: 'Mashbere | Artisanal Frozen Treats & B2B Solutions in UAE',
-  description: 'Experience the finest artisanal ice cream, popsicles, and hygienic ice cups in the UAE. Mashbere is your trusted wholesale ice cream UAE partner and premium ice cream supplier UAE.',
+  title: 'Mashbere | Best Wholesale Ice Cream, Pookees & Popsicles in UAE',
+  description: 'Mashbere is your trusted wholesale partner for premium ice cream, pookees, popsicles, and hygienic ice cups in the UAE. We also provide zero-risk B2B ice cream kiosks.',
   alternates: {
     canonical: '/',
   },
