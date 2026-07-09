@@ -13,6 +13,7 @@ const FOOTER_LINKS = {
     { name: 'Ice Cream', href: '/products?category=ice-cream' },
     { name: 'Popsicles', href: '/products?category=popsicle' },
     { name: 'Commercial Equipment', href: '/equipment' },
+    { name: 'Contact Us', href: '/contact' },
   ],
   Support: [
     { name: 'Delivery & Shipping', href: '/delivery' },

@@ -3,14 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2, Sparkles, Truck, Heart, HelpCircle } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2, Sparkles, Truck, Heart, HelpCircle, Phone } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { UserMenu } from '@/components/auth/UserMenu';
 import { ArrowLeft } from 'lucide-react';
-import GooeyNav from '@/components/ui/GooeyNav';
 
 export default function Header() {
   const { getCartCount } = useCart();
@@ -170,7 +169,8 @@ export default function Header() {
                     { label: 'Home', href: '/' },
                     { label: 'About', href: '/about' },
                     { label: 'Products', href: '/products' },
-                    { label: 'For Business', href: '/equipment' },
+                    { label: 'Business', href: '/equipment' },
+                    { label: 'Contact', href: '/contact' },
                   ].map((item) => {
                     const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
                     return (
@@ -346,10 +346,11 @@ export default function Header() {
                   { label: 'Home', href: '/', icon: Home },
                   { label: 'About', href: '/about', icon: Sparkles },
                   { label: 'Products', href: '/products', icon: LayoutGrid },
-                  { label: 'For Business', href: '/equipment', icon: Building2 },
+                  { label: 'Business', href: '/equipment', icon: Building2 },
                   { label: 'Delivery Guarantee', href: '/delivery', icon: Truck },
                   { label: 'Dietary & Allergens', href: '/dietary', icon: Heart },
                   { label: 'FAQs & Support', href: '/faq', icon: HelpCircle },
+                  { label: 'Contact Us', href: '/contact', icon: Phone },
                   { label: 'Account', href: user ? '/profile' : '/auth/login', icon: User },
                 ].map((item) => {
                   const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));

@@ -1,12 +1,16 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import SmoothScroll from '@/components/shared/SmoothScroll';
-import WhatsAppWidget from '@/components/shared/WhatsAppWidget';
 import ScrollProgress from '@/components/shared/ScrollProgress';
 import { Suspense } from 'react';
+
+// Dynamically import WhatsAppWidget client-side only to avoid hydration mismatch
+// (uses localStorage + scroll listeners that differ between SSR and client)
+const WhatsAppWidget = dynamic(() => import('@/components/shared/WhatsAppWidget'), { ssr: false });
 
 const AUTH_ROUTES = ['/auth/login', '/auth/register', '/auth/forgot-password'];
 // Admin panel uses its own layout — exclude from public Header/Footer

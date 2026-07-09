@@ -1,9 +1,7 @@
 import './globals.css';
 import { Inter, Bebas_Neue } from 'next/font/google';
-import { CartProvider } from '@/context/CartContext';
-import { Toaster } from 'sonner';
 import Script from 'next/script';
-import ConditionalLayout from '@/components/shared/ConditionalLayout';
+import ClientProviders from '@/components/shared/ClientProviders';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -20,6 +18,21 @@ export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com'),
   title: 'Mashbere | Wholesale Ice Cream, Pookees, Popsicles & Kiosks in UAE',
   description: 'Mashbere is the top wholesale supplier for premium artisanal ice cream, pookees, popsicles, and ice cream kiosks in the UAE. Partner with us for high-margin frozen treats.',
+  keywords: [
+    'wholesale ice cream UAE',
+    'ice cream supplier Dubai',
+    'popsicle supplier UAE',
+    'pookees UAE',
+    'ice cream kiosk UAE',
+    'frozen desserts wholesale UAE',
+    'Mashbere',
+    'Jamees Food UAE',
+    'artisan ice cream Dubai',
+    'premium ice cream supplier UAE',
+    'ice glass UAE',
+    'sipup UAE',
+    'kiosk solution UAE',
+  ],
   icons: {
     icon: '/photos/mashbere icon.webp',
   },
@@ -80,7 +93,7 @@ const organizationSchema = {
 // JSON-LD LocalBusiness Schema for Local SEO
 const localBusinessSchema = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": "FoodEstablishment",
   "name": "Mashbere",
   "image": "https://mashbere.com/photos/mashbere_logo_no_bg.webp",
   "url": "https://mashbere.com",
@@ -89,18 +102,36 @@ const localBusinessSchema = {
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Dubai",
-    "addressCountry": "UAE"
+    "addressCountry": "AE"
   },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 25.2048,
+    "longitude": 55.2708
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "14:00"
+    }
+  ],
   "description": "Wholesale supplier of premium artisanal ice cream, pookees, popsicles, and ice cream kiosks in the UAE.",
+  "servesCuisine": "Ice Cream, Frozen Desserts",
+  "priceRange": "$$",
+  "hasMap": "https://maps.google.com/?q=Dubai,UAE",
   "sameAs": [
     "https://www.instagram.com/mashbere.ae",
     "https://www.facebook.com/share/1JTDeNX7H1/"
   ]
 };
-
-import { PageLoader } from '@/components/shared/PageLoader';
-import ClickSpark from '@/components/ui/ClickSpark';
-import SmoothScroll from '@/components/shared/SmoothScroll';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -131,13 +162,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
-        <PageLoader />
-        <CartProvider>
-          <ClickSpark sparkColor="#C4EB54" sparkSize={12} sparkRadius={20} sparkCount={10} duration={600} extraScale={1.2}>
-            <ConditionalLayout>{children}</ConditionalLayout>
-          </ClickSpark>
-          <Toaster position="top-center" richColors />
-        </CartProvider>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );
