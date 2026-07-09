@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { ProductService } from '@/services/server/productService';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mashbere.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.mashbere.com';
 
   // Static routes
   const staticRoutes = [
