@@ -244,26 +244,3 @@ export default function Footer() {
   );
 }
 
-
-const FOOTER_LINKS = {
-  Explore: [
-    { name: 'About Us', href: '/about' },
-    { name: 'All Products', href: '/products' },
-    { name: 'Ice Cream', href: '/products?category=ice-cream' },
-    { name: 'Popsicles', href: '/products?category=popsicle' },
-    { name: 'Commercial Equipment', href: '/equipment' },
-    { name: 'Contact Us', href: '/contact' },
-  ],
-  Support: [
-    { name: 'Delivery & Shipping', href: '/delivery' },
-    { name: 'Dietary & Allergens', href: '/dietary' },
-    { name: 'FAQs & Support', href: '/faq' },
-    { name: 'Privacy Policy', href: '/privacy' },
-    { name: 'Terms of Service', href: '/terms' },
-  ],
-  Contact: [
-    { icon: MapPin, text: 'Jamees Food and Beverage Trading LLC - Dubai, UAE' },
-    { icon: Phone, text: '+971 502994974' },
-    { icon: Mail, text: 'info@Jameesfood.com' },
-  ]
-};
