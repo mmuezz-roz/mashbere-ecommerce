@@ -143,7 +143,7 @@ export default function ContactClient() {
           </FadeUp>
 
           <FadeUp delay={0.1}>
-            <h1 className="font-display uppercase tracking-tighter leading-[0.82] text-white text-[13vw] xs:text-[11vw] sm:text-7xl md:text-8xl lg:text-9xl">
+            <h1 className="font-display uppercase tracking-tighter leading-[0.85] text-white text-[14vw] xs:text-[12vw] sm:text-7xl md:text-8xl lg:text-9xl mt-2">
               Let&apos;s<br />
               <span className="text-[#C4EB54]">Connect.</span>
             </h1>
@@ -167,7 +167,7 @@ export default function ContactClient() {
                   href={item.href}
                   target={item.href.startsWith('http') ? '_blank' : undefined}
                   rel="noopener noreferrer"
-                  className="group block bg-white border border-gray-100 hover:border-[#C4EB54]/40 hover:bg-[#141A0B] rounded-[28px] p-7 sm:p-8 h-full transition-all duration-500 cursor-pointer"
+                  className="group block bg-white border border-gray-100 hover:border-[#C4EB54]/40 hover:bg-[#141A0B] rounded-[24px] sm:rounded-[28px] p-6 sm:p-8 h-full transition-all duration-500 cursor-pointer"
                 >
                   <div className="w-11 h-11 rounded-xl bg-[#F7F7F5] group-hover:bg-[#C4EB54]/10 border border-gray-100 group-hover:border-[#C4EB54]/20 flex items-center justify-center mb-5 transition-all duration-500">
                     <item.icon className="w-5 h-5 text-[#708238] group-hover:text-[#C4EB54] transition-colors duration-500" />
@@ -192,18 +192,18 @@ export default function ContactClient() {
               href="https://wa.me/971502994974?text=Hello%20Mashbere%2C%20I%20have%20a%20wholesale%20inquiry."
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 bg-[#25D366] rounded-[28px] px-8 py-6 transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
+              className="group flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-4 bg-[#25D366] rounded-[24px] sm:rounded-[28px] px-6 sm:px-8 py-6 transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                  <MessageCircle className="w-6 h-6 text-white" />
+              <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4">
+                <div className="w-14 h-14 sm:w-12 sm:h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <MessageCircle className="w-7 h-7 sm:w-6 sm:h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-white font-black text-base sm:text-lg">Chat with us on WhatsApp</p>
-                  <p className="text-white/70 text-xs sm:text-sm font-medium">Fastest response — usually within minutes</p>
+                  <p className="text-white font-black text-lg">Chat with us on WhatsApp</p>
+                  <p className="text-white/80 text-sm font-medium mt-0.5">Fastest response — usually within minutes</p>
                 </div>
               </div>
-              <span className="flex-shrink-0 bg-white text-[#25D366] font-black text-xs uppercase tracking-widest px-6 py-3 rounded-full group-hover:scale-105 transition-transform">
+              <span className="w-full sm:w-auto text-center flex-shrink-0 bg-white text-[#25D366] font-black text-xs uppercase tracking-widest px-6 py-4 sm:py-3 rounded-[16px] sm:rounded-full group-hover:scale-105 transition-transform">
                 Open WhatsApp →
               </span>
             </a>
@@ -222,7 +222,7 @@ export default function ContactClient() {
                 <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 block mb-3">
                   Send a Message
                 </span>
-                <h2 className="font-display uppercase tracking-tighter leading-none text-[#141A0B] text-3xl sm:text-5xl mb-8">
+                <h2 className="font-display uppercase tracking-tighter leading-[0.9] text-[#141A0B] text-4xl sm:text-5xl mb-8">
                   We&apos;d Love to<br />
                   <span className="text-[#708238]">Hear From You.</span>
                 </h2>
@@ -345,7 +345,7 @@ export default function ContactClient() {
                       id="contact-submit-btn"
                       type="submit"
                       disabled={status === 'sending'}
-                      className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#141A0B] hover:bg-[#1E2710] text-white font-black text-xs uppercase tracking-widest px-10 py-4 rounded-full transition-all hover:scale-105 active:scale-95 shadow-xl disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
+                      className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#141A0B] hover:bg-[#1E2710] text-white font-black text-xs uppercase tracking-widest px-10 py-4 sm:py-4 rounded-[16px] sm:rounded-full transition-all hover:scale-105 active:scale-95 shadow-xl disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
                     >
                       {status === 'sending' ? (
                         <>
