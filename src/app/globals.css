@@ -154,3 +154,47 @@
   will-change: transform;
 }
 
+/* ─── Blog Article Body Styles ─── */
+.article-body {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: #4b5563;
+  font-weight: 500;
+}
+.article-body h2 {
+  font-family: var(--font-bebas), 'Bebas Neue', sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: #141A0B;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.article-body h3 {
+  font-family: var(--font-bebas), 'Bebas Neue', sans-serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #708238;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.article-body p { margin-bottom: 1.25rem; }
+.article-body ul { list-style: none; padding: 0; margin: 1rem 0 1.5rem 0; }
+.article-body ul li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; }
+.article-body ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.65em;
+  width: 6px; height: 6px;
+  background: #C4EB54;
+  border-radius: 50%;
+}
+.article-body strong { color: #141A0B; font-weight: 700; }
+.article-body a { color: #708238; text-decoration: none; }
+.article-body a:hover { text-decoration: underline; }
+.article-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; overflow-x: auto; display: block; }
+.article-body th { background: #141A0B; color: white; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; padding: 0.75rem 1rem; text-align: left; white-space: nowrap; }
+.article-body td { border: 1px solid #f3f4f6; padding: 0.75rem 1rem; color: #4b5563; vertical-align: top; }
+.article-body tr:nth-child(even) td { background: #f9fafb; }

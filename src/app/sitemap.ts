@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { ProductService } from '@/services/server/productService';
+import { blogPosts } from '@/data/blogPosts';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.mashbere.com';
@@ -11,14 +12,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/equipment',
     '/about',
     '/contact',
+    '/blog',
+    '/delivery',
+    '/dietary',
+    '/faq',
     '/privacy',
     '/terms',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1 : 0.8,
+    priority: route === '' ? 1 : route === '/blog' ? 0.9 : 0.8,
   }));
+
+  // Blog post routes
+  const blogRoutes = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.publishedAt),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
 
   // Fetch all categories for dynamic product routes
   const [popsicles, sipups, equipment, pookees] = await Promise.all([
@@ -56,5 +70,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ];
 
-  return [...staticRoutes, ...productRoutes];
+  return [...staticRoutes, ...blogRoutes, ...productRoutes];
 }

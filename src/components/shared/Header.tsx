@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2, Sparkles, Truck, Heart, HelpCircle, Phone } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Home, LayoutGrid, Building2, Sparkles, Truck, Heart, HelpCircle, Phone, BookOpen } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -170,6 +170,7 @@ export default function Header() {
                     { label: 'About', href: '/about' },
                     { label: 'Products', href: '/products' },
                     { label: 'Business', href: '/equipment' },
+                    { label: 'Blog', href: '/blog' },
                     { label: 'Contact', href: '/contact' },
                   ].map((item) => {
                     const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
@@ -347,6 +348,7 @@ export default function Header() {
                   { label: 'About', href: '/about', icon: Sparkles },
                   { label: 'Products', href: '/products', icon: LayoutGrid },
                   { label: 'Business', href: '/equipment', icon: Building2 },
+                  { label: 'Blog', href: '/blog', icon: BookOpen },
                   { label: 'Delivery Guarantee', href: '/delivery', icon: Truck },
                   { label: 'Dietary & Allergens', href: '/dietary', icon: Heart },
                   { label: 'FAQs & Support', href: '/faq', icon: HelpCircle },
