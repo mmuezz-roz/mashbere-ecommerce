@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --font-size: 16px;
   --background: #ffffff;
   --foreground: #1c2114;
@@ -63,27 +64,7 @@
   }
 }
 
-.dark {
-  --background: #0d1108;
-  --foreground: #f4f6ef;
-  --card: #0d1108;
-  --card-foreground: #f4f6ef;
-  --popover: #0d1108;
-  --popover-foreground: #f4f6ef;
-  --primary: #8ba145;
-  --primary-foreground: #0d1108;
-  --secondary: #1c2114;
-  --secondary-foreground: #f4f6ef;
-  --muted: #1c2114;
-  --muted-foreground: #a3b18a;
-  --accent: #1c2114;
-  --accent-foreground: #f4f6ef;
-  --destructive: #9b2c2c;
-  --destructive-foreground: #ffffff;
-  --border: #2d361c;
-  --input: #1c2114;
-  --ring: #8ba145;
-}
+/* Dark mode intentionally disabled — site always renders in light mode */
 
 @theme inline {
   --color-background: var(--background);
