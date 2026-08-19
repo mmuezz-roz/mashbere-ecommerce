@@ -3,6 +3,10 @@
 @import '../styles/fonts.css';
 
 @layer base {
+  html {
+    color-scheme: light only !important;
+  }
+
   html.lenis, html.lenis body {
     height: auto;
   }
@@ -26,7 +30,7 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
     font-feature-settings: "rlig" 1, "calt" 1;
-    color-scheme: light;
+    color-scheme: light only !important;
   }
 }
 

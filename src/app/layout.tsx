@@ -63,6 +63,11 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  themeColor: '#ffffff',
+  colorScheme: 'only light',
+};
+
 // JSON-LD Organization Schema for Brand Authority
 const organizationSchema = {
   "@context": "https://schema.org",
