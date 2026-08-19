@@ -139,7 +139,7 @@ export default function ArchiveSection() {
                 </h3>
               </div>
               
-              <Link href="/products" passHref>
+              <Link href="/products?category=toroness">
                 <button
                   className="sensory-btn flex items-center justify-center rounded-full shadow-lg shrink-0"
                   style={{
@@ -150,7 +150,7 @@ export default function ArchiveSection() {
                     border: 'none',
                     cursor: 'pointer',
                   }}
-                  aria-label="View Coffee Luxe details"
+                  aria-label="View Toroness products"
                 >
                   <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
@@ -163,8 +163,9 @@ export default function ArchiveSection() {
           <div className="col-span-12 md:col-span-4 flex flex-row md:flex-col gap-4 md:gap-6 md:h-full">
             
             {/* Stacked 1: Strawberry */}
-            <div
-              className="sensory-stack-1 group relative flex-1 overflow-hidden rounded-2xl shadow-lg z-20 md:-ml-12"
+            <Link
+              href="/products?category=toroness"
+              className="sensory-stack-1 group relative flex-1 overflow-hidden rounded-2xl shadow-lg z-20 md:-ml-12 block cursor-pointer"
               style={{ minHeight: 'clamp(160px, 40vw, 338px)' }}
             >
               <div
@@ -192,11 +193,12 @@ export default function ArchiveSection() {
                   TORONESS<br />STRAWBERRY
                 </h4>
               </div>
-            </div>
+            </Link>
 
             {/* Stacked 2: Vanilla */}
-            <div
-              className="sensory-stack-2 group relative flex-1 overflow-hidden rounded-2xl shadow-lg"
+            <Link
+              href="/products?category=toroness"
+              className="sensory-stack-2 group relative flex-1 overflow-hidden rounded-2xl shadow-lg block cursor-pointer"
               style={{ minHeight: 'clamp(160px, 40vw, 338px)' }}
             >
               <div
@@ -224,7 +226,7 @@ export default function ArchiveSection() {
                   VANILLA
                 </h4>
               </div>
-            </div>
+            </Link>
             
           </div>
         </div>
