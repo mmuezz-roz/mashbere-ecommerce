@@ -150,7 +150,7 @@ export default function ArchiveSection() {
                     border: 'none',
                     cursor: 'pointer',
                   }}
-                  aria-label="View Toroness products"
+                  aria-label="View Turkish Ice Cream products"
                 >
                   <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
@@ -190,7 +190,7 @@ export default function ArchiveSection() {
                     transform: 'translateY(8px)',
                   }}
                 >
-                  TORONESS<br />STRAWBERRY
+                  TURKISH ICE CREAM<br />STRAWBERRY
                 </h4>
               </div>
             </Link>

@@ -103,11 +103,21 @@ export default async function Home() {
             </Link>
           </div>
 
+          {/* Mobile Swipe Hint */}
+          <div className="flex sm:hidden items-center justify-end gap-2 mb-4 pr-4">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Swipe to explore</span>
+            <div className="flex gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-pulse" style={{ animationDelay: '150ms' }} />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-pulse" style={{ animationDelay: '300ms' }} />
+            </div>
+          </div>
+
           {/* Product Grid / Carousel */}
           <div className="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none scroll-smooth sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 pb-8 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {featuredProducts.length > 0 ? (
               featuredProducts.slice(0, 4).map(product => (
-                <div key={product.id} className="snap-start shrink-0 w-[65vw] sm:w-auto">
+                <div key={product.id} className="snap-start shrink-0 w-[82vw] sm:w-auto">
                   <ProductCard product={product} />
                 </div>
               ))

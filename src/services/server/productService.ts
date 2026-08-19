@@ -418,10 +418,15 @@ export const ProductService = {
 
     return (data || []).map((p: any) => {
       const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
+      // Normalise the subtitle: always display 'Turkish Ice Cream' instead of 'Toroness' or empty
+      const rawSubtitle = d?.subtitle ?? '';
+      const subtitle = rawSubtitle.toLowerCase().includes('toroness') || !rawSubtitle
+        ? 'Turkish Ice Cream'
+        : rawSubtitle;
       return {
         id: p.slug,
         name: p.name,
-        subtitle: d?.subtitle ?? '',
+        subtitle,
         label: d?.label ?? 'NEW ARRIVAL',
         image: p.image,
         hoverImage: d?.image_path ?? null,
@@ -468,11 +473,16 @@ export const ProductService = {
 
     if (!data) return null;
     const d = Array.isArray(data.product_details) ? data.product_details[0] : data.product_details;
+    // Normalise the subtitle: always display 'Turkish Ice Cream' instead of 'Toroness' or empty
+    const rawSubtitle = d?.subtitle ?? '';
+    const subtitle = rawSubtitle.toLowerCase().includes('toroness') || !rawSubtitle
+      ? 'Turkish Ice Cream'
+      : rawSubtitle;
 
     return {
       id: data.slug,
       name: data.name,
-      subtitle: d?.subtitle ?? '',
+      subtitle,
       label: d?.label ?? 'NEW ARRIVAL',
       image: d?.image_path ?? data.image,
       accentColor: d?.accent_color ?? '#FCE4EC',

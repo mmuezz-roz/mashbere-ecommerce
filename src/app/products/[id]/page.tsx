@@ -26,15 +26,37 @@ export async function generateMetadata({ params }: Props) {
     ? product.image 
     : `${baseUrl}${product.image}`;
 
+  const isToronessProduct = product.category === 'toroness' || (product.slug || id).startsWith('toroness-');
+  const seoTitle = isToronessProduct
+    ? `${product.name} | Turkish Ice Cream UAE | Mashbere`
+    : `${product.name} | Mashbere`;
+  const seoDescription = isToronessProduct
+    ? `${product.description} — Authentic Turkish Ice Cream (Dondurma) handcrafted in the UAE by Mashbere. Stretchy, creamy & made with natural ingredients.`
+    : product.description;
+  const seoKeywords = isToronessProduct
+    ? [
+        `${product.name} Turkish ice cream`,
+        'Turkish ice cream UAE',
+        'Turkish ice cream Dubai',
+        'Dondurma UAE',
+        'Dondurma Dubai',
+        'stretchy ice cream UAE',
+        'authentic Turkish dessert UAE',
+        'Mashbere Turkish ice cream',
+        'buy Turkish ice cream online UAE',
+      ]
+    : undefined;
+
   return {
-    title: `${product.name} | Mashbere`,
-    description: product.description,
+    title: seoTitle,
+    description: seoDescription,
+    ...(seoKeywords && { keywords: seoKeywords }),
     alternates: {
       canonical: `/products/${product.slug || id}`,
     },
     openGraph: {
-      title: product.name,
-      description: product.description,
+      title: isToronessProduct ? `${product.name} | Turkish Ice Cream UAE` : product.name,
+      description: seoDescription,
       url: `${baseUrl}/products/${product.slug || id}`,
       siteName: 'Mashbere',
       images: [
@@ -42,7 +64,7 @@ export async function generateMetadata({ params }: Props) {
           url: fullImageUrl,
           width: 1200,
           height: 630,
-          alt: product.name,
+          alt: isToronessProduct ? `${product.name} — Turkish Ice Cream by Mashbere UAE` : product.name,
         },
       ],
       locale: 'en_AE',
@@ -50,8 +72,8 @@ export async function generateMetadata({ params }: Props) {
     },
     twitter: {
       card: 'summary_large_image',
-      title: product.name,
-      description: product.description,
+      title: isToronessProduct ? `${product.name} | Turkish Ice Cream UAE` : product.name,
+      description: seoDescription,
       images: [fullImageUrl],
     },
   };

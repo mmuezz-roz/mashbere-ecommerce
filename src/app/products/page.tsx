@@ -4,9 +4,24 @@ import FlavorsGrid from './FlavorsGrid';
 import DotGrid from '@/components/ui/DotGrid';
 
 export const metadata = {
-  title: 'Ice Cream Products UAE | Popsicles, Ice Cups & Flavours | Mashbere',
-  description: 'Indulge in the best artisanal ice cream, handcrafted popsicles, & premium ice cups in the UAE. Made with 100% natural ingredients. Explore our flavors today!',
-  keywords: ['artisanal ice cream UAE', 'premium popsicles Dubai', 'SipUp ice cups', 'handcrafted frozen desserts', 'Mashbere ice cream', 'ice cream supplier UAE', 'wholesale ice cream UAE'],
+  title: 'Turkish Ice Cream UAE | Dondurma, Popsicles & Premium Flavours | Mashbere',
+  description: 'Discover authentic Turkish ice cream (Dondurma) in the UAE — stretchy, creamy & handcrafted. Also explore premium popsicles, SipUp ice cups & artisan frozen desserts. Made with 100% natural ingredients.',
+  keywords: [
+    'Turkish ice cream UAE',
+    'Turkish ice cream Dubai',
+    'Dondurma UAE',
+    'Dondurma Dubai',
+    'stretchy ice cream UAE',
+    'artisanal ice cream UAE',
+    'premium popsicles Dubai',
+    'SipUp ice cups',
+    'handcrafted frozen desserts UAE',
+    'Mashbere ice cream',
+    'ice cream supplier UAE',
+    'wholesale ice cream UAE',
+    'Turkish dessert UAE',
+    'buy Turkish ice cream online UAE',
+  ],
   alternates: {
     canonical: '/products',
   },
@@ -62,7 +77,7 @@ export default async function ProductsPage() {
                   Ice Cream <span className="text-white/40">Products UAE</span>
                 </span>
                 <span className="text-[#C4EB54] text-3xl sm:text-6xl lg:text-[4rem] leading-[0.9] mt-2 sm:mt-4">
-                  Popsicles <span className="opacity-40 font-light mx-2">/</span> Ice Cups <span className="opacity-40 font-light mx-2">/</span> Flavours
+                  Turkish Ice Cream <span className="opacity-40 font-light mx-2">/</span> Popsicles <span className="opacity-40 font-light mx-2">/</span> SipUps
                 </span>
               </h1>
             </div>

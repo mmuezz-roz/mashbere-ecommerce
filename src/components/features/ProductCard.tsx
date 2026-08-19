@@ -31,108 +31,73 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative hover:-translate-y-1.5 transition-transform duration-300 ease-out"
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="group relative block w-full h-full"
     >
       <Link
         href={product.category === 'sip-up' ? `/sipups/${product.slug}` : `/products/${product.slug}`}
-        className="block bg-white rounded-[32px] sm:rounded-[40px] p-3 sm:p-4 transition-all duration-500 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.14)] border border-gray-50 group-hover:border-primary/10"
+        className="flex flex-col h-full bg-white rounded-[32px] sm:rounded-[40px] p-4 transition-all duration-700 ease-out hover:bg-gray-50/50 hover:scale-[1.02]"
       >
-        {/* Image Container */}
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] sm:rounded-[32px] bg-[#FDFCFD]">
+        {/* Apple-style Minimal Image Container */}
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] sm:rounded-[32px] bg-[#F5F5F7] transition-all duration-700 group-hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)]">
           <ImageWithFallback
             src={product.image}
-            alt={`${product.name} - Mashbere Premium Frozen Treats UAE`}
-            className={`w-full h-full group-hover:scale-105 transition-transform duration-[1.2s] ease-out ${
+            alt={`${product.name} - Mashbere Premium`}
+            className={`w-full h-full transform transition-transform duration-[1.2s] ease-[0.22,1,0.36,1] group-hover:scale-110 ${
               product.category === 'sip-up'
-                ? 'object-contain p-0 sm:p-2 drop-shadow-xl'
+                ? 'object-contain p-0 sm:p-2 mix-blend-multiply'
                 : product.category === 'pookees'
-                ? 'object-contain p-12 sm:p-4 drop-shadow-lg'
+                ? 'object-contain p-12 sm:p-4 mix-blend-multiply'
+                : (product.category === 'toroness' || product.slug?.startsWith('toroness-'))
+                ? 'object-contain p-8 sm:p-10 drop-shadow-xl'
                 : 'object-cover'
             }`}
           />
 
-          {/* Badges */}
-          <div className="absolute top-3 sm:top-5 left-3 sm:left-5 flex flex-col gap-2 z-10">
+          {/* Minimal Badges */}
+          <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
             {product.featured && (
-              <motion.div
-                initial={{ x: -20, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-white/90 text-primary text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg border border-white/30 flex items-center gap-1.5"
-              >
-                <Sparkles className="w-2.5 h-2.5 fill-primary" />
-                Bestseller
-              </motion.div>
-            )}
-            {product.stock !== undefined && product.stock < 10 && product.category === 'equipment' && product.slug !== 'mashbere-retail-kiosk' && (
-              <div className="bg-red-500/90 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
-                Low Stock
+              <div className="bg-black/80 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                <Sparkles className="w-2.5 h-2.5" />
+                Featured
               </div>
             )}
           </div>
 
-          {/* Wishlist Button */}
-          <button
-            onClick={(e) => { e.preventDefault(); setIsWishlisted(!isWishlisted); }}
-            aria-label={isWishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
-            aria-pressed={isWishlisted}
-            className="absolute top-3 sm:top-5 right-3 sm:right-5 p-2.5 sm:p-3 bg-white/90 rounded-xl sm:rounded-2xl transition-transform duration-200 border border-white/30 z-10 hover:scale-110"
-          >
-            <Heart className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400 hover:text-primary'}`} />
-          </button>
-
-          <div className="absolute bottom-3 sm:bottom-5 inset-x-3 sm:inset-x-5 flex z-10">
-            <motion.div
-              whileTap={{ scale: 0.95 }}
-              className="flex-1 h-11 sm:h-14 bg-white text-gray-900 rounded-[16px] sm:rounded-[20px] font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-xl shadow-gray-900/10
-                opacity-100 translate-y-0
-                sm:opacity-0 sm:translate-y-6 sm:group-hover:opacity-100 sm:group-hover:translate-y-0
-                transition-all duration-400 flex items-center justify-center gap-2 border border-gray-100"
-            >
-              <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
-              View Details
-            </motion.div>
+          {/* Hover Overlay Button */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <div className="bg-white/90 backdrop-blur-xl text-gray-900 rounded-full font-bold text-xs uppercase tracking-widest px-6 py-3 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-center gap-2">
+              <Eye className="w-4 h-4" />
+              View
+            </div>
           </div>
-
-          {/* Gradient overlay on hover (desktop) */}
-          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
 
-        {/* Card Content */}
-        <div className="pt-5 sm:pt-8 pb-2 sm:pb-4 px-1 sm:px-2 space-y-2 sm:space-y-4">
-          <div className="flex justify-between items-start">
-            <div className="space-y-1">
-              <span className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-widest block bg-primary/5 w-fit px-2 py-0.5 rounded-full border border-primary/10">
-                {product.type || product.category}
-              </span>
-              <h3 className="text-lg sm:text-2xl font-black text-gray-900 leading-tight group-hover:text-primary transition-colors line-clamp-1">
-                {product.name}
-              </h3>
+        {/* Minimal Interactive Writings */}
+        <div className="pt-6 sm:pt-8 px-2 flex flex-col flex-1 relative overflow-hidden">
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 transition-colors duration-300 group-hover:text-primary">
+            {(product.category === 'toroness' || product.slug?.startsWith('toroness-')) ? 'Turkish Ice Cream' : (product.type || product.category)}
+          </span>
+          
+          <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-primary transition-colors duration-300 mb-2">
+            {product.name}
+          </h3>
+
+          {/* Description reveals on hover by sliding up */}
+          <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
+            <div className="overflow-hidden">
+              <p className="text-gray-500 text-sm font-normal leading-relaxed pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                {product.description}
+              </p>
             </div>
           </div>
 
-          <p className="text-gray-500 text-xs sm:text-sm font-medium leading-relaxed line-clamp-2 min-h-[32px] sm:min-h-[40px]">
-            {product.description}
-          </p>
-
-          <div className="flex items-center justify-between pt-2 sm:pt-4">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1">
-                <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Top Rated</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-end gap-1">
-              <span className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-tighter bg-primary/5 px-2 py-0.5 rounded-full">
-                View Details
-              </span>
-            </div>
+          <div className="mt-auto flex items-center gap-1 pt-2 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+            <Star className="w-3.5 h-3.5 text-gray-400 fill-current" />
+            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Top Rated</span>
           </div>
         </div>
       </Link>

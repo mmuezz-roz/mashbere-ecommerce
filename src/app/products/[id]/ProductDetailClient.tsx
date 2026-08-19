@@ -166,7 +166,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                   src={displayImage}
                   alt={flavor.name}
                   fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
+                  className={`${isToroness ? 'object-contain p-12' : 'object-cover'} transition-transform duration-700 hover:scale-105`}
                   priority
                 />
                 

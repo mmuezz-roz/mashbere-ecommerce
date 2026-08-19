@@ -20,7 +20,7 @@ const CATEGORIES = [
   { id: 'sip-up',    label: 'SipUps',    emoji: '🥤', toroness: false },
   { id: 'pookees',   label: 'Pookees',   emoji: '🍬', toroness: false },
   { id: 'equipment', label: 'B2B',       emoji: '🏭', toroness: false },
-  { id: 'toroness',  label: 'Toroness',  emoji: '✦',  toroness: true  },
+  { id: 'toroness',  label: 'Turkish Ice Cream', emoji: '✦',  toroness: true  },
 ];
 
 interface Flavor {
@@ -467,12 +467,12 @@ export default function FlavorsGrid({ flavors }: Props) {
                               ? (flavor.cardImage || flavor.image)
                               : flavor.image;
                             return (
-                              <div className="aspect-square relative overflow-hidden flex items-center justify-center">
+                              <div className={`${flavor.category === 'toroness' ? 'aspect-[4/3]' : 'aspect-square'} relative overflow-hidden flex items-center justify-center`}>
                                 <Image
                                   src={primarySrc}
                                   alt={flavor.name}
                                   fill
-                                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                  className={`transition-transform duration-700 ${flavor.category === 'toroness' ? 'object-contain p-6 group-hover:scale-90' : 'object-cover group-hover:scale-110'}`}
                                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                                 />
                                 {hasAlt && (
@@ -481,7 +481,7 @@ export default function FlavorsGrid({ flavors }: Props) {
                                       src={flavor.hoverImage!}
                                       alt={`${flavor.name} detail`}
                                       fill
-                                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                      className={`transition-transform duration-700 ${flavor.category === 'toroness' ? 'object-contain p-6 group-hover:scale-90' : 'object-cover group-hover:scale-110'}`}
                                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                                     />
                                   </div>
