@@ -47,13 +47,23 @@ interface Props {
 
 export default function FlavorsGrid({ flavors }: Props) {
   const searchParams = useSearchParams();
-  const defaultCategory = searchParams.get('category') || 'popsicle';
+  const categoryParam = searchParams.get('category');
 
   const [search, setSearch] = useState('');
   const [activeTag, setActiveTag] = useState('All');
-  const [activeCategory, setActiveCategory] = useState<string>(defaultCategory);
+  const [activeCategory, setActiveCategory] = useState<string>(categoryParam || 'All');
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [toggledId, setToggledId] = useState<string | null>(null);
+
+  // Sync state with URL search params on navigation (e.g. browser back/forward)
+  React.useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat) {
+      setActiveCategory(cat);
+    } else {
+      setActiveCategory('All');
+    }
+  }, [searchParams]);
 
   const filtered = flavors.filter(f => {
     const matchSearch =
@@ -109,6 +119,15 @@ export default function FlavorsGrid({ flavors }: Props) {
     setActiveCategory(id);
     setActiveTag('All');
     scrollToGrid();
+
+    // Update browser URL query param without triggering full reload so back button returns to this category
+    const url = new URL(window.location.href);
+    if (id === 'All') {
+      url.searchParams.delete('category');
+    } else {
+      url.searchParams.set('category', id);
+    }
+    window.history.replaceState(null, '', url.pathname + url.search);
   };
 
   const handleTagClick = (tag: string) => {

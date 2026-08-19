@@ -131,7 +131,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 if (flavor.category === 'toroness') return '/products?category=toroness';
                 return '/products';
               })()}
-              className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-gray-800 hover:bg-white hover:scale-110 transition-all duration-300"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-md border border-white/80 text-gray-800 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-300 shadow-sm"
               aria-label="Back to category"
             >
               <ArrowLeft size={18} />
