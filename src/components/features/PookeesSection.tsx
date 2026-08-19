@@ -193,8 +193,6 @@ export default function PookeesSection() {
         @media (max-width: 768px) {
           .pookees-main-section {
             margin-top: 0 !important;
-            border-top-left-radius: 40px;
-            border-top-right-radius: 40px;
           }
           .pookees-content-wrap {
             padding: 140px 24px 64px 24px !important;

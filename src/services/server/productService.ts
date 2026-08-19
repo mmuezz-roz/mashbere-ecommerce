@@ -378,16 +378,116 @@ export const ProductService = {
         name: fixPookeeText(p.name),
         subtitle: fixPookeeText(d?.subtitle) ?? '',
         label: fixPookeeText(d?.label) ?? '',
-        image: d?.image_path ?? p.image,
-        accentColor: getPastelColor(p.name),
-        desc: fixPookeeText(p.description),
+        image: d?.image_path ?? p.image ?? '',
+        accentColor: d?.accent_color ?? getPastelColor(p.name),
+        bgGradient: d?.bg_gradient ?? null,
+        textColor: d?.text_color ?? null,
+        desc: fixPookeeText(p.description) ?? '',
         longDesc: fixPookeeText(d?.long_desc ?? p.description),
+        tags: (d?.tags ?? []).map((t: string) => fixPookeeText(t) ?? t),
         stats: d?.stats ?? [],
         price: Number(p.price),
-        featured: p.featured,
+        featured: p.featured ?? false,
         category: 'pookees',
       };
     });
+  },
+
+  /**
+   * Fetches all TORONESS products (stored as ice-cream category, slug starts with 'toroness-')
+   */
+  async getAllToroness(): Promise<any[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, name, description, price, image, featured, slug, category,
+        product_details (
+          subtitle, label, accent_color, bg_gradient, text_color,
+          long_desc, highlight, ingredients, stats, tags, image_path
+        )
+      `)
+      .eq('category', 'ice-cream')
+      .like('slug', 'toroness-%')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('[Server] Error fetching TORONESS products:', error.message || error);
+      return [];
+    }
+
+    return (data || []).map((p: any) => {
+      const d = Array.isArray(p.product_details) ? p.product_details[0] : p.product_details;
+      return {
+        id: p.slug,
+        name: p.name,
+        subtitle: d?.subtitle ?? '',
+        label: d?.label ?? 'NEW ARRIVAL',
+        image: p.image,
+        hoverImage: d?.image_path ?? null,
+        accentColor: d?.accent_color ?? '#FCE4EC',
+        bgGradient: d?.bg_gradient ?? '',
+        textColor: d?.text_color ?? '#E11D48',
+        desc: p.description,
+        longDesc: d?.long_desc ?? p.description,
+        highlight: d?.highlight ?? '',
+        ingredients: d?.ingredients ?? [],
+        stats: d?.stats ?? [],
+        tags: d?.tags ?? [],
+        price: Number(p.price),
+        featured: p.featured,
+        category: 'toroness',
+      };
+    });
+  },
+
+  /**
+   * Fetches a single TORONESS product with full detail by slug
+   */
+  async getToronessDetail(slug: string): Promise<any | null> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id, name, description, price, image, featured, slug, category,
+        product_details (
+          subtitle, label, accent_color, bg_gradient, text_color,
+          long_desc, highlight, ingredients, stats, tags, image_path
+        )
+      `)
+      .eq('category', 'ice-cream')
+      .eq('slug', slug)
+      .single();
+
+    if (error) {
+      if (error.code !== 'PGRST116') {
+        console.error('[Server] Error fetching TORONESS detail:', error.message || error);
+      }
+      return null;
+    }
+
+    if (!data) return null;
+    const d = Array.isArray(data.product_details) ? data.product_details[0] : data.product_details;
+
+    return {
+      id: data.slug,
+      name: data.name,
+      subtitle: d?.subtitle ?? '',
+      label: d?.label ?? 'NEW ARRIVAL',
+      image: d?.image_path ?? data.image,
+      accentColor: d?.accent_color ?? '#FCE4EC',
+      bgGradient: d?.bg_gradient ?? '',
+      textColor: d?.text_color ?? '#E11D48',
+      desc: data.description,
+      longDesc: d?.long_desc ?? data.description,
+      highlight: d?.highlight ?? '',
+      ingredients: d?.ingredients ?? [],
+      stats: d?.stats ?? [],
+      tags: d?.tags ?? [],
+      price: Number(data.price),
+      featured: data.featured,
+      category: 'toroness',
+    };
   },
 
   /**

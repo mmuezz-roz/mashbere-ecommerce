@@ -16,6 +16,12 @@ const ProductShowcase = dynamic(() => import('@/components/features/ProductShowc
 const PookeesSection = dynamic(() => import('@/components/features/PookeesSection'), {
   loading: () => <div className="h-screen bg-white" />
 });
+const ArchiveSection = dynamic(() => import('@/components/features/ArchiveSection'), {
+  loading: () => <div className="h-[60vh] bg-[#141A0B]" />
+});
+const SensoryShowcaseSection = dynamic(() => import('@/components/features/SensoryShowcaseSection'), {
+  loading: () => <div className="h-[50vh] bg-[#f5fce3]" />
+});
 const ZeroRiskPartnership = dynamic(() => import('@/components/features/ZeroRiskPartnership'));
 
 /**
@@ -51,6 +57,11 @@ export default async function Home() {
       {/* Pookees Section – Mini Popsicles Highlight */}
       <PookeesSection />
 
+      {/* Sensory Showcase – Avocado Silk scrollytelling (between Pookees & Archive) */}
+      <SensoryShowcaseSection />
+
+      {/* Archive Section – Flux Carousel + Bento Grid */}
+      <ArchiveSection />
 
 
       {/* Featured Products Section */}
@@ -92,18 +103,25 @@ export default async function Home() {
             </Link>
           </div>
 
-          {/* Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+          {/* Product Grid / Carousel */}
+          <div className="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none scroll-smooth sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 pb-8 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {featuredProducts.length > 0 ? (
               featuredProducts.slice(0, 4).map(product => (
-                <ProductCard key={product.id} product={product} />
+                <div key={product.id} className="snap-start shrink-0 w-[65vw] sm:w-auto">
+                  <ProductCard product={product} />
+                </div>
               ))
             ) : (
-              <p className="text-gray-500 col-span-full text-center py-20 bg-gray-50 rounded-[40px] font-bold text-xl">
+              <p className="text-gray-500 col-span-full text-center py-20 bg-gray-50 rounded-[40px] font-bold text-xl w-full">
                 No products found.
               </p>
             )}
           </div>
+          <style dangerouslySetInnerHTML={{ __html: `
+            .hide-scrollbar::-webkit-scrollbar {
+              display: none;
+            }
+          `}} />
         </section>
       </ScrollReveal>
 

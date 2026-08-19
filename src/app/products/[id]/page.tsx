@@ -63,14 +63,15 @@ export default async function ProductDetailPage({ params }: Props) {
   // We need to fetch all to know prev/next.
   // In a real large DB, we might do cursor-based or adjacent queries,
   // but for 15 products, fetching all once is totally fine.
-  const [allPopsicles, allPookees, allEquipment, allSipups] = await Promise.all([
+  const [allPopsicles, allPookees, allEquipment, allSipups, allToroness] = await Promise.all([
     ProductService.getAllPopsicles(),
     ProductService.getAllPookees(),
     ProductService.getAllEquipment(),
-    ProductService.getAllSipups()
+    ProductService.getAllSipups(),
+    ProductService.getAllToroness()
   ]);
   
-  const allItems = [...allPopsicles, ...allPookees, ...allEquipment, ...allSipups];
+  const allItems = [...allPopsicles, ...allPookees, ...allEquipment, ...allSipups, ...allToroness];
   
   const currentIndex = allItems.findIndex(f => f.id === id);
   const flavor = allItems[currentIndex];

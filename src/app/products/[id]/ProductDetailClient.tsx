@@ -21,9 +21,16 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
   const isKiosk = flavor.id === 'mashbere-retail-kiosk';
   const isIceGlass = flavor.id === 'uae-ice-cup-ready-to-use-ice-glass' || flavor.id === 'mashbere-ice-glass';
   const isB2B = isKiosk || isIceGlass;
+  const isToroness = flavor.category === 'toroness';
+  const isPookees = flavor.category === 'pookees';
+  const usesGradientBg = (isToroness || isPookees) && !!flavor.bgGradient;
   const displayImage = isKiosk ? '/photos/kiosk-main.webp' : flavor.image;
   const projectGreen = '#708238';
   const mainAccent = isB2B ? (isIceGlass ? '#BAE6FD' : projectGreen) : flavor.accentColor;
+  // For Toroness/Pookees, extract the lightest colour from bgGradient for the ambient glow
+  const pastelGlowColor = usesGradientBg
+    ? (flavor.bgGradient.match(/#[0-9a-fA-F]{3,8}/)?.[0] ?? flavor.accentColor)
+    : mainAccent;
   const [selectedCard, setSelectedCard] = useState<any>(null);
 
   // Split longDesc into intro, how it works, and conclusion for Kiosk
@@ -78,7 +85,16 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
   ];
 
   return (
-    <main className="min-h-screen font-sans" style={{ background: isB2B ? `linear-gradient(135deg, #F8F9FA 0%, #FDFCFB 100%)` : `linear-gradient(135deg, ${flavor.accentColor}, #FFFFFF)` }}>
+    <main
+      className="min-h-screen font-sans"
+      style={{
+        background: isB2B
+          ? 'linear-gradient(135deg, #F8F9FA 0%, #FDFCFB 100%)'
+          : usesGradientBg
+            ? `${flavor.bgGradient.replace(/linear-gradient\([^,]+,/, 'linear-gradient(160deg,').replace(/100%\)/, '60%), #FFFFFF 100%)')}`
+            : `linear-gradient(135deg, ${flavor.accentColor}, #FFFFFF)`,
+      }}
+    >
       {/* Schema.org Structured Data for Rich Results */}
       <script
         type="application/ld+json"
@@ -97,7 +113,9 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
       {/* Dynamic color glow */}
       <div
         className="fixed inset-0 pointer-events-none"
-        style={{ background: `radial-gradient(ellipse at 60% 30%, ${mainAccent}40, transparent 60%)` }}
+        style={{
+          background: `radial-gradient(ellipse at 60% 30%, ${usesGradientBg ? pastelGlowColor : mainAccent}30, transparent 60%)`,
+        }}
       />
 
       <div className="relative z-10">
@@ -110,6 +128,7 @@ export default function ProductDetailClient({ flavor, prevFlavor, nextFlavor, cu
                 if (flavor.category === 'pookees') return '/products?category=pookees';
                 if (flavor.category === 'sip-up') return '/products?category=sip-up';
                 if (flavor.category === 'popsicle') return '/products?category=popsicle';
+                if (flavor.category === 'toroness') return '/products?category=toroness';
                 return '/products';
               })()}
               className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-gray-800 hover:bg-white hover:scale-110 transition-all duration-300"

@@ -5,10 +5,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, Star, ChevronLeft, ChevronRight } from 'lucide-react';
-
 import { useSearchParams } from 'next/navigation';
 
-const ALL_TAGS = ['All', 'Tropical', 'Creamy', 'Nutty', 'Refreshing', 'Exotic', 'Premium', 'Gourmet', 'Rich', 'Nostalgic', 'Wellness', 'Arabian', 'Decadent', 'Fruity'];
+const ALL_TAGS = [
+  'All', 'Tropical', 'Creamy', 'Nutty', 'Refreshing', 'Exotic', 'Premium',
+  'Gourmet', 'Rich', 'Nostalgic', 'Wellness', 'Arabian', 'Decadent', 'Fruity',
+  'New Arrival', 'Strawberry', 'Chocolate', 'Vanilla', 'Avocado', 'Banana',
+  'Biscuit', 'Peanut Butter',
+];
+
+const CATEGORIES = [
+  { id: 'All',       label: 'All',       emoji: '✦',  toroness: false },
+  { id: 'popsicle',  label: 'Popsicles', emoji: '🍦', toroness: false },
+  { id: 'sip-up',    label: 'SipUps',    emoji: '🥤', toroness: false },
+  { id: 'pookees',   label: 'Pookees',   emoji: '🍬', toroness: false },
+  { id: 'equipment', label: 'B2B',       emoji: '🏭', toroness: false },
+  { id: 'toroness',  label: 'Toroness',  emoji: '✦',  toroness: true  },
+];
 
 interface Flavor {
   id: string;
@@ -17,7 +30,10 @@ interface Flavor {
   label: string;
   image: string;
   cardImage?: string;
+  hoverImage?: string;
   accentColor: string;
+  bgGradient?: string;
+  textColor?: string;
   desc: string;
   tags: string[];
   price: number;
@@ -37,6 +53,7 @@ export default function FlavorsGrid({ flavors }: Props) {
   const [activeTag, setActiveTag] = useState('All');
   const [activeCategory, setActiveCategory] = useState<string>(defaultCategory);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [toggledId, setToggledId] = useState<string | null>(null);
 
   const filtered = flavors.filter(f => {
     const matchSearch =
@@ -46,6 +63,10 @@ export default function FlavorsGrid({ flavors }: Props) {
     const matchCategory = activeCategory === 'All' || f.category === activeCategory;
     return matchSearch && matchTag && matchCategory;
   });
+
+  // Per-category product count
+  const countFor = (catId: string) =>
+    catId === 'All' ? flavors.length : flavors.filter(f => f.category === catId).length;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const tagsRef = React.useRef<HTMLDivElement>(null);
@@ -62,23 +83,18 @@ export default function FlavorsGrid({ flavors }: Props) {
 
   React.useEffect(() => {
     checkScroll();
-    const currentTagsRef = tagsRef.current;
-    if (currentTagsRef) {
-      currentTagsRef.addEventListener('scroll', checkScroll);
-    }
+    const el = tagsRef.current;
+    if (el) el.addEventListener('scroll', checkScroll);
     window.addEventListener('resize', checkScroll);
     return () => {
-      if (currentTagsRef) {
-        currentTagsRef.removeEventListener('scroll', checkScroll);
-      }
+      if (el) el.removeEventListener('scroll', checkScroll);
       window.removeEventListener('resize', checkScroll);
     };
   }, []);
 
   const scrollTags = (direction: 'left' | 'right') => {
     if (tagsRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
-      tagsRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      tagsRef.current.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: 'smooth' });
     }
   };
 
@@ -102,115 +118,222 @@ export default function FlavorsGrid({ flavors }: Props) {
 
   return (
     <div ref={containerRef}>
-      {/* Filter Bar */}
-      <div className="relative z-20 bg-[#FDFCFA] border-b border-gray-100">
-        <div className="container-responsive py-3 lg:py-10">
-          <div className="flex flex-col gap-4 lg:gap-10">
-            {/* Category Filter */}
-            <div className="flex items-center gap-2 lg:gap-4 overflow-x-auto pb-2 sm:pb-0 w-full no-scrollbar scroll-smooth">
-              {[
-                { id: 'All', label: 'All Flavours' },
-                { id: 'popsicle', label: 'Signature Popsicles' },
-                { id: 'sip-up', label: 'Premium SipUps' },
-                { id: 'pookees', label: 'Mini Pookees' },
-                { id: 'equipment', label: 'B2B Solutions' }
-              ].map(cat => (
-                <motion.button
-                  key={cat.id}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleCategoryClick(cat.id)}
-                  className={`shrink-0 px-6 lg:px-12 py-2.5 lg:py-5 rounded-full text-[10px] lg:text-sm font-black uppercase tracking-widest transition-all duration-300 ${
-                    activeCategory === cat.id
-                      ? 'bg-[#1C2410] text-[#C4EB54] shadow-2xl shadow-[#1C2410]/40 ring-4 ring-[#1C2410]/5'
-                      : 'bg-white border border-gray-200 text-gray-400 hover:text-[#1C2410] hover:border-[#1C2410]/20 hover:bg-gray-50'
-                  }`}
-                >
-                  {cat.label}
-                </motion.button>
-              ))}
+
+      {/* ══════════════════════════════════════════════════════════
+          STICKY FILTER / CATEGORY BAR
+      ══════════════════════════════════════════════════════════ */}
+      <div className="sticky top-0 z-30 bg-white/85 backdrop-blur-2xl border-b border-black/[0.07] shadow-[0_2px_20px_-4px_rgba(0,0,0,0.06)]">
+        <div className="container-responsive">
+
+          {/* ────────────────────────────────────────────────────────
+              MOBILE ONLY  (hidden on lg+)
+          ──────────────────────────────────────────────────────── */}
+          <div className="lg:hidden py-3 space-y-2.5">
+
+            {/* Scrollable category pill row */}
+            <div
+              className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+            >
+              {CATEGORIES.map(cat => {
+                const isActive = activeCategory === cat.id;
+                const count = countFor(cat.id);
+
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => handleCategoryClick(cat.id)}
+                    className={[
+                      'relative shrink-0 flex items-center gap-1.5 rounded-full border',
+                      'transition-all duration-300 select-none active:scale-95',
+                      'px-3.5 py-2',
+                      isActive
+                        ? cat.toroness
+                          ? 'bg-gradient-to-r from-rose-500 to-pink-600 border-transparent text-white shadow-lg shadow-rose-400/30'
+                          : 'bg-[#1C2410] border-transparent text-white shadow-md shadow-black/15'
+                        : cat.toroness
+                          ? 'bg-rose-50 border-rose-200/60 text-rose-600'
+                          : 'bg-white border-black/[0.09] text-gray-600',
+                    ].join(' ')}
+                  >
+                    {/* emoji icon */}
+                    <span className="text-sm leading-none select-none">{cat.emoji}</span>
+
+                    {/* label */}
+                    <span className="text-[13px] font-semibold tracking-tight leading-none whitespace-nowrap">
+                      {cat.label}
+                    </span>
+
+                    {/* count badge */}
+                    {count > 0 && (
+                      <span
+                        className={[
+                          'inline-flex items-center justify-center rounded-full',
+                          'text-[10px] font-bold leading-none px-1.5 py-0.5 min-w-[18px]',
+                          isActive ? 'bg-white/20 text-white' : 'bg-black/[0.06] text-gray-400',
+                        ].join(' ')}
+                      >
+                        {count}
+                      </span>
+                    )}
+
+                    {/* NEW badge for Toroness when inactive */}
+                    {cat.toroness && !isActive && (
+                      <span className="ml-0.5 px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase bg-rose-100 text-rose-600 rounded-full border border-rose-200/60 leading-none">
+                        NEW
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Search and Tags Row */}
-            <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 lg:gap-12">
-              {/* Search input container */}
-              <div className="relative w-full lg:max-w-md group">
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 group-focus-within:text-[#708238] transition-colors" />
+            {/* Search + result count row */}
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1 group">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-3.5 h-3.5 group-focus-within:text-gray-900 transition-colors" />
                 <input
                   type="text"
-                  placeholder="What are you craving today?..."
+                  placeholder="Search flavours&#x2026;"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  className="w-full pl-12 pr-6 py-3 lg:py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-[#708238]/10 focus:bg-white focus:border-[#708238]/30 transition-all shadow-sm group-hover:shadow-md"
+                  className="w-full pl-9 pr-3 py-2 text-[13px] bg-black/[0.04] border border-black/[0.07] rounded-full font-normal text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-black/20 focus:ring-2 focus:ring-black/5 transition-all"
+                />
+              </div>
+              {/* Inline result count */}
+              <span className="shrink-0 text-[12px] font-semibold text-gray-400 whitespace-nowrap pr-0.5">
+                <span className="text-gray-900 font-black">{filtered.length}</span> items
+              </span>
+            </div>
+
+          </div>
+
+          {/* ────────────────────────────────────────────────────────
+              DESKTOP ONLY  (hidden on mobile)
+          ──────────────────────────────────────────────────────── */}
+          <div className="hidden lg:flex flex-col gap-4 lg:gap-5 py-4 lg:py-5">
+
+            {/* Category Segmented Control */}
+            <div className="w-full overflow-x-auto no-scrollbar py-0.5">
+              <div className="inline-flex items-center gap-1 p-1.5 bg-black/[0.03] rounded-full border border-black/[0.04] backdrop-blur-md min-w-full sm:min-w-0 justify-start sm:justify-center">
+                {CATEGORIES.map(cat => {
+                  const isActive = activeCategory === cat.id;
+                  const isToroness = cat.toroness;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => handleCategoryClick(cat.id)}
+                      className={`relative shrink-0 px-4 lg:px-6 py-2 lg:py-2.5 rounded-full text-xs lg:text-sm font-medium tracking-tight transition-colors duration-200 select-none flex items-center gap-2 ${
+                        isActive
+                          ? isToroness
+                            ? 'text-white font-semibold'
+                            : 'text-gray-900 font-semibold'
+                          : isToroness
+                            ? 'text-rose-600 hover:text-rose-700 font-medium'
+                            : 'text-gray-500 hover:text-gray-900'
+                      }`}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeCategoryPillDesktop"
+                          className={`absolute inset-0 rounded-full ${
+                            isToroness
+                              ? 'bg-gradient-to-r from-rose-500 to-pink-600 shadow-md shadow-rose-500/25'
+                              : 'bg-white shadow-[0_2px_10px_rgba(0,0,0,0.08)] border border-black/[0.04]'
+                          }`}
+                          transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                        />
+                      )}
+                      <span className="relative z-10">{cat.label}</span>
+                      {cat.toroness && !isActive && (
+                        <span className="relative z-10 px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase bg-rose-100 text-rose-600 rounded-full border border-rose-200/60">
+                          NEW
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Search + Tags row */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1 border-t border-black/[0.03]">
+              <div className="relative w-full sm:max-w-xs group">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 group-focus-within:text-gray-900 transition-colors" />
+                <input
+                  type="text"
+                  placeholder="Search flavours..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 text-xs lg:text-sm bg-black/[0.03] border border-black/[0.04] rounded-full font-normal text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-black/20 focus:ring-2 focus:ring-black/5 transition-all"
                 />
               </div>
 
-              {/* Tags Container with Arrows */}
-              <div className="relative flex-1 flex items-center gap-3 overflow-hidden group/tags">
-                <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-xl lg:bg-transparent lg:p-0 shrink-0">
-                  <Filter className="w-4 h-4 text-gray-400 shrink-0" />
-                  <span className="text-[10px] lg:text-xs font-black uppercase tracking-widest text-gray-400">Filter:</span>
+              {/* Tags filter */}
+              <div className="relative flex-1 flex items-center gap-2 overflow-hidden">
+                <div className="flex items-center gap-1.5 text-gray-400 shrink-0 px-1">
+                  <Filter className="w-3.5 h-3.5" />
+                  <span className="text-[11px] font-medium tracking-wide uppercase">Filter</span>
                 </div>
 
                 <div className="relative flex-1 flex items-center overflow-hidden">
-                  {/* Left Arrow */}
                   <AnimatePresence>
                     {canScrollLeft && (
                       <motion.button
-                        initial={{ opacity: 0, x: -10 }}
+                        initial={{ opacity: 0, x: -5 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -10 }}
+                        exit={{ opacity: 0, x: -5 }}
                         onClick={() => scrollTags('left')}
-                        className="absolute left-0 z-20 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-gray-900 hover:bg-[#1C2410] hover:text-white transition-all duration-300 hidden lg:flex"
+                        className="absolute left-0 z-20 w-7 h-7 bg-white/90 backdrop-blur-md rounded-full shadow-md border border-black/5 flex items-center justify-center text-gray-700 hover:bg-black hover:text-white transition-all"
                       >
-                        <ChevronLeft className="w-4 h-4" />
+                        <ChevronLeft className="w-3.5 h-3.5" />
                       </motion.button>
                     )}
                   </AnimatePresence>
 
-                  <div 
+                  <div
                     ref={tagsRef}
-                    className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth w-full lg:px-2"
+                    className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth w-full lg:px-2 py-0.5"
                   >
                     {ALL_TAGS.map(tag => (
-                      <motion.button
+                      <button
                         key={tag}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
                         onClick={() => handleTagClick(tag)}
-                        className={`shrink-0 px-4 lg:px-6 py-2 lg:py-3 rounded-xl text-[10px] lg:text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                        className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                           activeTag === tag
-                            ? 'bg-[#708238] text-white shadow-xl shadow-[#708238]/20'
-                            : 'bg-white border border-gray-100 text-gray-400 hover:text-gray-900 hover:border-gray-300 hover:bg-gray-50'
+                            ? 'bg-gray-900 text-white shadow-sm'
+                            : 'bg-black/[0.03] text-gray-600 hover:bg-black/[0.07] hover:text-gray-900'
                         }`}
                       >
                         {tag}
-                      </motion.button>
+                      </button>
                     ))}
                   </div>
 
-                  {/* Right Arrow */}
                   <AnimatePresence>
                     {canScrollRight && (
                       <motion.button
-                        initial={{ opacity: 0, x: 10 }}
+                        initial={{ opacity: 0, x: 5 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
+                        exit={{ opacity: 0, x: 5 }}
                         onClick={() => scrollTags('right')}
-                        className="absolute right-0 z-20 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-gray-900 hover:bg-[#1C2410] hover:text-white transition-all duration-300 hidden lg:flex"
+                        className="absolute right-0 z-20 w-7 h-7 bg-white/90 backdrop-blur-md rounded-full shadow-md border border-black/5 flex items-center justify-center text-gray-700 hover:bg-black hover:text-white transition-all"
                       >
-                        <ChevronRight className="w-4 h-4" />
+                        <ChevronRight className="w-3.5 h-3.5" />
                       </motion.button>
                     )}
                   </AnimatePresence>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
 
-      {/* Grid */}
+      {/* ══════════════════════════════════════════════════════════
+          PRODUCTS GRID
+      ══════════════════════════════════════════════════════════ */}
       <div className="container-responsive py-12 lg:py-20">
         <AnimatePresence mode="wait">
           {filtered.length === 0 ? (
@@ -232,110 +355,184 @@ export default function FlavorsGrid({ flavors }: Props) {
               {filtered.map((flavor, i) => {
                 const isB2B = flavor.category === 'equipment';
                 return (
-                <motion.div
-                  key={flavor.id}
-                  layout
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <Link href={(flavor.category === 'sip-up' && flavor.id !== 'mashbere-ice-glass') ? `/sipups/${flavor.id}` : `/products/${flavor.id}`}>
-                    {isB2B ? (
-                      <div 
-                        className="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-[#708238]/10 hover:border-[#708238]/30 flex flex-col h-full"
-                        onMouseEnter={() => setHoveredId(flavor.id)}
-                        onMouseLeave={() => setHoveredId(null)}
-                      >
-                        {/* Subtle top accent bar */}
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-[#708238] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-20" />
-                        
-                        <div className="aspect-[4/3] relative overflow-hidden bg-gray-50/50 flex items-center justify-center border-b border-gray-50">
-                          <div className="absolute inset-0 bg-gradient-to-t from-gray-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          <Image
-                            src={flavor.image}
-                            alt={flavor.name}
-                            fill
-                            className="object-contain p-6 transition-transform duration-700 group-hover:scale-105"
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                          />
-                          {/* Minimal overlay arrow */}
-                          <div className={`absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#708238] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500`}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                          </div>
-                        </div>
-                        
-                        <div className="p-5 flex-1 flex flex-col bg-white">
-                          <p className="text-[10px] font-black uppercase tracking-widest text-[#708238] mb-1.5">
-                            {flavor.subtitle || 'B2B Solution'}
-                          </p>
-                          <h3 className="font-display text-gray-900 text-xl uppercase tracking-tight leading-none mb-3 group-hover:text-[#708238] transition-colors">
-                            {flavor.name}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-gray-500 leading-relaxed line-clamp-2 mb-4">
-                            {flavor.desc}
-                          </p>
-                          <div className="mt-auto flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-gray-900 transition-colors">
-                              View Details
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className="group relative rounded-[28px] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-                        style={{ backgroundColor: flavor.accentColor }}
-                        onMouseEnter={() => setHoveredId(flavor.id)}
-                        onMouseLeave={() => setHoveredId(null)}
-                      >
-                        {/* Featured badge */}
-                        {flavor.featured && (
-                          <div className="absolute top-3 right-3 z-10">
-                            <div className="w-7 h-7 bg-[#708238] rounded-full flex items-center justify-center shadow-lg">
-                              <Star className="w-3.5 h-3.5 fill-white text-white" />
+                  <motion.div
+                    key={flavor.id}
+                    layout
+                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.4, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Link
+                      href={
+                        (flavor.category === 'sip-up' && flavor.id !== 'mashbere-ice-glass')
+                          ? `/sipups/${flavor.id}`
+                          : `/products/${flavor.id}`
+                      }
+                    >
+                      {isB2B ? (
+                        /* B2B / Equipment Card */
+                        <div
+                          className="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-[#708238]/10 hover:border-[#708238]/30 flex flex-col h-full"
+                          onMouseEnter={() => setHoveredId(flavor.id)}
+                          onMouseLeave={() => setHoveredId(null)}
+                        >
+                          {/* Top accent bar */}
+                          <div className="absolute top-0 left-0 right-0 h-1 bg-[#708238] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-20" />
+
+                          <div className="aspect-[4/3] relative overflow-hidden bg-gray-50/50 flex items-center justify-center border-b border-gray-50">
+                            <div className="absolute inset-0 bg-gradient-to-t from-gray-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <Image
+                              src={flavor.image}
+                              alt={flavor.name}
+                              fill
+                              className="object-contain p-6 transition-transform duration-700 group-hover:scale-105"
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                            />
+                            <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#708238] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                              </svg>
                             </div>
                           </div>
-                        )}
-                        {/* Tag chip */}
-                        <div className="absolute top-3 left-3 z-10 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                          <span className="bg-white/80 backdrop-blur-sm text-gray-700 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm">
-                            {(flavor.tags || [])[0] ?? ''}
-                          </span>
-                        </div>
 
-                        {/* Image */}
-                        <div className="aspect-square relative overflow-hidden flex items-center justify-center">
-                          <Image
-                            src={flavor.category === 'sip-up' ? (flavor.cardImage || flavor.image) : flavor.image}
-                            alt={flavor.name}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                          />
-                          <div className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${hoveredId === flavor.id ? 'opacity-100' : 'opacity-0'} flex items-center justify-center`}>
-                            <span className="text-white font-black text-sm uppercase tracking-widest bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
-                              View Details
-                            </span>
+                          <div className="p-5 flex-1 flex flex-col bg-white">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-[#708238] mb-1.5">
+                              {flavor.subtitle || 'B2B Solution'}
+                            </p>
+                            <h3 className="font-display text-gray-900 text-xl uppercase tracking-tight leading-none mb-3 group-hover:text-[#708238] transition-colors">
+                              {flavor.name}
+                            </h3>
+                            <p className="text-xs sm:text-sm text-gray-500 leading-relaxed line-clamp-2 mb-4">
+                              {flavor.desc}
+                            </p>
+                            <div className="mt-auto flex items-center justify-between">
+                              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-gray-900 transition-colors">
+                                View Details
+                              </span>
+                            </div>
                           </div>
                         </div>
+                      ) : (
+                        /* Ice Cream / Popsicle / SipUp / Toroness / Pookees Card */
+                        <div
+                          className="group relative rounded-[28px] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                          style={{
+                            background: (flavor.category === 'toroness' || flavor.category === 'pookees') && flavor.bgGradient
+                              ? flavor.bgGradient
+                              : flavor.accentColor,
+                          }}
+                          onMouseEnter={() => setHoveredId(flavor.id)}
+                          onMouseLeave={() => setHoveredId(null)}
+                        >
+                          {/* Featured badge */}
+                          {flavor.featured && (
+                            <div className="absolute top-3 right-3 z-10">
+                              <div className="w-7 h-7 bg-[#708238] rounded-full flex items-center justify-center shadow-lg">
+                                <Star className="w-3.5 h-3.5 fill-white text-white" />
+                              </div>
+                            </div>
+                          )}
 
-                        {/* Info */}
-                        <div className="p-5">
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-black/40 mb-1.5">
-                            {flavor.subtitle}
-                          </p>
-                          <h3 className="font-display text-black text-xl lg:text-2xl uppercase tracking-tight leading-[0.9] mb-3">
-                            {flavor.name}
-                          </h3>
-                          <p className="text-xs text-black/60 leading-relaxed line-clamp-2 font-medium">
-                            {flavor.desc}
-                          </p>
+                          {/* Tag chip on hover */}
+                          <div className="absolute top-3 left-3 z-10 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                            <span className="bg-white/80 backdrop-blur-sm text-gray-700 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm">
+                              {(flavor.tags || [])[0] ?? ''}
+                            </span>
+                          </div>
+
+                          {/* Image area */}
+                          {(() => {
+                            const hasAlt = !!flavor.hoverImage;
+                            const isToggled = toggledId === flavor.id;
+                            const primarySrc = flavor.category === 'sip-up'
+                              ? (flavor.cardImage || flavor.image)
+                              : flavor.image;
+                            return (
+                              <div
+                                className="aspect-square relative overflow-hidden flex items-center justify-center"
+                                onClick={(e) => {
+                                  if (hasAlt && window.matchMedia('(hover: none)').matches) {
+                                    e.preventDefault();
+                                    setToggledId(prev => prev === flavor.id ? null : flavor.id);
+                                  }
+                                }}
+                              >
+                                <Image
+                                  src={primarySrc}
+                                  alt={flavor.name}
+                                  fill
+                                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                                />
+                                {hasAlt && (
+                                  <div className={`absolute inset-0 transition-opacity duration-500 ${hoveredId === flavor.id || isToggled ? 'opacity-100' : 'opacity-0'}`}>
+                                    <Image
+                                      src={flavor.hoverImage!}
+                                      alt={`${flavor.name} detail`}
+                                      fill
+                                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                                    />
+                                  </div>
+                                )}
+                                {/* Desktop "View Details" overlay */}
+                                <div className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${hoveredId === flavor.id ? 'opacity-100' : 'opacity-0'} flex items-center justify-center z-10`}>
+                                  <span className="text-white font-black text-sm uppercase tracking-widest bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                                    View Details
+                                  </span>
+                                </div>
+                                {/* Mobile expand hint */}
+                                {hasAlt && (
+                                  <div className="absolute bottom-3 right-3 z-10 md:hidden">
+                                    <div className="w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md">
+                                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })()}
+
+                          {/* Info */}
+                          <div className="p-5">
+                            <p
+                              className="text-[10px] font-black uppercase tracking-[0.2em] mb-1.5"
+                              style={{
+                                color: (flavor.category === 'toroness' || flavor.category === 'pookees') && flavor.textColor
+                                  ? `${flavor.textColor}99`
+                                  : 'rgba(0,0,0,0.4)',
+                              }}
+                            >
+                              {flavor.subtitle}
+                            </p>
+                            <h3
+                              className="font-display text-xl lg:text-2xl uppercase tracking-tight leading-[0.9] mb-3"
+                              style={{
+                                color: (flavor.category === 'toroness' || flavor.category === 'pookees') && flavor.textColor
+                                  ? flavor.textColor
+                                  : '#000',
+                              }}
+                            >
+                              {flavor.name}
+                            </h3>
+                            <p
+                              className="text-xs leading-relaxed line-clamp-2 font-medium"
+                              style={{
+                                color: (flavor.category === 'toroness' || flavor.category === 'pookees') && flavor.textColor
+                                  ? `${flavor.textColor}99`
+                                  : 'rgba(0,0,0,0.6)',
+                              }}
+                            >
+                              {flavor.desc}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </Link>
-                </motion.div>
+                      )}
+                    </Link>
+                  </motion.div>
                 );
               })}
             </motion.div>

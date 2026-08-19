@@ -14,18 +14,20 @@ export const metadata = {
 
 export default async function ProductsPage() {
   // Fetch from Supabase
-  const [popsicles, sipups, pookees, equipment] = await Promise.all([
+  const [popsicles, sipups, pookees, equipment, toroness] = await Promise.all([
     ProductService.getAllPopsicles(),
     ProductService.getAllSipups(),
     ProductService.getAllPookees(),
-    ProductService.getAllEquipment()
+    ProductService.getAllEquipment(),
+    ProductService.getAllToroness()
   ]);
 
   const allItems = [
     ...popsicles.map(p => ({ ...p, category: 'popsicle' })),
     ...sipups.map(s => ({ ...s, category: 'sip-up' })),
     ...pookees.map(pk => ({ ...pk, category: 'pookees' })),
-    ...equipment.map(e => ({ ...e, category: 'equipment' }))
+    ...equipment.map(e => ({ ...e, category: 'equipment' })),
+    ...toroness.map(t => ({ ...t, category: 'toroness' }))
   ];
 
   return (

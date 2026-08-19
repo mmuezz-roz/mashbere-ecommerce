@@ -49,6 +49,8 @@ export function ProductCard({ product }: ProductCardProps) {
             className={`w-full h-full group-hover:scale-105 transition-transform duration-[1.2s] ease-out ${
               product.category === 'sip-up'
                 ? 'object-contain p-0 sm:p-2 drop-shadow-xl'
+                : product.category === 'pookees'
+                ? 'object-contain p-12 sm:p-4 drop-shadow-lg'
                 : 'object-cover'
             }`}
           />
