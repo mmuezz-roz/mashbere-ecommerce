@@ -463,20 +463,11 @@ export default function FlavorsGrid({ flavors }: Props) {
                           {/* Image area */}
                           {(() => {
                             const hasAlt = !!flavor.hoverImage;
-                            const isToggled = toggledId === flavor.id;
                             const primarySrc = flavor.category === 'sip-up'
                               ? (flavor.cardImage || flavor.image)
                               : flavor.image;
                             return (
-                              <div
-                                className="aspect-square relative overflow-hidden flex items-center justify-center"
-                                onClick={(e) => {
-                                  if (hasAlt && window.matchMedia('(hover: none)').matches) {
-                                    e.preventDefault();
-                                    setToggledId(prev => prev === flavor.id ? null : flavor.id);
-                                  }
-                                }}
-                              >
+                              <div className="aspect-square relative overflow-hidden flex items-center justify-center">
                                 <Image
                                   src={primarySrc}
                                   alt={flavor.name}
@@ -485,7 +476,7 @@ export default function FlavorsGrid({ flavors }: Props) {
                                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                                 />
                                 {hasAlt && (
-                                  <div className={`absolute inset-0 transition-opacity duration-500 ${hoveredId === flavor.id || isToggled ? 'opacity-100' : 'opacity-0'}`}>
+                                  <div className={`absolute inset-0 transition-opacity duration-500 ${hoveredId === flavor.id ? 'opacity-100' : 'opacity-0'}`}>
                                     <Image
                                       src={flavor.hoverImage!}
                                       alt={`${flavor.name} detail`}
@@ -495,22 +486,12 @@ export default function FlavorsGrid({ flavors }: Props) {
                                     />
                                   </div>
                                 )}
-                                {/* Desktop "View Details" overlay */}
+                                {/* View Details overlay */}
                                 <div className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${hoveredId === flavor.id ? 'opacity-100' : 'opacity-0'} flex items-center justify-center z-10`}>
                                   <span className="text-white font-black text-sm uppercase tracking-widest bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
                                     View Details
                                   </span>
                                 </div>
-                                {/* Mobile expand hint */}
-                                {hasAlt && (
-                                  <div className="absolute bottom-3 right-3 z-10 md:hidden">
-                                    <div className="w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md">
-                                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-                                      </svg>
-                                    </div>
-                                  </div>
-                                )}
                               </div>
                             );
                           })()}
