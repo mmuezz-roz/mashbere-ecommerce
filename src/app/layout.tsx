@@ -34,7 +34,7 @@ export const metadata = {
     'kiosk solution UAE',
   ],
   icons: {
-    icon: '/photos/mashbere icon.webp',
+    icon: '/photos/mashbere icon.png',
   },
   verification: {
     google: 'rMZnh5V9v9sYih5zJb5-gklsLpRSSKeZLfBY-g5L4TQ',
